@@ -21,40 +21,18 @@
 class NumberGenerator {
  public:
   /**
-  * Function name: NumberGenerator()
-  *
-  * @brief Constructor for Number Generator Interface
-  *
-  * @param[in]	None
-  *
-  * @return		void
-  **/
-  NumberGenerator() {}
-  
-  /**
-  * Function name: ~NumberGenerator()
-  *
-  * @brief Destructor for Number Generator Interface
-  *
-  * @param[in]	None
-  *
-  * @return		void
-  **/
-  virtual ~NumberGenerator() {}
-
-  /**
   * Function name: SetRandomValRange()
   *
   * @brief Interface to set the the random genrator range
   *
   * The implementation is defined in the derived class of the interface file
   *
-  * @param[in]	uint32_t  _nMaxRandomValue Maximum range the Random Generator should generate values within
-  * @param[in   uint32_t  _nMinRandomValue Minimum range the Random Generator should generate values within
+  * @param[in]	uint32_t  max_random_value Maximum range the Random Generator should generate values within
+  * @param[in   uint32_t  min_random_value Minimum range the Random Generator should generate values within
   *
   * @return		 void
   **/
-  virtual void SetRandomValRange(uint32_t _nMaxRandomValue, uint32_t _nMinRandomValue) = 0;
+  virtual void SetRandomValRange(uint32_t max_random_value, uint32_t min_random_value) = 0;
 
   /**
   * Function name: GetGeneratedNumber()

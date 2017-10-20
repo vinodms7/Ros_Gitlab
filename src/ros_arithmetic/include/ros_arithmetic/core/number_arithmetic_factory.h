@@ -11,26 +11,28 @@
 *
 *
 **/
-#ifndef __NUMBER_MULTIPLIER_FACTORY_H_
-#define __NUMBER_MULTIPLIER_FACTORY_H_
+#ifndef NUMBER_ARITHMETIC_FACTORY_H_
+#define NUMBER_ARITHMETIC_FACTORY_H_
 
 /* include files */
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
 #include "ros_arithmetic/core/number_arithmetic_interface.h"
 
-class NumberArithematicFactory {
+class NumberArithmeticFactory {
  public:
   /**
   * Constructor
+  * @brief Construct NumberArithmeticFactory object
   **/
-  NumberArithematicFactory();
+  NumberArithmeticFactory();
   /**
   * Destructor
+  * @brief Destruct NumberArithmeticFactory object
   **/
-  ~NumberArithematicFactory();
+  ~NumberArithmeticFactory();
 
   /**
-  * Function name: CreateMultiplier
+  * Function name: CreateArithmeticOperation
   *
   * @brief Create number arithmetic operation object
   *
@@ -39,18 +41,18 @@ class NumberArithematicFactory {
   *
   * @return	void
   **/
-  void CreateMultiplier(NumberArithematicInterface *multiplier_int);
+  void CreateArithmeticOperation(NumberArithmeticInterface *multiplier_int);
   /**
-  * Function name: GetMultiplier
+  * Function name: GetArithmeticOperation
   *
   * @brief Get Created number arithmetic operation object   
   *
   * @return	NumberArithmeticInterface* 
   *             returns created object to base class pointer 
   **/
-  NumberArithematicInterface* GetMultiplier();
+  NumberArithmeticInterface* GetArithmeticOperation();
 
  private:
-  NumberArithematicInterface *number_multiplier_; //  Pointer to Interface
+  NumberArithmeticInterface *number_arithmetic_; //  Pointer to Interface
 };
 #endif /* __NUMBER_MULTIPLIER_FACTORY_H_ */

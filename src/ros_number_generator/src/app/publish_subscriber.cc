@@ -39,6 +39,10 @@ PublishSubscribe::PublishSubscribe(GeneratorNodeHandler *p_generator_node_handle
 * @brief Implements the destructor to the PublishSubscribe class
 **/
 PublishSubscribe::~PublishSubscribe() {
+  if ( generator_node_handler != NULL ) {
+       delete generator_node_handler;
+       generator_node_handler = NULL;
+  }   
 }
 
 /**
@@ -49,7 +53,7 @@ void PublishSubscribe::SendMessage() {
   ros::Rate rate(1);
   ros_ran_num_msg::rand_num value;
   
-  while(nodeHandle.ok()) {
+  while( nodeHandle.ok() ) {
     value.number1 = generator_node_handler->GetNumber();
     value.number2 = generator_node_handler->GetNumber();
 

@@ -83,7 +83,7 @@ class CommFactory {
   *               Returns the pointer to the communicaiton interface object
   *
   **/
-  CommunicationInterface* GetCommunicator() const;
+  CommunicationInterface* GetCommunicator();
  
  private:
   /** Holds the pointer to communication interface object */

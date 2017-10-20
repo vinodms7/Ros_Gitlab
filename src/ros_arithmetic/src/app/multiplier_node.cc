@@ -22,9 +22,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "MultiplierNode");
 
   std::unique_ptr<MultiplierNodeHandler> multiplierObj(new MultiplierNodeHandler());
-
-  multiplierObj->GetCommunicationFactory()->GetCommunicator()->ReceiveMessage();
-
+  multiplierObj->Execute();
   ros::spin();
 
   return 0;

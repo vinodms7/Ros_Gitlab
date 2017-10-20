@@ -11,23 +11,25 @@
 *
 *
 **/
-#ifndef __MULTIPLIER_ARITHMETIC_H_
-#define __MULTIPLIER_ARITHMETIC_H_
+#ifndef MULTIPLIER_ARITHMETIC_H_
+#define MULTIPLIER_ARITHMETIC_H_
 
 #include "ros_arithmetic/core/number_arithmetic_interface.h"
 
-class NumberMultiplier : public NumberArithematicInterface {
+class NumberMultiplier : public NumberArithmeticInterface {
  public:
   /**
   * Constructor
+  * @brief Construct number arithmetic object
   **/
   NumberMultiplier();
   /**
   * Destructor
+  * @brief Destruct number arithmetic object
   **/
-  ~NumberMultiplier() {}
+  ~NumberMultiplier();
   /**
-  * Function name: DoArithematicOperation
+  * Function name: DoArithmeticOperation
   *
   * @brief Perfom arithmetic operation
   * 
@@ -38,17 +40,18 @@ class NumberMultiplier : public NumberArithematicInterface {
   *
   * @return	uint32_t  return value after operation is done
   **/
-  uint32_t DoArithematicOperation(uint32_t value1,
+  uint32_t DoArithmeticOperation(uint32_t value1,
                                   uint32_t value2);
- /**
-  * Function name: PrintValue
+  /**
+  * Function name: DisplayResult
   *
-  * @brief Show result
-  * 
-  * @return void
+  * @brief Display result
   *
+  * @param[in]	uint32_t value this is first number for arithmetic operation
+  *
+  * @return	void 
   **/
- void PrintValue();
+  void DisplayResult(uint32_t value);
 
  private:
   uint32_t multiplier_value_; //  multiplier value

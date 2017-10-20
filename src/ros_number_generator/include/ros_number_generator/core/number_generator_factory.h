@@ -60,7 +60,7 @@ class NumberGeneratorFactory {
   *
   * @return		  NumberGenerator  Data pointer to the instance of Number Generator
   **/
-  NumberGenerator* GetGenerator() const;
+  NumberGenerator* GetGenerator();
 
  private:
   NumberGenerator *number_generator_;   //  Data pointer to the number generator 

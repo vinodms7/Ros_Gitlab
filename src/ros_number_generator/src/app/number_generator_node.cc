@@ -20,8 +20,7 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "NumberGeneratorNode");
 
   std::unique_ptr<GeneratorNodeHandler> randNumberObj(new GeneratorNodeHandler());
-  randNumberObj->GetCommunicationFactory()->GetCommunicator()->SendMessage();
-
+  randNumberObj->Execute();
   return 0;
 }
 

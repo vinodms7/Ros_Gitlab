@@ -42,7 +42,7 @@ class NumberGeneratorLCG : public NumberGenerator {
   *
   * @return		void
   **/
-  ~NumberGeneratorLCG() {}
+  ~NumberGeneratorLCG();
   
   /**
   * Function name: SetRandomValRange()
@@ -56,7 +56,7 @@ class NumberGeneratorLCG : public NumberGenerator {
   *
   * @return		 void
   **/
-  void SetRandomValRange(uint32_t _nMaxRandomValue, uint32_t _nMinRandomValue);
+  void SetRandomValRange(uint32_t max_random_value, uint32_t min_random_value);
   
   /**
   * Function name: GetGeneratedNumber()

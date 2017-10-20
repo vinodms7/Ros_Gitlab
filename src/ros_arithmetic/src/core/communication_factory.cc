@@ -57,6 +57,6 @@ void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
 * @brief Implements the functionality to return the reference to the 
 *        communication interface object
 **/
-CommunicationInterface * CommFactory::GetCommunicator() const {
+CommunicationInterface * CommFactory::GetCommunicator() {
   return communication_interface_;
 }

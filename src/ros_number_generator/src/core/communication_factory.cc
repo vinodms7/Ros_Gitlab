@@ -35,7 +35,7 @@ CommFactory::CommFactory() {
 *        interface object if existing and intializes it to NULL
 **/
 CommFactory::~CommFactory() {
-  if (NULL != communication_interface_) {
+  if ( NULL != communication_interface_ ) {
     delete communication_interface_;
     communication_interface_ = NULL;
   }
@@ -46,7 +46,7 @@ CommFactory::~CommFactory() {
 *        the the communication object and initialize to the received object
 **/
 void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
-  if (NULL != communication_interface_) {
+  if ( NULL != communication_interface_ ) {
     delete communication_interface_;
     communication_interface_ = NULL;
   }  
@@ -57,6 +57,6 @@ void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
 * @brief Implements the functionality to return the reference to the 
 *        communication interface object
 **/
-CommunicationInterface * CommFactory::GetCommunicator() const {
+CommunicationInterface* CommFactory::GetCommunicator() {
   return communication_interface_;
 }

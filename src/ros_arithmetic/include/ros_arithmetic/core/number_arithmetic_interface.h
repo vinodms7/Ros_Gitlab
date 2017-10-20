@@ -18,16 +18,8 @@
 /* include files */
 #include <ros/types.h>
 
-class NumberArithematicInterface {
- public:
-  /**
-  * Constructor
-  **/
-  NumberArithematicInterface() {}
-  /**
-  * Destructor
-  **/
-  virtual ~NumberArithematicInterface() {}
+class NumberArithmeticInterface {
+ public:  
   /**
   * Function name: DoArithmeticOperation
   *
@@ -39,17 +31,19 @@ class NumberArithematicInterface {
   *
   * @return	uint32_t retrun value after arithmetic opeation is done 
   **/
-  virtual uint32_t DoArithematicOperation(uint32_t, uint32_t) = 0;
+  virtual uint32_t DoArithmeticOperation(uint32_t, uint32_t) = 0;
 
  protected:
-/**
-  * Function name: PrintValue
+  /**
+  * Function name: DisplayResult
   *
-  * @brief Show result
+  * @brief Display result
+  *
+  * @param[in]	uint32_t value this is first number for arithmetic operation
   *
   * @return	void 
   **/
-  virtual void PrintValue() = 0;
+  virtual void DisplayResult(uint32_t value) = 0;
 
 };
 

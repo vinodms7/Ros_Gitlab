@@ -16,14 +16,17 @@
 #include "ros_arithmetic/app/multiplier_arithmetic.h"
 #include "ros/ros.h"
 
-NumberMultiplier::NumberMultiplier() : NumberArithematicInterface() {
+NumberMultiplier::NumberMultiplier(): multiplier_value_(0) {
 }
 
-uint32_t NumberMultiplier::DoArithematicOperation(uint32_t value1, uint32_t value2) {
+NumberMultiplier::~NumberMultiplier() {
+}
+
+uint32_t NumberMultiplier::DoArithmeticOperation(uint32_t value1, uint32_t value2) {
   multiplier_value_ = (value1)*(value2);
   return multiplier_value_;
 }
 
-void NumberMultiplier::PrintValue() {
+void NumberMultiplier::DisplayResult(uint32_t value) {
 }
 

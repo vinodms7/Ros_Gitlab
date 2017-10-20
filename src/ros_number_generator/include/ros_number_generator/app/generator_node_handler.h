@@ -40,21 +40,21 @@ class GeneratorNodeHandler {
   /**
   * Function name: GetNumber
   *
-  * @brief Get random value geeratedusing the generator Factory Node
+  * @brief Get random value generated using the generator Factory Node
   * 
   * @return	uint32_t  return value of result
   **/
   uint32_t GetNumber();
 
   /**
-  * Function name: GetCommunicationFactory
+  * Function name: Execute
   *
-  * @brief Get the created communication object by factory 
-  *   
-  * @return	CommFactory* Data pointer to the communication factory
+  * @brief Execute the Generator and communication functionalities
+  *
+  * @return	void
   **/
-  CommFactory* GetCommunicationFactory();
- 
+  void Execute();
+
  private:
   /**
   * Function name: CreateNumberFactory
@@ -73,8 +73,9 @@ class GeneratorNodeHandler {
   * @return	void
   **/
   void CreateCommunicationFactory();
+  
 
   NumberGeneratorFactory* number_generator_; // Pointer to generator factory
-  CommFactory*   comm_controller_factory_;   // Pointer to communication factory
+  CommFactory*   communication_factory_;   // Pointer to communication factory
 };
 #endif /* GENERATOR_NODE_H */

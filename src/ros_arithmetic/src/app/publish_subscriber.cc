@@ -40,11 +40,11 @@ ReceiverCallback::~ReceiverCallback() {
 /**
 * @brief Implements the callback function that get the multiplier of received values         
 **/
-void ReceiverCallback::CallbackFunction(const ros_ran_num_msg::rand_num::ConstPtr& value) {
+void ReceiverCallback::MultiplierCallback(const ros_ran_num_msg::rand_num::ConstPtr& value) {
   ROS_INFO("Node Received Value 1: [%u] and Value 2: [%u]", value->number1, value->number2);
 
-  uint32_t vresult = node_handler_->GetResult(value->number1, value->number2);
-  ROS_INFO("The Multiplier value is [%lu]", vresult);
+  uint32_t vresult = node_handler_->ProcessData(value->number1, value->number2);
+  ROS_INFO("The Multiplier value is [%u]", vresult);
 }
 
 /*! Class Declarations */
@@ -66,13 +66,6 @@ PublishSubscribe::~PublishSubscribe() {
 }
 
 /**
-* @brief Implements the functionality to set the received 
-*        multiplier node handler
-**/
-void PublishSubscribe:: SetHandler(MultiplierNodeHandler *multiplier_node_handler) {
-}
-
-/**
 * @brief Implements the functionality to send the message
 **/
 void PublishSubscribe::SendMessage() {
@@ -83,7 +76,7 @@ void PublishSubscribe::SendMessage() {
 *        and calls the receiver callback function
 **/
 void PublishSubscribe::ReceiveMessage() {
-  multiplier_subscriber_ = node_handle_.subscribe("random_number_srand", 100, &ReceiverCallback::CallbackFunction, receiver_callback_);
+  multiplier_subscriber_ = node_handle_.subscribe("random_number_srand", 100, &ReceiverCallback::MultiplierCallback, receiver_callback_);
   
   ros::spinOnce();
 }

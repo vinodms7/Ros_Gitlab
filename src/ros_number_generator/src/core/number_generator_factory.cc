@@ -60,6 +60,6 @@ void NumberGeneratorFactory::CreateGenerator(NumberGenerator *pNumberGen) {
 * @brief Returns a pointer to the instance of the Number generator
 *
 */
-NumberGenerator * NumberGeneratorFactory::GetGenerator() const {
+NumberGenerator * NumberGeneratorFactory::GetGenerator() {
   return number_generator_;
 }

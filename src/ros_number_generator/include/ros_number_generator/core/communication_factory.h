@@ -22,7 +22,7 @@
 /*! Class Declarations */
 class CommFactory {
  public:
-  /**
+   /**
   * Function name: CommFactory
   *
   * @brief      Defines the constructor that initialises the comm interface
@@ -53,7 +53,7 @@ class CommFactory {
   ~CommFactory();
   
   /**
-  * Function name: ~CommFactory
+  * Function name: CreateCommunicator
   *
   * @brief      Defines the functionality to delete the existing reference to 
   *             the the communication object and initialize to the received object
@@ -82,7 +82,7 @@ class CommFactory {
   *               Returns the pointer to the communicaiton interface object
   *
   **/
-  CommunicationInterface* GetCommunicator() const;
+  CommunicationInterface* GetCommunicator();
  
  private:
   /** Holds the pointer to communication interface object */

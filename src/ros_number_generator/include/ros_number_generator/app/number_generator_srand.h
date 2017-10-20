@@ -30,7 +30,7 @@ class NumberGeneratorSRand : public NumberGenerator {
    *
    * @return		void
    **/
-   NumberGeneratorSRand(uint32_t nMaxRandomValue = 1000, uint32_t nMinRandomValue = 0);
+   NumberGeneratorSRand(uint32_t max_random_value = 1000, uint32_t min_random_value = 0);
    
    /**
    * Function name: ~NumberGeneratorSRand()
@@ -39,7 +39,7 @@ class NumberGeneratorSRand : public NumberGenerator {
    *
    * @return		void
    **/
-   ~NumberGeneratorSRand() {}
+   ~NumberGeneratorSRand();
 
    /**
    * Function name: SetRandomValRange()
@@ -53,7 +53,7 @@ class NumberGeneratorSRand : public NumberGenerator {
    *
    * @return		 void
    **/
-  void SetRandomValRange(uint32_t _nMaxRandomValue, uint32_t _nMinRandomValue);
+  void SetRandomValRange(uint32_t max_random_value, uint32_t min_random_value);
 
   /**
   * Function name: GetGeneratedNumber()

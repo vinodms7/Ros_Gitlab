@@ -13,8 +13,8 @@
 *
 **/
 
-#ifndef MULTIPLIER_NODE_H
-#define MULTIPLIER_NODE_H
+#ifndef MULTIPLIER_NODE_HANDLER_H
+#define MULTIPLIER_NODE_HANDLER_H
 
 /* include files */
 #include "ros_arithmetic/core/communication_factory.h"
@@ -25,24 +25,26 @@ class MultiplierNodeHandler {
 public:
   /**
   * Constructor
+  * @brief Constructs MultiplierNodeHandler object
   **/
   MultiplierNodeHandler();
   /**
   * Destructor
+  * @brief Destructs MultiplierNodeHandler object
   **/
   ~MultiplierNodeHandler();
 
   /**
-  * Function name: GetCommunicationFactory
+  * Function name: Execute
   *
-  * @brief Get communication object
+  * @brief Execute the multiplier and communication functionalities
   *
-  * @return	CommFactory* returns created communication object
+  * @return	void
   **/
-  CommFactory* GetCommunicationFactory();
+  void Execute();
 
   /**
-  * Function name: GetResult
+  * Function name: ProcessData
   *
   * @brief process data and return value
   * 
@@ -53,7 +55,7 @@ public:
   *
   * @return	uint32_t  return value after result is computed
   **/
-  uint32_t GetResult(uint32_t, uint32_t);
+  uint32_t ProcessData(uint32_t, uint32_t);  
 
 private:
   /**
@@ -74,9 +76,10 @@ private:
   *
   **/
   void CreateCommunicationFactory();
+  
 
-  NumberArithematicFactory* multiplier_factory_; //  pointer to arithmetic factory
-  CommFactory*   comm_controller_factory_; //  pointer to comm factory
+  NumberArithmeticFactory* arithmetic_factory_; //  pointer to arithmetic factory
+  CommFactory*   communication_factory_; //  pointer to comm factory
 };
 
 #endif /*MULTIPLIER_NODE_H */

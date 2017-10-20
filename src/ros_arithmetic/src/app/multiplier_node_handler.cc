@@ -24,32 +24,34 @@ MultiplierNodeHandler::MultiplierNodeHandler() {
 }
 
 MultiplierNodeHandler::~MultiplierNodeHandler() {
-  if(NULL != multiplier_factory_){
-    delete  multiplier_factory_;
-    multiplier_factory_ = NULL;
+  if(NULL != arithmetic_factory_){
+    delete  arithmetic_factory_;
+    arithmetic_factory_ = NULL;
   }
 
-  if(NULL != comm_controller_factory_){
-    delete comm_controller_factory_;
-    comm_controller_factory_ = NULL ;
+  if(NULL != communication_factory_){
+    delete communication_factory_;
+    communication_factory_ = NULL ;
   }
 }
 
 void MultiplierNodeHandler::CreateMultiplierFactory() {
-  multiplier_factory_ = new NumberArithematicFactory();
-  multiplier_factory_->CreateMultiplier(new NumberMultiplier());  
+  arithmetic_factory_ = new NumberArithmeticFactory();
+  arithmetic_factory_->CreateArithmeticOperation(new NumberMultiplier());  
 }
 
 void MultiplierNodeHandler::CreateCommunicationFactory() {
-  comm_controller_factory_ = new CommFactory();
-  comm_controller_factory_->CreateCommunicator(new PublishSubscribe(this));
+  communication_factory_ = new CommFactory();
+  communication_factory_->CreateCommunicator(new PublishSubscribe(this));
 }
 
-CommFactory* MultiplierNodeHandler::GetCommunicationFactory() {
-  return comm_controller_factory_;
+void MultiplierNodeHandler::Execute() {
+   if( communication_factory_->GetCommunicator() != NULL )
+      communication_factory_->GetCommunicator()->SendMessage();
 }
 
-uint32_t MultiplierNodeHandler::GetResult(uint32_t value1, uint32_t value2) {  
-
- return multiplier_factory_->GetMultiplier()->DoArithematicOperation(value1, value2);
+uint32_t MultiplierNodeHandler::ProcessData(uint32_t value1, uint32_t value2) {
+  if( arithmetic_factory_->GetArithmeticOperation() != NULL )
+    return arithmetic_factory_->GetArithmeticOperation()->DoArithmeticOperation(value1, value2);
+  return 0;
 }

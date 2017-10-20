@@ -15,24 +15,24 @@
 
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
 
-NumberArithematicFactory::NumberArithematicFactory() {
-  number_multiplier_ = NULL;
+NumberArithmeticFactory::NumberArithmeticFactory() {
+  number_arithmetic_ = NULL;
 }
-NumberArithematicFactory::~NumberArithematicFactory() {
-  if (NULL != number_multiplier_) {
-    delete number_multiplier_;
-    number_multiplier_ = NULL;
+NumberArithmeticFactory::~NumberArithmeticFactory() {
+  if (NULL != number_arithmetic_) {
+    delete number_arithmetic_;
+    number_arithmetic_ = NULL;
   }
 }
 
-void NumberArithematicFactory::CreateMultiplier(NumberArithematicInterface *pNumberMult) {
-  if (NULL != number_multiplier_) {
-    delete number_multiplier_;
-    number_multiplier_ = NULL;
+void NumberArithmeticFactory::CreateArithmeticOperation(NumberArithmeticInterface *number_arithmetic) {
+  if (NULL != number_arithmetic_) {
+    delete number_arithmetic_;
+    number_arithmetic_ = NULL;
   }
-  number_multiplier_ = pNumberMult;
+  number_arithmetic_ = number_arithmetic;
 }
 
-NumberArithematicInterface* NumberArithematicFactory::GetMultiplier() {
-  return number_multiplier_;
+NumberArithmeticInterface* NumberArithmeticFactory::GetArithmeticOperation() {
+  return number_arithmetic_;
 }

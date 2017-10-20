@@ -22,10 +22,13 @@
 * numbers need to be generator.
 * The seed value is initialize using inbuilt srandom()  and random() function call
 **/
-NumberGeneratorSRand::NumberGeneratorSRand(uint32_t _nMaxRandomValue, uint32_t _nMinRandomValue) 
+NumberGeneratorSRand::NumberGeneratorSRand(uint32_t max_random_value, uint32_t min_random_value) 
   : current_random_number_(0) {
-  SetRandomValRange(_nMaxRandomValue, _nMinRandomValue);
+  SetRandomValRange(max_random_value, min_random_value);
   srandom(static_cast<uint32_t>(time(0)));
+}
+
+NumberGeneratorSRand::~NumberGeneratorSRand() {
 }
 
 /**
@@ -55,17 +58,17 @@ std::string NumberGeneratorSRand::GetGeneratorName() {
 * @brief Function call to set the the random genrator range
 *
 * The Range between which the random numbers need to be generator.
-* The method does a basic check to verify is the _nMaxRandomValue is greater than _nMinRandomValue
-* If the _nMinRandomValue is greater than _nMaxRandomValue, the values swapped
+* The method does a basic check to verify is the max_random_value is greater than min_random_value
+* If the min_random_value is greater than max_random_value, the values swapped
 **/
-void NumberGeneratorSRand::SetRandomValRange(uint32_t _nMaxRandomValue, uint32_t _nMinRandomValue) {
-  if (_nMaxRandomValue > _nMinRandomValue) {
-    max_random_value_ = _nMaxRandomValue;
-    min_random_value_ = _nMinRandomValue;
+void NumberGeneratorSRand::SetRandomValRange(uint32_t max_random_value, uint32_t min_random_value) {
+  if (max_random_value > min_random_value) {
+    max_random_value_ = max_random_value;
+    min_random_value_ = min_random_value;
   }
   else {
-    max_random_value_ = _nMinRandomValue;
-    min_random_value_ = _nMaxRandomValue;
+    max_random_value_ = min_random_value;
+    min_random_value_ = max_random_value;
   }
 }
 

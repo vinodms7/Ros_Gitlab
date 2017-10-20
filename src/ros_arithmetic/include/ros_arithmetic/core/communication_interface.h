@@ -19,35 +19,7 @@
 
 /* Class Declarations */
 class CommunicationInterface {
- public:
-  /**
-  * Function name: CommunicationInterface
-  *
-  * @brief      Constructor to the comm interface class
-  *
-  * @param[in]  None
-  *
-  * @param[out] None
-  *
-  * @return     None
-  *
-  **/
-  CommunicationInterface() {}
-  
-  /**
-  * Function name: CommunicationInterface
-  *
-  * @brief      Destructor to the comm interface class
-  *
-  * @param[in]  None
-  *
-  * @param[out] None
-  *
-  * @return     None
-  *
-  **/
-  virtual ~CommunicationInterface() {}
-  
+ public:   
   /**
   * Function name: SendMessage
   *

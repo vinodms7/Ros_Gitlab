@@ -58,7 +58,7 @@ class ReceiverCallback {
   ~ReceiverCallback();
   
   /**
-  * Function name: CallbackFunction
+  * Function name: MultiplierCallback
   *
   * @brief      Defines the callback function that get the multiplier
   *             of received values
@@ -72,7 +72,7 @@ class ReceiverCallback {
   * @return     Void
   *
   **/
-  void CallbackFunction(const ros_ran_num_msg::rand_num::ConstPtr& value);
+  void MultiplierCallback(const ros_ran_num_msg::rand_num::ConstPtr& value);
  
  private:  
   /*! Holds the reference of the multiplier node handler */
@@ -142,23 +142,7 @@ class PublishSubscribe : public CommunicationInterface {
   *
   **/
   void ReceiveMessage();
-  
-  /**
-  * Function name: SetHandler
-  *
-  * @brief      Defines the the functionality to set the received 
-  *             multiplier node handler
-  *
-  * @param[in]  MultiplierNodeHandler*
-  *              Pointer to the reference multiplier node handler
-  *
-  * @param[out] None
-  *
-  * @return     None
-  *
-  **/
-  void SetHandler(MultiplierNodeHandler* node_handler);
-
+ 
  private:
   /** Holds the reference to the receiver callback object */
   ReceiverCallback *receiver_callback_;

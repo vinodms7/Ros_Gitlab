@@ -49,9 +49,9 @@ GeneratorNodeHandler::~GeneratorNodeHandler() {
 	  number_generator_ = NULL;
   }
 
-  if(NULL != comm_controller_factory_) {
-  	delete comm_controller_factory_;
-	  comm_controller_factory_ = NULL;
+  if(NULL != communication_factory_) {
+  	delete communication_factory_;
+	communication_factory_ = NULL;
   }
 }
 
@@ -73,18 +73,14 @@ void GeneratorNodeHandler::CreateNumberFactory() {
 *   
 **/
 void GeneratorNodeHandler::CreateCommunicationFactory() {
-  comm_controller_factory_ = new CommFactory();
-  comm_controller_factory_->CreateCommunicator(new PublishSubscribe(this));
+  communication_factory_ = new CommFactory();
+  communication_factory_->CreateCommunicator(new PublishSubscribe(this));
 }
 
-/**
-* Function name: GetCommunicationFactory
-*
-* @brief Get the created communication object by factory 
-*   
-**/
-CommFactory* GeneratorNodeHandler::GetCommunicationFactory() {
-  return comm_controller_factory_;
+void GeneratorNodeHandler::Execute()
+{
+  if( communication_factory_->GetCommunicator() != NULL )
+      communication_factory_->GetCommunicator()->SendMessage();
 }
 
 /**
@@ -94,6 +90,7 @@ CommFactory* GeneratorNodeHandler::GetCommunicationFactory() {
 * 
 **/
 uint32_t GeneratorNodeHandler::GetNumber() {
-  return number_generator_->GetGenerator()->GetGeneratedNumber();
+  if( number_generator_->GetGenerator() != NULL)
+    return number_generator_->GetGenerator()->GetGeneratedNumber();
 }
 
