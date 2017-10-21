@@ -18,6 +18,9 @@
 #define GENERATOR_NODE_HANDLER_INTERFACE_H
 #include <string>
 
+#include "ros_number_generator/core/communication_factory.h"
+#include "ros_number_generator/core/number_generator_factory.h"
+
 /* Class Declarations */
 
 class NodeHandlerInterface {
@@ -41,3 +44,4 @@ class NodeHandlerInterface {
   virtual void Execute() = 0;
 };
 #endif
+
