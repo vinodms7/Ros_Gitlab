@@ -58,6 +58,17 @@ class NumberGeneratorFactory {
   **/
   uint32_t ExecuteGenerator() const;
 
+ /**
+ * Function name: getGenerator()
+ *  
+ * @brief Returns the instance of the Number Generator
+ *
+ * If an instance of Number generator already exist, the current method will 
+ * return the instance 
+ *
+ **/
+ NumberGenerator* getGenerator();
+ 
  private:
   NumberGenerator *number_generator_;   //  Data pointer to the number generator 
 };

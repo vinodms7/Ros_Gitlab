@@ -45,7 +45,7 @@ class GeneratorNodeHandler : public NodeHandlerInterface {
   * 
   * @brief Destructor for the Node Handler
   **/
-  ~GeneratorNodeHandler();
+  virtual ~GeneratorNodeHandler();
 
   /**
   * Function name: GetNumber
@@ -65,6 +65,22 @@ class GeneratorNodeHandler : public NodeHandlerInterface {
   **/
   void Execute();
 
+  /**
+  * Function name: GetCommunicationFactory
+  *
+  * @brief Get pointer to communication object by factory 
+  *   
+  **/
+  CommFactory* GetCommunicationFactory();
+
+  /**
+  * Function name: GetNumberFactory
+  *
+  * @brief Get the pointer to the generator Factory Node
+  * 
+  **/
+  NumberGeneratorFactory* GetNumberFactory();
+ 
  private:
   /**
   * Function name: CreateNumberFactory
@@ -89,3 +105,4 @@ class GeneratorNodeHandler : public NodeHandlerInterface {
   CommFactory*   communication_factory_;   // Pointer to communication factory
 };
 #endif /* GENERATOR_NODE_H */
+

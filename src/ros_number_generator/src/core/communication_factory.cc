@@ -54,7 +54,10 @@ void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
 }
 void CommFactory::ExecuteCommunication()
 {
-  if( nullptr != communication_interface_ )
+  if( nullptr != communication_interface_ ) {
     communication_interface_->SendMessage();
+  } else { }
 }
-
+CommunicationInterface* CommFactory::GetCommunicator() {
+  return communication_interface_;
+}

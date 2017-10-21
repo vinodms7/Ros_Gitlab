@@ -59,9 +59,6 @@ uint32_t NumberGeneratorLCG::GenerateNumber() {
 
   current_seed_ = constValues::APMA * (current_seed_ - (kRatio * constValues::QSA)) \
                       - (constValues::RSA * kRatio);
-  if (current_seed_ < 0) {
-    current_seed_ += constValues::MPMA;
-  }
 
   return current_seed_;
 }

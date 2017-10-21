@@ -14,6 +14,7 @@
 **/
 
 /*  include files */
+#include "ros/ros.h"
 #include "ros_number_generator/app/generator_node_handler.h"
 #include "ros_number_generator/app/publish_subscribe.h"
 
@@ -68,36 +69,64 @@ void GeneratorNodeHandler::CreateNumberFactory() {
   else if( generator_type_ == GeneratorType::SRAND )
     number_generator_->CreateGenerator(new NumberGeneratorSRand(constVariables::MAX_RANDOM_VALUE,constVariables::MIN_RANDOM_VALUE));
   else {
-    std::cout<< "No object Created, Invalid type";
+    std::cout<< "No object Created, Invalid type"<<std::endl;
   }
 }
 
 /**
-* Function name: GetCommunicationFactory
+* Function name: CreateCommunicationFactory
 *
 * @brief Get the created communication object by factory 
 *   
 **/
 void GeneratorNodeHandler::CreateCommunicationFactory() {
   communication_factory_ = new CommFactory();
-  communication_factory_->CreateCommunicator(new PublishSubscribe(this));
+  if(nullptr != communication_factory_)
+    communication_factory_->CreateCommunicator(new PublishSubscribe(this));
+  else
+    std::cout<< "Failed to  to create Communication Interface..."<<std::endl;
 }
 
 void GeneratorNodeHandler::Execute()
 {
   if( nullptr != communication_factory_ )
     communication_factory_->ExecuteCommunication();
+  else
+    std::cout<< "No instance of Communication Interface available..."<<std::endl;
 }
-
 /**
 * Function name: GetNumber
 *
-* @brief Get random value generated using the generator Factory Node
+* @brief Get random value genrator by generator Factory Node
 * 
 **/
 uint32_t GeneratorNodeHandler::GetNumber() {
-  if( nullptr != number_generator_ )
-    return number_generator_->ExecuteGenerator();
-  return 0;
+  uint32_t gen_number = 0;
+  if(nullptr != number_generator_){
+    gen_number =  number_generator_->ExecuteGenerator();
+  } else { 
+    gen_number =  0;
+  }
+  return gen_number;
+}
+
+/**
+* Function name: GetCommunicationFactory
+*
+* @brief Get pointer to communication object by factory 
+*   
+**/
+CommFactory* GeneratorNodeHandler::GetCommunicationFactory() {
+  return communication_factory_;
+}
+
+/**
+* Function name: GetNumberFactory
+*
+* @brief Get the pointer to the generator Factory Node
+* 
+**/
+NumberGeneratorFactory* GeneratorNodeHandler::GetNumberFactory() {
+  return number_generator_;
 }
 

@@ -54,6 +54,18 @@ void NumberGeneratorFactory::CreateGenerator(NumberGenerator *p_number_generator
   }
   number_generator_ = p_number_generator;
 }
+/**
+* Function name: getGenerator()
+*  
+* @brief Returns the instance of the Number Generator
+*
+* If an instance of Number generator already exist, the current method will 
+* return the instance 
+*
+**/
+NumberGenerator* NumberGeneratorFactory::getGenerator() {
+  return number_generator_;
+}
 
 uint32_t NumberGeneratorFactory::ExecuteGenerator() const {  
   if ( nullptr != number_generator_ )  

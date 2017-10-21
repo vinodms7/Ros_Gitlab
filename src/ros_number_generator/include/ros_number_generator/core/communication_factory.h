@@ -71,6 +71,21 @@ class CommFactory {
   **/
   void ExecuteCommunication();
   
+ /**
+  * Function name: GetCommunicator
+  *
+  * @brief      Get the existing reference to the communication object 
+  *             and initialize to the received object
+  *
+  * @param[in]  None
+  *
+  * @param[out] None
+  *
+  * @return     CommunicationInterface* Data pointer to the instance of 
+  *             communication factory
+  *
+  **/
+  CommunicationInterface* GetCommunicator();
  private:
   /** Holds the pointer to communication interface object */
   CommunicationInterface* communication_interface_;  

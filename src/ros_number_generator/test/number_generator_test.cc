@@ -1,3 +1,16 @@
+/****************************************************************************
+* Copyright (C) 2017 by KPIT Technologies                                  *
+*                                                                          *
+****************************************************************************/
+/**
+* @file     number_generator_test.cc
+* @author   Rajat Jayanth Shetty <rajat.shetty@kpit.com>
+* @date     18 Oct 2017
+* @brief    This file declares Number Generator Factory Class
+*
+*/
+
+/*  include files */
 #include <gtest/gtest.h>
 #include <boost/thread/thread.hpp>
 
@@ -8,302 +21,423 @@
 #include "ros_number_generator/app/publish_subscribe.h"
 #include "ros_ran_num_msg/rand_num.h"
 
-//to check assignment of communication_interface_
-/*TEST(CreateCommunicator_test, CreateCommunicator_test_1) {
-  CommFactory comm_controller_factory_;
 
-  comm_controller_factory_.CreateCommunicator(new PublishSubscribe(NULL));
-  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
+/*
+ * @brief  receiveCallback for Subscriber 
+ */
+void receiveCallback(const ros_ran_num_msg::rand_num& msg) {
+  std::cerr << "Received message using Subscribe.." << std::endl;
   
-  EXPECT_TRUE(comm_interface != NULL);
+  ros::shutdown();
+  ASSERT_NE(msg.number1,msg.number2);
 }
 
-//to check assignment of communication_interface_ with check to cover IF TRUE part
-// IF ensures to delete previously allocated communication_interface_ to release memory
-TEST(CreateCommunicator_test, CreateCommunicator_test_2) {
-  CommFactory comm_controller_factory_;
-
-  comm_controller_factory_.CreateCommunicator(new PublishSubscribe(NULL));
-  comm_controller_factory_.CreateCommunicator(new PublishSubscribe(NULL));
-  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
+/*
+ * @brief  timer_lapsed function callback in case no publisher available 
+ */
+void timer_lapsed(const ros::TimerEvent& evt) {
+  std::cerr << "Time elapsed and no message received.." << std::endl;
   
-  EXPECT_TRUE(comm_interface != NULL);
+  ros::shutdown();
+  EXPECT_TRUE(0);
 }
 
-//to check assignment of communication_interface_ to non-garbage when NULL is passed to CreateCommunicator
-TEST(CreateCommunicator_test, CreateCommunicator_test_3) {
-  CommFactory comm_controller_factory_;
-
-  comm_controller_factory_.CreateCommunicator(NULL);
-  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
-  
-  EXPECT_TRUE(comm_interface == NULL);
-}
-
-//To check communication_interface_ without CreateCommunicator
-TEST(GetCommunicator_test, GetCommunicator_test_1) {
-  CommFactory comm_controller_factory_;
-
-  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
-  
-  EXPECT_TRUE(comm_interface == NULL);
-}
-*/
-//To recreate number generator using alternate implementation
-/*TEST(NumberGenerator_test, GenerateNumber_test_1) {
-  NumberGeneratorFactory *number_generator = new NumberGeneratorFactory();
-  number_generator->CreateGenerator(new NumberGeneratorLCG(0,1000));
-  number_generator->CreateGenerator(new NumberGeneratorSRand(0,1000));
-
-  uint32_t number1 =	1001;
-  uint32_t number2 = number_generator->GetGenerator()->GetGeneratedNumber();	
-
-  delete number_generator;
-
-  ASSERT_GT(number1,number2);
-}
-*/
-//To check GetNumber - GenerateNumber generating random number within given value
+/*
+ * @brief  To check GetGeneratedNumber - GenerateNumber generating random number 
+ *         within given range using LCG Implementation
+ */
 TEST(NumberGeneratorLCG_test, GenerateNumber_test_1) {
-  NumberGeneratorLCG number_generator_lcg(100);
+  NumberGeneratorLCG number_generator_lcg(100, 0);
 
-  uint32_t number1 =	101;
-  uint32_t number2 =	number_generator_lcg.GetGeneratedNumber();
+  uint32_t number1 =  101;
+  uint32_t number2 =  number_generator_lcg.GetGeneratedNumber();
   ASSERT_GT(number1,number2);
 }
 
-//To check setMaxRandomValLimit is setting max_random_value & min_random_value with given value
+/*
+ * @brief  To check setMaxRandomValLimit is setting max_random_value & 
+ *         min_random_value with given value using LCG Implementation
+*/
 TEST(NumberGeneratorLCG_test, GenerateNumber_test_2) {
   NumberGeneratorLCG number_generator_lcg(1000);
 
-  number_generator_lcg.SetRandomValRange(0, 100);
-	
-  uint32_t number1 =	101;
-  uint32_t number2 =	number_generator_lcg.GetGeneratedNumber();
+  number_generator_lcg.SetRandomValRange(100, 0);
+  
+  uint32_t number1 =  101;
+  uint32_t number2 =  number_generator_lcg.GetGeneratedNumber();
   ASSERT_GT(number1,number2);
 }
-//To check setMaxRandomValLimit by setting max_random_value_ < min_random_value_
+/*
+ * @brief  To check setMaxRandomValLimit by setting max_random_value_ < 
+ *         min_random_value_ using LCG Implementation
+*/
 TEST(NumberGeneratorLCG_test, GenerateNumber_test_3) {
   NumberGeneratorLCG number_generator_lcg(1000);
 
-  number_generator_lcg.SetRandomValRange(500, 100);
-	
-  uint32_t expected1 =	99;
-  uint32_t expected2 =	501;
-  uint32_t actual =	number_generator_lcg.GetGeneratedNumber();
+  number_generator_lcg.SetRandomValRange(100, 500);
+  
+  uint32_t expected1 =  99;
+  uint32_t expected2 =  501;
+  uint32_t actual =  number_generator_lcg.GetGeneratedNumber();
   EXPECT_TRUE((expected1<actual) && (expected2>actual));
 }
-
+/*
+ * @brief   To check Number generator's name based on instance
+*/
 TEST(NumberGeneratorLCG_test, GenerateNumber_test_4) {
   NumberGeneratorLCG number_generator_lcg(100);
 
-  std::string actual_string =	number_generator_lcg.GetGeneratorName();
+  std::string actual_string =  number_generator_lcg.GetGeneratorName();
   std::string expected_string = "Linear Congruential Generator";
   ASSERT_EQ(actual_string,expected_string);
 }
 
-
-//To check GetNumber - GenerateNumber generating random number within given value
+/*
+ * @brief  To check GetNumber - GenerateNumber generating random number 
+ * within given value based on SRAND Implementation
+*/
 TEST(NumberGeneratorSRand_test, GenerateNumber_test_1) {
-  NumberGeneratorSRand number_generator_srand(100);
+  NumberGeneratorSRand number_generator_srand(100,0);
 
-  uint32_t number1 =	101;
-  uint32_t number2 =	number_generator_srand.GetGeneratedNumber();
+  uint32_t number1 =  101;
+  uint32_t number2 =  number_generator_srand.GetGeneratedNumber();
   ASSERT_GT(number1,number2);
 }
-//To check setMaxRandomValLimit by setting max_random_value_ < min_random_value_
+/*
+ * @brief  To check setMaxRandomValLimit by setting 
+ *         max_random_value_ < min_random_value_
+*/
 TEST(NumberGeneratorSRand_test, GenerateNumber_test_2) {
-  NumberGeneratorLCG number_generator_srand(1000);
+  NumberGeneratorSRand number_generator_srand(1000);
 
   number_generator_srand.SetRandomValRange(500, 100);
-	
-  uint32_t expected1 =	99;
-  uint32_t expected2 =	501;
-  uint32_t actual =	number_generator_srand.GetGeneratedNumber();
+  
+  uint32_t expected1 =  99;
+  uint32_t expected2 =  501;
+  uint32_t actual =  number_generator_srand.GetGeneratedNumber();
   EXPECT_TRUE((expected1<actual) && (expected2>actual));
 }
-
+/*
+ * @brief  To check setMaxRandomValLimit by setting 
+ *         max_random_value_ < min_random_value_
+*/
 TEST(NumberGeneratorSRand_test, GenerateNumber_test_3) {
+  NumberGeneratorSRand number_generator_srand(1000);
+
+  number_generator_srand.SetRandomValRange(100, 500);
+  
+  uint32_t expected1 =  99;
+  uint32_t expected2 =  501;
+  uint32_t actual =  number_generator_srand.GetGeneratedNumber();
+  EXPECT_TRUE((expected1<actual) && (expected2>actual));
+}
+/*
+ * @brief   To check Number generator's name based on instance
+*/
+TEST(NumberGeneratorSRand_test, GenerateNumber_test_4) {
   NumberGeneratorSRand number_generator_srand(100);
 
-  std::string actual_string =	number_generator_srand.GetGeneratorName();
+  std::string actual_string =  number_generator_srand.GetGeneratorName();
   std::string expected_string = "Default CPP SRand Generator";
   ASSERT_EQ(actual_string,expected_string);
 }
   
-//to check GetNumber of GeneratorNodeHandler
-/*TEST(GeneratorNodeHandler_test, GetNumber_test_1) {  
-  GeneratorNodeHandler generator_node_handler;
-
-  uint32_t number1 =	1001;
-  uint32_t number2 =	generator_node_handler.GetNumber();
-	
-  ASSERT_GT(number1,number2);
-}  */
-
-//to check GetCommunicationFactory of GeneratorNodeHandler
-/*TEST(GeneratorNodeHandler_test, GetCommunicationFactory_test_1) {
-
-  GeneratorNodeHandler generator_node_handler;
-	
-  CommFactory *comm_factory_obj = NULL;	
-  comm_factory_obj = 	generator_node_handler.GetCommunicationFactory();	
-  
-  EXPECT_TRUE(comm_factory_obj != NULL);
-}
+/*
+ * @brief  To check GetNumber using GeneratorNodeHandler instance
+ * LCG Implementation 
 */
-PublishSubscribe* publish_subcribe;
+TEST(GeneratorNodeHandler_test, GetNumber_test_1) {  
+  GeneratorNodeHandler generator_node_handler(GeneratorNodeHandler::LCG);
 
-void receiveCallback(const ros_ran_num_msg::rand_num& msg) {
-  std::cerr << "Received message using Subscribe.." << std::endl;
+  uint32_t number1 =  1001;
+  uint32_t number2 =  generator_node_handler.GetNumber();
   
-  delete publish_subcribe;
-  ASSERT_NE(msg.number1,msg.number2);
+  ASSERT_GT(number1,number2);
+}  
+/*
+ * @brief  To check GetNumber using GeneratorNodeHandler instance
+ * SRAND Implementation 
+*/
+TEST(GeneratorNodeHandler_test, GetNumber_test_3) {  
+  GeneratorNodeHandler generator_node_handler(GeneratorNodeHandler::SRAND);
+
+  uint32_t number1 =  1001;
+  uint32_t number2 =  generator_node_handler.GetNumber();
+  
+  ASSERT_GT(number1,number2);
+} 
+/*
+ * @brief  To check NumberGeneratorFactory instance creation
+*/
+TEST(GeneratorNodeHandler_test, GetNumberFactory_test_1) {
+  GeneratorNodeHandler *generator_node_handler = new GeneratorNodeHandler(GeneratorNodeHandler::LCG); 
+  NumberGeneratorFactory *number_factory = generator_node_handler->GetNumberFactory();
+  EXPECT_TRUE(number_factory != NULL);
+ 
+  delete generator_node_handler;
+
 }
 
-void timer_lapsed(const ros::TimerEvent& evt) {
-  std::cerr << "Time elapsed and no message received.." << std::endl;
-  delete publish_subcribe;
+/*
+ * @brief  to check GetCommunicationFactory instance from GeneratorNodeHandler LCG
+*/
+TEST(CommunicationFactory_test, GetCommunicationFactory_test_1) {
 
-  EXPECT_TRUE(0);
+  GeneratorNodeHandler *generator_node_handler = new GeneratorNodeHandler(GeneratorNodeHandler::LCG); 
+  CommFactory *comm_factory = generator_node_handler->GetCommunicationFactory();
+  EXPECT_TRUE(comm_factory != NULL);
+ 
+  delete generator_node_handler;
+}
+/*
+ * @brief  to check GetCommunicationFactory instance from GeneratorNodeHandler SRAND
+*/
+TEST(CommunicationFactory_test, GetCommunicationFactory_test_2) {
+
+  GeneratorNodeHandler *generator_node_handler = new GeneratorNodeHandler(GeneratorNodeHandler::SRAND); 
+  CommFactory *comm_factory = generator_node_handler->GetCommunicationFactory();
+  EXPECT_TRUE(comm_factory != NULL);
+ 
+  delete generator_node_handler;
+}
+/*
+ * @brief  to check CommunicationInterface instance from  CommFactory
+*/
+TEST(CommunicationFactory_test, GetCommunicationFactory_test_3) {
+
+  CommFactory *communication_factory_ = new CommFactory();	
+  communication_factory_->CreateCommunicator(new PublishSubscribe(nullptr));
+  
+  CommunicationInterface *comm_interface = communication_factory_->GetCommunicator();
+
+  EXPECT_TRUE(comm_interface != NULL);
+}
+/*
+ * @brief  to check CommunicationInterface instance creation
+*/
+TEST(CommunicationFactory_test, GetCommunicationFactory_test_4) {
+
+  CommFactory *communication_factory_ = new CommFactory();
+  communication_factory_->CreateCommunicator(new PublishSubscribe(nullptr));
+  communication_factory_->CreateCommunicator(new PublishSubscribe(nullptr));
+  
+  CommunicationInterface *comm_interface = communication_factory_->GetCommunicator();
+
+  EXPECT_TRUE(comm_interface != NULL);
+}
+/*
+ * @brief  to check PublishSubscribe Publishing message with no Handler instance
+*/
+TEST(CommunicationFactory_test, GetCommunicationFactory_test_5) {
+  unsigned int nTimer = 0;
+
+  ros::NodeHandle nh;
+  ros::Subscriber sub = nh.subscribe("random_number_srand", 1000, receiveCallback);
+  std::cerr << "Subscribed to topic random_number_srand!" << std::endl;
+
+  PublishSubscribe publish_subscribe(nullptr);
+  publish_subscribe.SendMessage();
+  publish_subscribe.ReceiveMessage();  //  Does nothing
+
+  std::cerr << "Waiting for Publishers ";
+  while((sub.getNumPublishers() < 1) && (nTimer++<5)) {
+    boost::this_thread::sleep(boost::posix_time::seconds(1));
+    std::cerr << ".";
+  }
+  if(nTimer>=5)
+    std::cerr << "No Publishers available"<< std::endl;
+  
+  EXPECT_NE(nTimer,5);
+}
+/*
+ * @brief  to check CommFactory Publishing message with no Publisher instance
+*/
+TEST(CommunicationFactory_test, GetCommunicationFactory_test_6) {
+  unsigned int nTimer = 0;
+
+  CommFactory *communication_factory_ = new CommFactory();
+  
+  ros::NodeHandle nh;
+
+  ros::Subscriber sub = nh.subscribe("random_number_srand",
+					1000, receiveCallback);
+  std::cerr << "Subscribed to topic random_number_srand!" << std::endl;
+
+  communication_factory_->CreateCommunicator(nullptr);
+  communication_factory_->ExecuteCommunication();
+
+  std::cerr << "Waiting for Publishers ";
+  while((sub.getNumPublishers() < 1) && (nTimer++<5)) {
+    boost::this_thread::sleep(boost::posix_time::seconds(1));
+    std::cerr << ".";
+  }
+  if(nTimer>=5)
+    std::cerr << "No Publishers available"<< std::endl;
+ 
+  EXPECT_NE(nTimer,5);
 }
 
-/*TEST(PublisherSuscribe_test, SendMessage_test_1) {
+TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_1) {
+
+  NumberGeneratorFactory *generator_factory = new NumberGeneratorFactory();
+  generator_factory->CreateGenerator(new NumberGeneratorLCG(100, 0)); 
+  NumberGenerator *number_generator = generator_factory->getGenerator();
+
+  EXPECT_TRUE(number_generator != NULL);
+
+  delete number_generator;
+}
+TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_2) {
+
+  NumberGeneratorFactory *generator_factory = new NumberGeneratorFactory();
+  generator_factory->CreateGenerator(new NumberGeneratorLCG(1000, 0)); 
+  generator_factory->CreateGenerator(new NumberGeneratorSRand(100,0)); 
+  
+  NumberGenerator *number_generator = generator_factory->getGenerator();
+
+  std::string actual_string =  number_generator->GetGeneratorName();
+  std::string expected_string = "Default CPP SRand Generator";
+  EXPECT_EQ(actual_string,expected_string);
+
+  delete generator_factory;
+}
+
+/*
+ * @brief  to check if Publisher is able to publish messages
+*/
+TEST(PublisherSuscribe_test, SendMessage_test_1) {
   ros::NodeHandle nh;
   ros::Subscriber sub = nh.subscribe("random_number_srand", 1000, receiveCallback);
   std::cerr << "Testing Send Message using Publish..." << std::endl;
 
   GeneratorNodeHandler generator_node_handler;
-  publish_subcribe = new PublishSubscribe(&generator_node_handler);
+  PublishSubscribe publish_subcribe(&generator_node_handler);
 
   ros::Timer timer = nh.createTimer(ros::Duration(5), &timer_lapsed, false, true);
 
-  publish_subcribe->SendMessage();
+  publish_subcribe.SendMessage();
  
 }
-*/
+
 /**********************negative cases**********************************/
 
-
-/*
 TEST(PublisherSuscribe_Negtest, SendMessage_test_1) {
   ros::NodeHandle nh;
   ros::Subscriber sub = nh.subscribe("Wrong_random_number", 1000, receiveCallback);
   std::cerr << "Testing Send Message using Publish..." << std::endl;
 
   GeneratorNodeHandler generator_node_handler;
-  publish_subcribe = new PublishSubscribe(&generator_node_handler);
+  PublishSubscribe publish_subcribe(&generator_node_handler);
 
   ros::Timer timer = nh.createTimer(ros::Duration(5), &timer_lapsed, false, true);
  
-  publish_subcribe->SendMessage();
+  publish_subcribe.SendMessage();
  
 }
+/*
+ * @brief  To check GetNumber - GenerateNumber generating random 
+ *          number within given value for Negative test
 */
-//To recreate number generator using alternate implementation
-/*TEST(NumberGenerator_Negtest, GenerateNumber_test_1) {
-  NumberGeneratorFactory *number_generator = new NumberGeneratorFactory();
-  number_generator->CreateGenerator(new NumberGeneratorLCG(0,1000));
-  number_generator->CreateGenerator(new NumberGeneratorSRand(0,100));
-
-  uint32_t number1 =	100;
-  uint32_t number2 = number_generator->GetGenerator()->GetGeneratedNumber();	
-
-  delete number_generator;
-
-  ASSERT_LT(number1,number2);
-}*/
-
-//To check GetNumber - GenerateNumber generating random number within given value
 TEST(NumberGeneratorLCG_Negtest, GenerateNumber_test_1) {
   NumberGeneratorLCG number_generator_lcg(100);
 
-  uint32_t number1 =	101;
-  uint32_t number2 =	number_generator_lcg.GetGeneratedNumber();
-  ASSERT_LT(number1,number2);
+  uint32_t number1 =  101;
+  uint32_t number2 =  number_generator_lcg.GetGeneratedNumber();
+  EXPECT_GT(number1,number2);
 }
 
-//To check setMaxRandomValLimit is setting max_random_value & min_random_value with given value
+/*
+ * @brief  To check setMaxRandomValLimit is setting max_random_value
+ *  & min_random_value with given value
+*/
 TEST(NumberGeneratorLCG_Negtest, GenerateNumber_test_2) {
   NumberGeneratorLCG number_generator_lcg(1000);
 
   number_generator_lcg.SetRandomValRange(0, 100);
-	
-  uint32_t number1 =	101;
-  uint32_t number2 =	number_generator_lcg.GetGeneratedNumber();
-  ASSERT_LT(number1,number2);
+  
+  uint32_t number1 =  101;
+  uint32_t number2 =  number_generator_lcg.GetGeneratedNumber();
+  EXPECT_GT(number1,number2);
 }
-//To check setMaxRandomValLimit by setting max_random_value_ < min_random_value_
+/*
+ * @brief  To check setMaxRandomValLimit by setting 
+ * max_random_value_ < min_random_value_
+*/
 TEST(NumberGeneratorLCG_Negtest, GenerateNumber_test_3) {
   NumberGeneratorLCG number_generator_lcg(1000);
 
   number_generator_lcg.SetRandomValRange(500, 100);
-	
-  uint32_t expected1 =	99;
-  uint32_t expected2 =	501;
-  uint32_t actual =	number_generator_lcg.GetGeneratedNumber();
+  
+  uint32_t expected1 =  99;
+  uint32_t expected2 =  501;
+  uint32_t actual =  number_generator_lcg.GetGeneratedNumber();
   EXPECT_FALSE((expected1<actual) && (expected2>actual));
 }
-
+/*
+ * @brief   To check Number generator's name based on instance
+*/
 TEST(NumberGeneratorLCG_Negtest, GenerateNumber_test_4) {
   NumberGeneratorLCG number_generator_lcg(100);
 
-  std::string actual_string =	number_generator_lcg.GetGeneratorName();
+  std::string actual_string =  number_generator_lcg.GetGeneratorName();
   std::string expected_string = "Default CPP SRand Generator";
-  ASSERT_EQ(actual_string,expected_string);
+  EXPECT_EQ(actual_string,expected_string);
 }
 
-
-//To check GetNumber - GenerateNumber generating random number within given value
+/*
+ * @brief  To check GetNumber - GenerateNumber generating 
+ * random number within given value
+*/
 TEST(NumberGeneratorSRand_Negtest, GenerateNumber_test_1) {
   NumberGeneratorSRand number_generator_srand(100);
 
-  uint32_t number1 =	101;
-  uint32_t number2 =	number_generator_srand.GetGeneratedNumber();
-  ASSERT_LT(number1,number2);
+  uint32_t number1 =  101;
+  uint32_t number2 =  number_generator_srand.GetGeneratedNumber();
+  EXPECT_GT(number1,number2);
 }
-//To check setMaxRandomValLimit by setting max_random_value_ < min_random_value_
+/*
+ * @brief  To check setMaxRandomValLimit by setting 
+ * max_random_value_ < min_random_value_
+*/
 TEST(NumberGeneratorSRand_Negtest, GenerateNumber_test_2) {
   NumberGeneratorLCG number_generator_srand(1000);
 
   number_generator_srand.SetRandomValRange(500, 100);
-	
-  uint32_t expected1 =	99;
-  uint32_t expected2 =	501;
-  uint32_t actual =	number_generator_srand.GetGeneratedNumber();
+  
+  uint32_t expected1 =  99;
+  uint32_t expected2 =  501;
+  uint32_t actual =  number_generator_srand.GetGeneratedNumber();
   EXPECT_FALSE((expected1<actual) && (expected2>actual));
 }
-
+/*
+ * @brief   To check Number generator's name based on instance
+*/
 TEST(NumberGeneratorSRand_Negtest, GenerateNumber_test_3) {
   NumberGeneratorSRand number_generator_srand(100);
 
-  std::string actual_string =	number_generator_srand.GetGeneratorName();
+  std::string actual_string =  number_generator_srand.GetGeneratorName();
   std::string expected_string = "Linear Congruential Generator";
-  ASSERT_EQ(actual_string,expected_string);
+  EXPECT_EQ(actual_string,expected_string);
 }
-  
-//to check GetNumber of GeneratorNodeHandler
-/*(TEST(GeneratorNodeHandler_Negtest, GetNumber_test_1) {  
-  GeneratorNodeHandler generator_node_handler;
+TEST(GeneratorNodeHandler_Negtest, GetNumber_test_1) {  
+  GeneratorNodeHandler generator_node_handler(GeneratorNodeHandler::LCG);
 
-  uint32_t number1 =	1001;
-  uint32_t number2 =	generator_node_handler.GetNumber();
-	
+  uint32_t number1 =  1001;
+  uint32_t number2 =  generator_node_handler.GetNumber();
+  
   ASSERT_LT(number1,number2);
-}  */
+}  
+TEST(GeneratorNodeHandler_Negtest, GetNumber_test_2) {  
+  GeneratorNodeHandler generator_node_handler(GeneratorNodeHandler::SRAND);
 
-//to check GetCommunicationFactory of GeneratorNodeHandler
-/*TEST(GeneratorNodeHandler_Negtest, GetCommunicationFactory_test_1) {
-
-  GeneratorNodeHandler generator_node_handler;
-	
-  CommFactory *comm_factory_obj = generator_node_handler.GetCommunicationFactory();	
+  uint32_t number1 =  1001;
+  uint32_t number2 =  generator_node_handler.GetNumber();
   
-  EXPECT_TRUE(comm_factory_obj == NULL);
-}
+  ASSERT_LT(number1,number2);
+}  
+/*
+ * @brief  
 */
-
-
 int main(int argc, char **argv) {
   
   ros::init(argc, argv, "NumberGeneratorNode_Test");
