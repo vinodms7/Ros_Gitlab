@@ -1,5 +1,5 @@
 /****************************************************************************
-*     Copyright (C) 2017 by KPIT Technologies                     *
+* 		Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
 
@@ -33,30 +33,22 @@ class ReceiverCallback {
   *             assigns the multiplier node handle reference to 
   *             the received reference
   *
-  * @param[in]  MultiplierNodeHandler*
-  *              Pointer to the reference multiplier node handler
-  *
-  * @param[out] None
-  *
-  * @return     None
+  * @param[in]  ArithmeticNodeHandlerInterface*
+  *              Pointer to the reference multiplier node handler  
+  *  
   *
   **/
-  ReceiverCallback(MultiplierNodeHandler* );
-
+  ReceiverCallback(ArithmeticNodeHandlerInterface* );
+  
   /**
   * Function name: ~ReceiverCallback
   *
   * @brief      Destructor to the receiver callback class
   *
-  * @param[in]  None
-  *
-  * @param[out] None
-  *
-  * @return     None
   *
   **/
   ~ReceiverCallback();
-
+  
   /**
   * Function name: MultiplierCallback
   *
@@ -73,9 +65,10 @@ class ReceiverCallback {
   *
   **/
   void MultiplierCallback(const ros_ran_num_msg::rand_num::ConstPtr& value);
-
+ 
  private:  
-  MultiplierNodeHandler *node_handler_;  //Holds the reference of the multiplier node handler
+  /*! Holds the reference of the multiplier node handler */
+  ArithmeticNodeHandlerInterface *arithmetic_node_handler_;
 };
 
 /*! Class Declarations */
@@ -89,30 +82,22 @@ class PublishSubscribe : public CommunicationInterface {
   *             assigns the received multiplier node handle reference to 
   *             reference callback class
   *
-  * @param[in]  MultiplierNodeHandler*
+  * @param[in]  ArithmeticNodeHandlerInterface*
   *              Pointer to the reference multiplier node handler
-  *
-  * @param[out] None
-  *
-  * @return     None
+  *  
   *
   **/
-  explicit PublishSubscribe(MultiplierNodeHandler* node_handler);
-
+  PublishSubscribe(ArithmeticNodeHandlerInterface* node_handler);
+  
   /**
   * Function name: ~PublishSubscribe
   *
   * @brief      Defines the destructor to the PublishSubscribe class
-  *
-  * @param[in]  None
-  *
-  * @param[out] None
-  *
-  * @return     None
+  *  
   *
   **/
   ~PublishSubscribe();
-
+  
   /**
   * Function name: SendMessage
   *
@@ -126,12 +111,11 @@ class PublishSubscribe : public CommunicationInterface {
   *
   **/
   void SendMessage();
-
+  
   /**
   * Function name: ReceiveMessage
   *
-  * @brief      Defines the functionality to receive the 
-  *             message through ros subscribe
+  * @brief      Defines the functionality to receive the message through ros subscribe
   *             and calls the receiver callback function
   *
   * @param[in]  None
@@ -142,12 +126,18 @@ class PublishSubscribe : public CommunicationInterface {
   *
   **/
   void ReceiveMessage();
-
+ 
  private:
-  ReceiverCallback *receiver_callback_;  //  Receiver callback object
-  MultiplierNodeHandler *multiplier_node_handler_;  // Multiplier node handler
-  ros::NodeHandle node_handle_;  // Reference of the nodehandle object
-  ros::Subscriber multiplier_subscriber_;   //  Subscriber object
+  /** Holds the reference to the receiver callback object */
+  ReceiverCallback *receiver_callback_;
+  
+  /** Holds the reference to the multiplier node handler object */
+  ArithmeticNodeHandlerInterface *arithmetic_node_handler_;
+  
+  /** Holds the reference of the nodehandle object */
+  ros::NodeHandle node_handle_;
+  
+  /** Holds the reference to the subscriber object */
+  ros::Subscriber multiplier_subscriber_;
 };
 #endif /* PUBLISHER_SUBSCRIBE_H */
-

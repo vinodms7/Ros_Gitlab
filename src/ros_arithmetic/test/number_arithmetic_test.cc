@@ -3,7 +3,7 @@
 *                                                                          *
 ****************************************************************************/
 /**
-* @file    number_arithmetic_test
+* @file		number_arithmetic_test
 * 
 * @author       Sujeyendra Tummala <Tummala.Sujeyendra@kpit.com>
 *
@@ -40,8 +40,7 @@ void receivercallback(const ros_ran_num_msg::rand_num::ConstPtr& value) {
 
   unique_ptr<MultiplierNodeHandler>multiplierObj(new MultiplierNodeHandler());
 
-  uint32_t vresult = multiplierObj->ProcessData(value->number1,
-                                                 value->number2);
+  uint32_t vresult = multiplierObj->ProcessData(value->number1, value->number2);
 
   EXPECT_TRUE(vresult > 0);
 }
@@ -64,16 +63,14 @@ void receivercallback(const ros_ran_num_msg::rand_num::ConstPtr& value) {
  * @brief Fail test to show numberarithmeticfactory is null - TBD
  */
 TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_) {
-/*
- unique_ptr<MultiplierNodeHandler> multiplierObj(new MultiplierNodeHandler());
+/*  unique_ptr<MultiplierNodeHandler> multiplierObj(new MultiplierNodeHandler());
   NumberArithmeticFactory* multiplier_factory_;
   NumberMultiplier number_multiplier;
 
   uint32_t number1 = 100;
   uint32_t number2 = 200;
   uint32_t number_expected = 20000;
-  uint32_t number_actual =number_multiplier.DoArithmeticOperation(number1,
-                                                                  number2);
+  uint32_t number_actual =number_multiplier.DoArithmeticOperation(number1,number2);
 
   EXPECT_EQ(number_expected,number_actual);
 */
@@ -97,7 +94,7 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_) {
  * @brief 
  */
 /*TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_4) {
- unique_ptr<MultiplierNodeHandler> multiplierObj(new MultiplierNodeHandler());
+  unique_ptr<MultiplierNodeHandler> multiplierObj(new MultiplierNodeHandler());
   
   NumberMultiplier NumberMultiplier;
 
@@ -119,9 +116,9 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_) {
 /*TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_5) {
   MultiplierNodeHandler *multiplier_obj_ = new MultiplierNodeHandler();
   
-  //  NumberMultiplier number_multiplier_; 
+  //NumberMultiplier number_multiplier_; 
   
-  //  number_multiplier_ = new NumberMultiplier();
+  //number_multiplier_ = new NumberMultiplier();
 
   uint32_t number1 = 10;
   uint32_t number2 = 10;
@@ -146,8 +143,7 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_) {
 
   uint32_t number_expected = 200;
   
-  uint32_t number_actual = number_multiplier_.DoArithmeticOperation(value1,
-                                                                    value2);
+  uint32_t number_actual = number_multiplier_.DoArithmeticOperation(value1,value2);
 
   EXPECT_EQ(number_expected,number_actual);
 }
@@ -163,8 +159,7 @@ TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
 
   uint32_t number_expected = 200;
   
-  uint32_t number_actual = number_multiplier_.DoArithmeticOperation(value1,
-                                                                    value2);
+  uint32_t number_actual = number_multiplier_.DoArithmeticOperation(value1,value2);
 
   EXPECT_EQ(number_expected,number_actual);
 }
@@ -172,10 +167,10 @@ TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
 
 /** Publish Subscribe Tests */
 /*
- * @brief // to check if receive is happening through right channel
+ * @brief //to check if receive is happening through right channel
  */
 /*TEST(PublishSubscribe_test, PublishSubscribe_test_1) {
-  ros::Subscriber multiplier_subscriber_;  
+  ros::Subscriber multiplier_subscriber_;	
   
   ros::NodeHandle node_handle_;
 
@@ -183,48 +178,45 @@ TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
 
   ReceiverCallback *receiverobj_ = new ReceiverCallback(multiplierobj_);
 
-  multiplier_subscriber_ = node_handle_.subscribe("random_number_srand",
-                                                  100, receivercallback);
+  multiplier_subscriber_ = node_handle_.subscribe("random_number_srand", 100, receivercallback);  
 
   ros::spinOnce();
 
-  ros::spinOnce();  
+  ros::spinOnce();	
 }*/
 
 /*
  * @brief Subscribe test - To check if random numbers are coming
  */
-/*TEST(PublishSubscribe_test, PublishSubscribe_test_2) {  
+/*TEST(PublishSubscribe_test, PublishSubscribe_test_2) {	
   ros::NodeHandle node_handle_;
-  ros::Subscriber test_subscriber;  
-  
-  test_subscriber = node_handle_.subscribe("random_number_srand", 
-                                           100, &cbfunction);
-  
+  ros::Subscriber test_subscriber;	
+	
+  test_subscriber = node_handle_.subscribe("random_number_srand", 100, &cbfunction);
+	
   ros::spinOnce();
         
-  ros::spinOnce();  
+  ros::spinOnce();	
 }
 */
 /*
  * @brief Subscribe test - To check if random numbers are coming
  */
-/*TEST(PublishSubscribe_test, PublishSubscribe_test_3) {  
+/*TEST(PublishSubscribe_test, PublishSubscribe_test_3) {	
   ros::NodeHandle node_handle_;
-  ros::Subscriber test_subscriber;  
-  
-  test_subscriber = node_handle_.subscribe("random_number_srand",
-                                              100, &cbfunction);
-  
+  ros::Subscriber test_subscriber;	
+	
+  test_subscriber = node_handle_.subscribe("random_number_srand", 100, &cbfunction);
+	
   ros::spinOnce();
         
-  ros::spinOnce();  
+  ros::spinOnce();	
 }
 */
 /*
  * @brief Subscribe test - To check if random numbers are coming
  */
-/*TEST(PublishSubscribe_test, PublishSubscribe_test_4) {  
+/*TEST(PublishSubscribe_test, PublishSubscribe_test_4) {	
   
   MultiplierNodeHandler *node_handler_ = new MultiplierNodeHandler();
  
@@ -236,64 +228,57 @@ TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
   
   ros::spinOnce();
         
-  ros::spinOnce();  
+  ros::spinOnce();	
 }
 */
 /** Communication Factory Tests */
 /*
- * @brief // to check if receive is happening through right channel
+ * @brief //to check if receive is happening through right channel
  */
 /*TEST(communication_factory_test, communication_factory_test_1) {
   CommFactory comm_controller_factory_;
   
   comm_controller_factory_.CreateCommunicator(new PublishSubscribe(NULL));
-  CommunicationInterface *comm_interface = 
-                             comm_controller_factory_.GetCommunicator();
+  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
   
   EXPECT_TRUE(comm_interface != NULL);
 }*/
 
 
 /*
- * @brief To check assignment of communication_interface_ with check to 
- *        cover IF TRUE part
- *        IF ensures to delete previously allocated communication_interface_
- *        to release memory
+ * @brief //to check assignment of communication_interface_ with check to cover IF TRUE part
+ *        // IF ensures to delete previously allocated communication_interface_ to release memory
  */
 /*TEST(communication_factory_test, communication_factory_test_2) {
   CommFactory comm_controller_factory_;
 
   comm_controller_factory_.CreateCommunicator(new PublishSubscribe(NULL));
   comm_controller_factory_.CreateCommunicator(new PublishSubscribe(NULL));
-  CommunicationInterface *comm_interface = 
-                                comm_controller_factory_.GetCommunicator();
+  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
   
   EXPECT_TRUE(comm_interface != NULL);
 }*/
 
 /*
- * @brief To check assignment of communication_interface_ to non-garbage
- *           when NULL is passed to CreateCommunicator
+ * @brief //to check assignment of communication_interface_ to non-garbage when NULL is passed to CreateCommunicator
  */
 /*TEST(communication_factory_test, communication_factory_test_3) {
   CommFactory comm_controller_factory_;
 
   comm_controller_factory_.CreateCommunicator(NULL);
-  CommunicationInterface *comm_interface = 
-                               comm_controller_factory_.GetCommunicator();
+  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
   
   EXPECT_TRUE(comm_interface == NULL);
 }*/
 
 /*
- * @brief // To check communication_interface_ without CreateCommunicator
+ * @brief //To check communication_interface_ without CreateCommunicator
  */
-// To check communication_interface_ without CreateCommunicator
+//To check communication_interface_ without CreateCommunicator
 /*TEST(communication_factory_test, communication_factory_test_4) {
   CommFactory comm_controller_factory_;
 
-  CommunicationInterface *comm_interface = 
-                               comm_controller_factory_.GetCommunicator();
+  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
   
   EXPECT_TRUE(comm_interface == NULL);
 }*/
@@ -328,7 +313,7 @@ TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
   number_factory_.CreateMultiplier(new NumberMultiplier());
   number_factory_.CreateMultiplier(new NumberMultiplier());
   number_multiplier_ = number_factory_.GetMultiplier();
- 
+  
   EXPECT_TRUE(number_multiplier_ != NULL);
 }*/
 
@@ -357,8 +342,7 @@ TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_3) {
   
   number_factory_.CreateMultiplier(NULL);
   
-  NumberArithematicInterface *arithmetic_int_obj =
-                                         number_factory_.GetMultiplier();
+  NumberArithematicInterface *arithmetic_int_obj = number_factory_.GetMultiplier();;
  
   EXPECT_TRUE(arithmetic_int_obj == NULL);
 }
@@ -370,13 +354,12 @@ TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_3) {
 /*TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_5) {
   NumberArithmeticFactory number_factory_;
   
-  NumberArithematicInterface *arithmetic_int_obj = 
-                                           number_factory_.GetMultiplier();
+  NumberArithematicInterface *arithmetic_int_obj = number_factory_.GetMultiplier();;
  
   EXPECT_TRUE(arithmetic_int_obj == NULL);
 }*/
 
-/**-------------------------- MAIN ----------------------------*/
+/**---------------------------------------- MAIN ---------------------------------------*/
 
 int main(int argc, char **argv) {
   
@@ -394,4 +377,3 @@ int main(int argc, char **argv) {
 
   return test_result;
 }
-

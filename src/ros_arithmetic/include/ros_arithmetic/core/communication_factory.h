@@ -1,5 +1,5 @@
 /****************************************************************************
-*     Copyright (C) 2017 by KPIT Technologies                     *
+* 		Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
 
@@ -31,58 +31,46 @@ class CommFactory {
   *
   * @param[in]  None
   *
-  * @param[out] None
-  *
-  * @return     None
   *
   **/
   CommFactory();
-
+ 
   /**
   * Function name: ~CommFactory
   *
   * @brief      Implements the destructor that deletes the communication 
   *             interface object if existing and intializes it to NULL
   *
-  * @param[in]  None
-  *
-  * @param[out] None
-  *
-  * @return     None
   *
   **/  
   ~CommFactory();
-
+  
   /**
-  * Function name: ~CommFactory
+  * Function name: CreateCommunicator
   *
-  * @brief      Defines the functionality to delete the existing reference to 
-  *             the the communication object and initialize to the received object
+  * @brief      Creating communication object
   *
   * @param[in]  CommunicationInterface* comm_int 
   *               Holds the communication interface object to be assigned
-  *
-  * @param[out] None
   *
   * @return     Void
   *
   **/
   void CreateCommunicator(CommunicationInterface* comm_int);
-
+  
   /**
   * Function name: ExecuteCommunication
   *
   * @brief Execute communication to send message
   *
-  * @param[in]  None
+  * @param[in]	None
   *
-  * @return  void
+  * @return	void
   **/
   void ExecuteCommunication();
-
+  
  private:
   /** Holds the pointer to communication interface object */
-  CommunicationInterface* communication_interface_;
+  CommunicationInterface* communication_interface_;  
 };
 #endif
-

@@ -56,9 +56,7 @@ void NumberGeneratorFactory::CreateGenerator(NumberGenerator *p_number_generator
 }
 
 uint32_t NumberGeneratorFactory::ExecuteGenerator() const {  
-  if ( nullptr != number_generator_ ) {
+  if ( nullptr != number_generator_ )  
     return  number_generator_->GetGeneratedNumber();
-  }
   return 0;
 }
-

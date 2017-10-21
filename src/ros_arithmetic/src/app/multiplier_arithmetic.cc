@@ -2,9 +2,10 @@
 * Copyright (C) 2017 by KPIT Technologies                                  *
 *                                                                          *
 ****************************************************************************/
+
 /**
-* @file    Multiplier Arithmetic
-* @author       Sasi Kiran  
+* @file		Multiplier Arithmetic
+* @author       Sasi Kiran	
 * @date         18 oct 2017
 * @brief        Implementation class for multiplication functionality
 *
@@ -21,8 +22,7 @@ NumberMultiplier::NumberMultiplier(): multiplier_value_(0) {
 NumberMultiplier::~NumberMultiplier() {
 }
 
-uint32_t NumberMultiplier::DoArithmeticOperation(uint32_t value1,
-                                                 uint32_t value2) {
+uint32_t NumberMultiplier::DoArithmeticOperation(uint32_t value1, uint32_t value2) { 
   return DoMultiplication(value1, value2);
 }
 

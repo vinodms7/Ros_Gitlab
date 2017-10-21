@@ -1,5 +1,5 @@
 /****************************************************************************
-*     Copyright (C) 2017 by KPIT Technologies                     *
+* 		Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
 
@@ -29,17 +29,16 @@
 *        assigns the received generator node handle reference 
 *        and advertises the topic to be published
 **/
-PublishSubscribe::PublishSubscribe(GeneratorNodeHandler *p_generator_node_handler) {
-  generator_node_handler = p_generator_node_handler;
-
-  rand_num_publisher = nodeHandle.advertise<ros_ran_num_msg::rand_num>("random_number_srand", 100);
+PublishSubscribe::PublishSubscribe(NodeHandlerInterface *p_generator_node_handler) {
+  generator_node_handler_ = p_generator_node_handler;
+  rand_num_publisher_ = node_handle_.advertise<ros_ran_num_msg::rand_num>("random_number_srand", 100);
 }
 
 /**
 * @brief Implements the destructor to the PublishSubscribe class
 **/
 PublishSubscribe::~PublishSubscribe() {
-  nodeHandle.shutdown();  
+  node_handle_.shutdown();   
 }
 
 /**
@@ -50,11 +49,11 @@ void PublishSubscribe::SendMessage() {
   ros::Rate rate(1);
   ros_ran_num_msg::rand_num value;
   
-  while( nodeHandle.ok() ) {
-    value.number1 = generator_node_handler->GetNumber();
-    value.number2 = generator_node_handler->GetNumber();
+  while( node_handle_.ok() ) {
+    value.number1 = generator_node_handler_->GetNumber();
+    value.number2 = generator_node_handler_->GetNumber();
 
-    rand_num_publisher.publish(value);
+    rand_num_publisher_.publish(value);
 
     ROS_INFO("Number Generator Value 1: [%u] and Value 2: [%u]", value.number1, value.number2);
     
@@ -68,4 +67,3 @@ void PublishSubscribe::SendMessage() {
 **/
 void PublishSubscribe::ReceiveMessage() {
 }
-
