@@ -1,0 +1,8 @@
+prefix=/home/ubuntu/bmw_ros_multiplicator/ROS_Example/install
+
+Name: ros_arithmetic
+Description: Description of ros_arithmetic
+Version: 1.0.1
+Cflags: -I/home/ubuntu/bmw_ros_multiplicator/ROS_Example/install/include
+Libs: -L/home/ubuntu/bmw_ros_multiplicator/ROS_Example/install/lib 
+Requires: 

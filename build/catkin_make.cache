@@ -1,0 +1,2 @@
+ros_arithmetic:ros_number_generator:ros_ran_num_msg
+-DCATKIN_DEVEL_PREFIX=/home/ubuntu/bmw_ros_multiplicator/ROS_Example/devel -DCMAKE_INSTALL_PREFIX=/home/ubuntu/bmw_ros_multiplicator/ROS_Example/install -G Unix Makefiles
