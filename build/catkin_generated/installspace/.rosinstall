@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ubuntu/bmw_ros_multiplicator/ROS_Example/install/setup.sh

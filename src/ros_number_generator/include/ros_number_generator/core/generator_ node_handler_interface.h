@@ -42,6 +42,7 @@ class NodeHandlerInterface {
   * @return	void
   **/
   virtual void Execute() = 0;
+
 };
 #endif
 
