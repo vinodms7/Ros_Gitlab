@@ -16,19 +16,29 @@
 #define GENERATOR_NODE_H
 
 /*  include files  */
+#include "ros_number_generator/core/generator_ node_handler_interface.h"
 #include "ros_number_generator/core/communication_factory.h"
 #include "ros_number_generator/core/number_generator_factory.h"
 #include "ros_number_generator/app/number_generator_srand.h"
 #include "ros_number_generator/app/number_generator_lcg.h"
 
-class GeneratorNodeHandler {
- public:
+class GeneratorNodeHandler : public NodeHandlerInterface {
+ public: 
+  // enumeration type for random generator types ( srand, lcg etc)
+  enum GeneratorType {
+    NONE = 0,
+    SRAND,
+    LCG
+  };
+    
   /**
   * Function name: GeneratorNodeHandler()
   *
   * @brief Constructor for the Node Handler
+  *
+  * @param[in]  GeneratorType This is enumeration type of generator type
   **/
-  GeneratorNodeHandler();
+  explicit GeneratorNodeHandler(GeneratorType generator_type = GeneratorType::LCG);
   
   /**
   * Function name: ~GeneratorNodeHandler()
@@ -74,7 +84,7 @@ class GeneratorNodeHandler {
   **/
   void CreateCommunicationFactory();
   
-
+  GeneratorType generator_type_; // enum type for generator type
   NumberGeneratorFactory* number_generator_; // Pointer to generator factory
   CommFactory*   communication_factory_;   // Pointer to communication factory
 };

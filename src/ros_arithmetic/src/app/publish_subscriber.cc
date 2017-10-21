@@ -27,8 +27,8 @@
 * @brief Implements the constructor to the receiver callback class that assigns
 *        the multiplier node handle reference to the received reference
 **/
-ReceiverCallback::ReceiverCallback(MultiplierNodeHandler *node_handler) {
-  node_handler_ = node_handler;
+ReceiverCallback::ReceiverCallback(ArithmeticNodeHandlerInterface *node_handler) {
+  arithmetic_node_handler_ = node_handler;
 }
 
 /**
@@ -43,7 +43,7 @@ ReceiverCallback::~ReceiverCallback() {
 void ReceiverCallback::MultiplierCallback(const ros_ran_num_msg::rand_num::ConstPtr& value) {
   ROS_INFO("Node Received Value 1: [%u] and Value 2: [%u]", value->number1, value->number2);
 
-  uint32_t vresult = node_handler_->ProcessData(value->number1, value->number2);
+  uint32_t vresult = arithmetic_node_handler_->ProcessData(value->number1, value->number2);
   ROS_INFO("The Multiplier value is [%u]", vresult);
 }
 
@@ -53,8 +53,8 @@ void ReceiverCallback::MultiplierCallback(const ros_ran_num_msg::rand_num::Const
 *        of receiver callback class and assigns the received multiplier node handle
 *        reference to reference callback class
 **/
-PublishSubscribe::PublishSubscribe(MultiplierNodeHandler *multiplier_node_handler) {
-  multiplier_node_handler_ = multiplier_node_handler;
+PublishSubscribe::PublishSubscribe(ArithmeticNodeHandlerInterface *multiplier_node_handler) {
+  arithmetic_node_handler_ = multiplier_node_handler;
   
   receiver_callback_ = new ReceiverCallback(multiplier_node_handler);
 }
@@ -63,6 +63,7 @@ PublishSubscribe::PublishSubscribe(MultiplierNodeHandler *multiplier_node_handle
 * @brief Implements the destructor to the PublishSubscribe class
 **/
 PublishSubscribe::~PublishSubscribe() {
+  node_handle_.shutdown();
 }
 
 /**

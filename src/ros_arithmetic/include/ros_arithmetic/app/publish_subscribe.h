@@ -33,26 +33,18 @@ class ReceiverCallback {
   *             assigns the multiplier node handle reference to 
   *             the received reference
   *
-  * @param[in]  MultiplierNodeHandler*
-  *              Pointer to the reference multiplier node handler
-  *
-  * @param[out] None
-  *
-  * @return     None
+  * @param[in]  ArithmeticNodeHandlerInterface*
+  *              Pointer to the reference multiplier node handler  
+  *  
   *
   **/
-  ReceiverCallback(MultiplierNodeHandler* );
+  ReceiverCallback(ArithmeticNodeHandlerInterface* );
   
   /**
   * Function name: ~ReceiverCallback
   *
   * @brief      Destructor to the receiver callback class
   *
-  * @param[in]  None
-  *
-  * @param[out] None
-  *
-  * @return     None
   *
   **/
   ~ReceiverCallback();
@@ -76,7 +68,7 @@ class ReceiverCallback {
  
  private:  
   /*! Holds the reference of the multiplier node handler */
-  MultiplierNodeHandler *node_handler_;
+  ArithmeticNodeHandlerInterface *arithmetic_node_handler_;
 };
 
 /*! Class Declarations */
@@ -90,26 +82,18 @@ class PublishSubscribe : public CommunicationInterface {
   *             assigns the received multiplier node handle reference to 
   *             reference callback class
   *
-  * @param[in]  MultiplierNodeHandler*
+  * @param[in]  ArithmeticNodeHandlerInterface*
   *              Pointer to the reference multiplier node handler
-  *
-  * @param[out] None
-  *
-  * @return     None
+  *  
   *
   **/
-  PublishSubscribe(MultiplierNodeHandler* node_handler);
+  PublishSubscribe(ArithmeticNodeHandlerInterface* node_handler);
   
   /**
   * Function name: ~PublishSubscribe
   *
   * @brief      Defines the destructor to the PublishSubscribe class
-  *
-  * @param[in]  None
-  *
-  * @param[out] None
-  *
-  * @return     None
+  *  
   *
   **/
   ~PublishSubscribe();
@@ -148,7 +132,7 @@ class PublishSubscribe : public CommunicationInterface {
   ReceiverCallback *receiver_callback_;
   
   /** Holds the reference to the multiplier node handler object */
-  MultiplierNodeHandler *multiplier_node_handler_;
+  ArithmeticNodeHandlerInterface *arithmetic_node_handler_;
   
   /** Holds the reference of the nodehandle object */
   ros::NodeHandle node_handle_;

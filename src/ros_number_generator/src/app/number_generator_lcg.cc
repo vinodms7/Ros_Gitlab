@@ -71,7 +71,7 @@ uint32_t NumberGeneratorLCG::GenerateNumber() {
 *
 * @brief Function call to query Generator name or Implementation name
 **/
-std::string NumberGeneratorLCG::GetGeneratorName() {
+std::string NumberGeneratorLCG::GetGeneratorName() const {
   return "Linear Congruential Generator";
 }
 

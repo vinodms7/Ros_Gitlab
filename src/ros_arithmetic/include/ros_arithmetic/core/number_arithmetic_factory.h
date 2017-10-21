@@ -56,6 +56,6 @@ class NumberArithmeticFactory {
   uint32_t ExecuteArithmeticOperation(uint32_t value1, uint32_t value2);
   
  private:
-  NumberArithmeticInterface *number_arithmetic_; //  Pointer to Interface
+  NumberArithmeticInterface *number_arithmetic_; //  Pointer to arithmetic Interface
 };
 #endif /* __NUMBER_MULTIPLIER_FACTORY_H_ */

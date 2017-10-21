@@ -33,15 +33,11 @@ public:
   *             assigns the received generator node handle reference 
   *             and advertises the topic to be published
   *
-  * @param[in]  MultiplierNodeHandler*
-  *              Pointer to the reference generator node handler
-  *
-  * @param[out] None
-  *
-  * @return     None
+  * @param[in]  NodeHandlerInterface*
+  *              Pointer to the reference generator node handler 
   *
   **/
-  explicit PublishSubscribe(GeneratorNodeHandler* node_handler);
+  explicit PublishSubscribe(NodeHandlerInterface *);
 
   /**
   * Function name: ~PublishSubscribe
@@ -50,9 +46,6 @@ public:
   *
   * @param[in]  None
   *
-  * @param[out] None
-  *
-  * @return     None
   *
   **/
   ~PublishSubscribe();
@@ -88,13 +81,13 @@ public:
 
 private:
   /** Holds the reference to the generator node handler object */
-  GeneratorNodeHandler *generator_node_handler;
+  NodeHandlerInterface *generator_node_handler_;
 
   /** Holds the reference of the nodehandle object */
-  ros::NodeHandle nodeHandle;
+  ros::NodeHandle node_handle_;
 
   /** Holds the reference to the publisher object */
-  ros::Publisher rand_num_publisher;
+  ros::Publisher rand_num_publisher_;
 };
 #endif /*PUBLISHER_SUBSCRIBE_H */
 

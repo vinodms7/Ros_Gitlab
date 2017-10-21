@@ -21,7 +21,7 @@
 class NumberGenerator {
  public:
   /**
-  * Function name: SetRandomValRange()
+  * Function name: SetRandomValRange
   *
   * @brief Interface to set the the random genrator range
   *
@@ -35,7 +35,7 @@ class NumberGenerator {
   virtual void SetRandomValRange(uint32_t max_random_value, uint32_t min_random_value) = 0;
 
   /**
-  * Function name: GetGeneratedNumber()
+  * Function name: GetGeneratedNumber
   *
   * @brief Interface to query for Number generator to provide a Random number
   *
@@ -48,7 +48,7 @@ class NumberGenerator {
   virtual uint32_t GetGeneratedNumber() = 0;
 
   /**
-  * Function name: GetGeneratorName()
+  * Function name: GetGeneratorName
   *
   * @brief Interface to query Generator name or Implementation name
   *
@@ -58,11 +58,11 @@ class NumberGenerator {
   *
   * @return		 std::string  String containing the name of the Random Generator implementation
   **/
-  virtual std::string GetGeneratorName() = 0;
+  virtual std::string GetGeneratorName() const = 0;
 
  protected:
   /**
-  * Function name: GenerateNumber()
+  * Function name: GenerateNumber
   *
   * @brief       Interface containing the actual implementation of the Number Generator
   *

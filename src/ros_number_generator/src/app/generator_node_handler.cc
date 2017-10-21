@@ -30,7 +30,7 @@ namespace constVariables {
  *
  * @brief Constructor for the Node Handler
 **/
-GeneratorNodeHandler::GeneratorNodeHandler() {
+GeneratorNodeHandler::GeneratorNodeHandler(GeneratorType generator_type) : generator_type_(generator_type) {
   CreateNumberFactory();
   CreateCommunicationFactory();
 }
@@ -44,14 +44,14 @@ GeneratorNodeHandler::GeneratorNodeHandler() {
  * number generator factory 
 **/
 GeneratorNodeHandler::~GeneratorNodeHandler() {
-  if(NULL != number_generator_){
+  if(nullptr != number_generator_){
 	  delete  number_generator_;
-	  number_generator_ = NULL;
+	  number_generator_ = nullptr;
   }
 
-  if(NULL != communication_factory_) {
+  if(nullptr != communication_factory_) {
   	delete communication_factory_;
-	communication_factory_ = NULL;
+	communication_factory_ = nullptr;
   }
 }
 
@@ -63,7 +63,13 @@ GeneratorNodeHandler::~GeneratorNodeHandler() {
 **/
 void GeneratorNodeHandler::CreateNumberFactory() {
   number_generator_ = new NumberGeneratorFactory();
-  number_generator_->CreateGenerator(new NumberGeneratorLCG(constVariables::MAX_RANDOM_VALUE,constVariables::MIN_RANDOM_VALUE));
+  if( generator_type_ == GeneratorType::LCG )
+    number_generator_->CreateGenerator(new NumberGeneratorLCG(constVariables::MAX_RANDOM_VALUE,constVariables::MIN_RANDOM_VALUE)); 
+  else if( generator_type_ == GeneratorType::SRAND )
+    number_generator_->CreateGenerator(new NumberGeneratorSRand(constVariables::MAX_RANDOM_VALUE,constVariables::MIN_RANDOM_VALUE));
+  else {
+    std::cout<< "No object Created, Invalid type";
+  }
 }
 
 /**
@@ -79,14 +85,14 @@ void GeneratorNodeHandler::CreateCommunicationFactory() {
 
 void GeneratorNodeHandler::Execute()
 {
-  if( nullptr != communication_factory_ )  
+  if( nullptr != communication_factory_ )
     communication_factory_->ExecuteCommunication();
 }
 
 /**
 * Function name: GetNumber
 *
-* @brief Get random value geeratedusing the generator Factory Node
+* @brief Get random value generated using the generator Factory Node
 * 
 **/
 uint32_t GeneratorNodeHandler::GetNumber() {

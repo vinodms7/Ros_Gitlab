@@ -26,13 +26,10 @@ class CommFactory {
   * Function name: CommFactory
   *
   * @brief      Defines the constructor that initialises the comm interface
-  *             object to NULL
+  *             object
   *
   * @param[in]  None
-  *
-  * @param[out] None
-  *
-  * @return     None
+  * 
   *
   **/
   CommFactory();
@@ -41,13 +38,8 @@ class CommFactory {
   * Function name: ~CommFactory
   *
   * @brief      Implements the destructor that deletes the communication 
-  *             interface object if existing and intializes it to NULL
-  *
-  * @param[in]  None
-  *
-  * @param[out] None
-  *
-  * @return     None
+  *             interface object if existing and intializes it to nullptr
+  *  
   *
   **/  
   ~CommFactory();

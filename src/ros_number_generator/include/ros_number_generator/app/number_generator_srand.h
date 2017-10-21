@@ -18,31 +18,29 @@
 class NumberGeneratorSRand : public NumberGenerator {
  public:
    /**
-   * Function name: NumberGeneratorSRand()
+   * Function name: NumberGeneratorSRand
    *
    * @brief Constructor for SRAND generator
    *
    * The constructor initializes the Random generator and specifies the range between which random
    * numbers need to be generator.
    *
-   * @param[in]	uint32_t nMaxRandomValue Maximum value the Random Generator  should generate
-   * @param[in]	uint32_t nMinRandomValue Minimum value the Random Generator  should generate
+   * @param[in]	uint32_t max_random_value Maximum value the Random Generator  should generate
+   * @param[in]	uint32_t min_random_value Minimum value the Random Generator  should generate
    *
-   * @return		void
    **/
    NumberGeneratorSRand(uint32_t max_random_value = 1000, uint32_t min_random_value = 0);
    
    /**
-   * Function name: ~NumberGeneratorSRand()
+   * Function name: ~NumberGeneratorSRand
    *
    * @brief Destructor for SRAND generator instance
    *
-   * @return		void
    **/
    ~NumberGeneratorSRand();
 
    /**
-   * Function name: SetRandomValRange()
+   * Function name: SetRandomValRange
    *
    * @brief Function call to set the the random genrator range
    *
@@ -56,7 +54,7 @@ class NumberGeneratorSRand : public NumberGenerator {
   void SetRandomValRange(uint32_t max_random_value, uint32_t min_random_value);
 
   /**
-  * Function name: GetGeneratedNumber()
+  * Function name: GetGeneratedNumber
   *
   * @brief Function call to query for Number generator to provide a Random number
   *
@@ -67,7 +65,7 @@ class NumberGeneratorSRand : public NumberGenerator {
   uint32_t GetGeneratedNumber();
 
   /**
-  * Function name: GetGeneratorName()
+  * Function name: GetGeneratorName
   *
   * @brief Function call to query Generator name or Implementation name
   *
@@ -75,11 +73,11 @@ class NumberGeneratorSRand : public NumberGenerator {
   *
   * @return		 std::string  String containing the name of the Random Generator implementation
   **/
-  std::string GetGeneratorName();
+  std::string GetGeneratorName() const;
 
  protected:
   /**
-  * Function name: GenerateNumber()
+  * Function name: GenerateNumber
   *
   * @brief       Function call containing the actual implementation of the Number Generator
   *

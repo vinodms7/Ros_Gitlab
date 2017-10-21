@@ -17,17 +17,26 @@
 #define MULTIPLIER_NODE_HANDLER_H
 
 /* include files */
+#include "ros_arithmetic/core/arithmetic_node_handler_interface.h"
 #include "ros_arithmetic/core/communication_factory.h"
 #include "ros_arithmetic/core/number_arithmetic_interface.h"
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
 
-class MultiplierNodeHandler {
+class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface {
 public:
+  // Enumeration type for arithmetic operation
+  enum OperationType {
+    NONE = 0,
+    MUL,
+    ADD,
+    SUB  
+  };
+
   /**
   * Constructor
   * @brief Constructs MultiplierNodeHandler object
   **/
-  MultiplierNodeHandler();
+  explicit MultiplierNodeHandler(OperationType operation_type = OperationType::MUL );
   /**
   * Destructor
   * @brief Destructs MultiplierNodeHandler object
@@ -77,7 +86,7 @@ private:
   **/
   void CreateCommunicationFactory();
   
-
+  OperationType operation_type_; // enum  type for arithmetic operation
   NumberArithmeticFactory* arithmetic_factory_; //  pointer to arithmetic factory
   CommFactory*   communication_factory_; //  pointer to comm factory
 };

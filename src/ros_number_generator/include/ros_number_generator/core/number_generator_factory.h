@@ -18,38 +18,34 @@
 class NumberGeneratorFactory {
  public:
   /**
-  * Function name: NumberGeneratorFactory()
+  * Function name: NumberGeneratorFactory
   *
   * @brief Constructor for the Number Generator Factory class
   *
   * @param[in]	None
-  *
-  * @return		void
+  *  
   **/
   NumberGeneratorFactory();
   
   /**
-  * Function name: ~NumberGeneratorFactory()
+  * Function name: ~NumberGeneratorFactory
   *
   * @brief Destructor for the Number Generator Factory class
   *
-  * @param[in]	None
-  *
-  * @return		void
   **/
   ~NumberGeneratorFactory();
 
   /**
-  * Function name: CreateGenerator()
+  * Function name: CreateGenerator
   *
   * @brief Receives an instance for the Number Generator
   *
-  * @param[in]	NumberGenerator pGenerator contains the data pointer to the 
+  * @param[in]	NumberGenerator number_generator contains the data pointer to the 
   *             instance of the Number generator
   *
   * @return		void
   **/
-  void CreateGenerator(NumberGenerator* pGenerator);
+  void CreateGenerator(NumberGenerator* number_generator);
   
   /**
   * Function name: ExecuteGenerator

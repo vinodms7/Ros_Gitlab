@@ -18,7 +18,7 @@
 #include "ros_arithmetic/app/publish_subscribe.h"
 #include "ros_arithmetic/app/multiplier_arithmetic.h"
 
-MultiplierNodeHandler::MultiplierNodeHandler() {
+MultiplierNodeHandler::MultiplierNodeHandler(OperationType operation_type): operation_type_(operation_type) {
   CreateMultiplierFactory();
   CreateCommunicationFactory();
 }
@@ -37,7 +37,11 @@ MultiplierNodeHandler::~MultiplierNodeHandler() {
 
 void MultiplierNodeHandler::CreateMultiplierFactory() {
   arithmetic_factory_ = new NumberArithmeticFactory();
-  arithmetic_factory_->CreateArithmeticOperation(new NumberMultiplier());  
+  if( operation_type_ == OperationType::MUL )
+    arithmetic_factory_->CreateArithmeticOperation(new NumberMultiplier());  
+  else {
+    std::cout<< "No object Created, Invalid type";
+  }   
 }
 
 void MultiplierNodeHandler::CreateCommunicationFactory() {

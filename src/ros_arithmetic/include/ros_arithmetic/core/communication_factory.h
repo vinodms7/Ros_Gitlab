@@ -31,9 +31,6 @@ class CommFactory {
   *
   * @param[in]  None
   *
-  * @param[out] None
-  *
-  * @return     None
   *
   **/
   CommFactory();
@@ -44,25 +41,17 @@ class CommFactory {
   * @brief      Implements the destructor that deletes the communication 
   *             interface object if existing and intializes it to NULL
   *
-  * @param[in]  None
-  *
-  * @param[out] None
-  *
-  * @return     None
   *
   **/  
   ~CommFactory();
   
   /**
-  * Function name: ~CommFactory
+  * Function name: CreateCommunicator
   *
-  * @brief      Defines the functionality to delete the existing reference to 
-  *             the the communication object and initialize to the received object
+  * @brief      Creating communication object
   *
   * @param[in]  CommunicationInterface* comm_int 
   *               Holds the communication interface object to be assigned
-  *
-  * @param[out] None
   *
   * @return     Void
   *
