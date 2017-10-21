@@ -132,14 +132,14 @@ TEST(NumberGeneratorSRand_test, GenerateNumber_test_3) {
 }
   
 //to check GetNumber of GeneratorNodeHandler
-TEST(GeneratorNodeHandler_test, GetNumber_test_1) {  
+/*TEST(GeneratorNodeHandler_test, GetNumber_test_1) {  
   GeneratorNodeHandler generator_node_handler;
 
   uint32_t number1 =	1001;
   uint32_t number2 =	generator_node_handler.GetNumber();
 	
   ASSERT_GT(number1,number2);
-}  
+}  */
 
 //to check GetCommunicationFactory of GeneratorNodeHandler
 /*TEST(GeneratorNodeHandler_test, GetCommunicationFactory_test_1) {
@@ -161,20 +161,6 @@ void receiveCallback(const ros_ran_num_msg::rand_num& msg) {
   ASSERT_NE(msg.number1,msg.number2);
 }
 
-TEST(PublisherSuscribe_test, SendMessage_test_1) {
-  ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe("random_number_srand", 1000, receiveCallback);
-  std::cerr << "Testing Send Message using Publish..." << std::endl;
-
-  GeneratorNodeHandler generator_node_handler;
-  publish_subcribe = new PublishSubscribe(&generator_node_handler);
-
-  publish_subcribe->SendMessage();
- 
-}
-
-/**********************negative cases**********************************/
-
 void timer_lapsed(const ros::TimerEvent& evt) {
   std::cerr << "Time elapsed and no message received.." << std::endl;
   delete publish_subcribe;
@@ -182,7 +168,24 @@ void timer_lapsed(const ros::TimerEvent& evt) {
   EXPECT_TRUE(0);
 }
 
+/*TEST(PublisherSuscribe_test, SendMessage_test_1) {
+  ros::NodeHandle nh;
+  ros::Subscriber sub = nh.subscribe("random_number_srand", 1000, receiveCallback);
+  std::cerr << "Testing Send Message using Publish..." << std::endl;
 
+  GeneratorNodeHandler generator_node_handler;
+  publish_subcribe = new PublishSubscribe(&generator_node_handler);
+
+  ros::Timer timer = nh.createTimer(ros::Duration(5), &timer_lapsed, false, true);
+
+  publish_subcribe->SendMessage();
+ 
+}
+*/
+/**********************negative cases**********************************/
+
+
+/*
 TEST(PublisherSuscribe_Negtest, SendMessage_test_1) {
   ros::NodeHandle nh;
   ros::Subscriber sub = nh.subscribe("Wrong_random_number", 1000, receiveCallback);
@@ -196,7 +199,7 @@ TEST(PublisherSuscribe_Negtest, SendMessage_test_1) {
   publish_subcribe->SendMessage();
  
 }
-
+*/
 //To recreate number generator using alternate implementation
 /*TEST(NumberGenerator_Negtest, GenerateNumber_test_1) {
   NumberGeneratorFactory *number_generator = new NumberGeneratorFactory();
@@ -280,14 +283,14 @@ TEST(NumberGeneratorSRand_Negtest, GenerateNumber_test_3) {
 }
   
 //to check GetNumber of GeneratorNodeHandler
-TEST(GeneratorNodeHandler_Negtest, GetNumber_test_1) {  
+/*(TEST(GeneratorNodeHandler_Negtest, GetNumber_test_1) {  
   GeneratorNodeHandler generator_node_handler;
 
   uint32_t number1 =	1001;
   uint32_t number2 =	generator_node_handler.GetNumber();
 	
   ASSERT_LT(number1,number2);
-}  
+}  */
 
 //to check GetCommunicationFactory of GeneratorNodeHandler
 /*TEST(GeneratorNodeHandler_Negtest, GetCommunicationFactory_test_1) {
