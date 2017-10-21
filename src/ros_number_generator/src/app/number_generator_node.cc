@@ -2,15 +2,15 @@
 * Copyright (C) 2017 by KPIT Technologies                                  *
 *                                                                          *
 ****************************************************************************/
-
 /**
-* @file
-* @author
-* @date
-* @brief
+* @file		Number Generator Node
+* @author       Rajat Jayanth Shetty <Rajat.Shetty@kpit.com>
+* @date         18 Oct 2017
+* @brief        Entry point for the Random Generator Node
 *
-*
-*/
+**/
+
+/*  include files  */
 #include <memory>
 
 #include "ros/ros.h"
@@ -20,8 +20,7 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "NumberGeneratorNode");
 
   std::unique_ptr<GeneratorNodeHandler> randNumberObj(new GeneratorNodeHandler());
-  randNumberObj->GetCommunicationFactory()->GetCommunicator()->SendMessage();
-
+  randNumberObj->Execute();
   return 0;
 }
 

@@ -2,15 +2,15 @@
 * Copyright (C) 2017 by KPIT Technologies                                  *
 *                                                                          *
 ****************************************************************************/
-
 /**
-* @file
-* @author
-* @date
-* @brief
+* @file		Multiplier Node
+* @author       Sasi Kiran	
+* @date         18 oct 2017
+* @brief        Class to create Multiplier Node Handler
 *
-*
-*/
+**/
+
+/* include files */
 #include <sstream>
 #include <memory>
 
@@ -22,9 +22,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "MultiplierNode");
 
   std::unique_ptr<MultiplierNodeHandler> multiplierObj(new MultiplierNodeHandler());
-
-  multiplierObj->GetCommunicationFactory()->GetCommunicator()->ReceiveMessage();
-
+  multiplierObj->Execute();
   ros::spin();
 
   return 0;

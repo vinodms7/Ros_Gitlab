@@ -4,28 +4,58 @@
 ****************************************************************************/
 
 /**
-* @file
-* @author
-* @date
-* @brief
+* @file		Number Arithmetic Factory
+* @author       Sasi Kiran	
+* @date         18 oct 2017
+* @brief        Factory class for creation of number arithmetic operations
 *
 *
-*/
-#ifndef __NUMBER_MULTIPLIER_FACTORY_H_
-#define __NUMBER_MULTIPLIER_FACTORY_H_
+**/
+#ifndef NUMBER_ARITHMETIC_FACTORY_H_
+#define NUMBER_ARITHMETIC_FACTORY_H_
 
+/* include files */
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
 #include "ros_arithmetic/core/number_arithmetic_interface.h"
 
-class NumberArithematicFactory {
+class NumberArithmeticFactory {
  public:
-  NumberArithematicFactory();
-  ~NumberArithematicFactory();
+  /**
+  * Constructor
+  * @brief Construct NumberArithmeticFactory object
+  **/
+  NumberArithmeticFactory();
 
-  void CreateMultiplier(NumberArithematicInterface *);
-  NumberArithematicInterface* GetMultiplier();
+  /**
+  * Destructor
+  * @brief Destruct NumberArithmeticFactory object
+  **/
+  ~NumberArithmeticFactory();
 
+  /**
+  * Function name: CreateArithmeticOperation
+  *
+  * @brief Create number arithmetic operation object
+  *
+  * @param[in]	NumberArithmeticInterface*  multiplier_int 
+  *             This is pointer to interface  
+  *
+  * @return	void
+  **/
+  void CreateArithmeticOperation(NumberArithmeticInterface *multiplier_int);
+  
+  /**
+  * Function name: ExecuteArithmeticOperation
+  *
+  * @brief Execute arithmetic operation and return value
+  *
+  * @param[in]	None
+  *
+  * @return	uint32_t  return generated value
+  **/
+  uint32_t ExecuteArithmeticOperation(uint32_t value1, uint32_t value2);
+  
  private:
-  NumberArithematicInterface *number_multiplier_;
+  NumberArithmeticInterface *number_arithmetic_; //  Pointer to Interface
 };
 #endif /* __NUMBER_MULTIPLIER_FACTORY_H_ */

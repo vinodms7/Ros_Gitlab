@@ -2,15 +2,18 @@
 * Copyright (C) 2017 by KPIT Technologies                                  *
 *                                                                          *
 ****************************************************************************/
-
 /**
-* @file
-* @author
-* @date
-* @brief
+* @file		Multiplier Node Handler
+* @author       Sasi Kiran <Sasi.Alur@kpit.com>
+* @author       Rajat Jayanth Shetty  <rajat.shetty@kpit.com>	
+* @author       Sujeyndra Tummala	<Tummala.Sujeyendra@kpit.com>
+* @date         18 oct 2017
+* @brief        Perform factory creation and processing data functionalities
 *
 *
-*/
+**/
+
+/* include files */
 #include "ros_arithmetic/app/multiplier_node_handler.h"
 #include "ros_arithmetic/app/publish_subscribe.h"
 #include "ros_arithmetic/app/multiplier_arithmetic.h"
@@ -21,32 +24,34 @@ MultiplierNodeHandler::MultiplierNodeHandler() {
 }
 
 MultiplierNodeHandler::~MultiplierNodeHandler() {
-  if(NULL != multiplier_factory_){
-    delete  multiplier_factory_;
-    multiplier_factory_ = NULL;
+  if(nullptr != arithmetic_factory_){
+    delete  arithmetic_factory_;
+    arithmetic_factory_ = nullptr;
   }
 
-  if(NULL != comm_controller_factory_){
-    delete comm_controller_factory_;
-    comm_controller_factory_ = NULL ;
+  if(nullptr != communication_factory_){
+    delete communication_factory_;
+    communication_factory_ = nullptr ;
   }
 }
 
 void MultiplierNodeHandler::CreateMultiplierFactory() {
-  multiplier_factory_ = new NumberArithematicFactory();
-  multiplier_factory_->CreateMultiplier(new NumberMultiplier());  
+  arithmetic_factory_ = new NumberArithmeticFactory();
+  arithmetic_factory_->CreateArithmeticOperation(new NumberMultiplier());  
 }
 
 void MultiplierNodeHandler::CreateCommunicationFactory() {
-  comm_controller_factory_ = new CommFactory();
-  comm_controller_factory_->CreateCommunicator(new PublishSubscribe(this));
+  communication_factory_ = new CommFactory();
+  communication_factory_->CreateCommunicator(new PublishSubscribe(this));
 }
 
-CommFactory* MultiplierNodeHandler::GetCommunicationFactory() {
-  return comm_controller_factory_;
+void MultiplierNodeHandler::Execute() { 
+  if( nullptr != communication_factory_ ) 
+    communication_factory_->ExecuteCommunication();
 }
 
-uint32_t MultiplierNodeHandler::GetResult(uint32_t value1, uint32_t value2) {  
-
- return multiplier_factory_->GetMultiplier()->DoArithematicOperation(value1, value2);
+uint32_t MultiplierNodeHandler::ProcessData(uint32_t value1, uint32_t value2) {  
+  if( nullptr != arithmetic_factory_ )   
+    return arithmetic_factory_->ExecuteArithmeticOperation(value1, value2);
+  return 0;
 }

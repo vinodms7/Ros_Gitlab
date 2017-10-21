@@ -121,12 +121,17 @@ include_directories(include
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(ros_arithmetic src/app/multiplier_node.cc src/core/communication_factory.cc src/core/communication_interface.cc src/app/multiplier_arithmetic.cc src/app/multiplier_node_handler.cc src/core/number_arithmetic_factory.cc src/core/number_arithmetic_interface.cc src/app/publish_subscriber.cc)
+add_executable(ros_arithmetic src/app/multiplier_node.cc src/core/communication_factory.cc src/app/multiplier_arithmetic.cc src/app/multiplier_node_handler.cc src/core/number_arithmetic_factory.cc src/app/publish_subscriber.cc)
 target_link_libraries(ros_arithmetic ${catkin_LIBRARIES})
 add_dependencies(ros_arithmetic ros_ran_num_msg_gencpp)
 
-#install(TARGETS ros_multiplier
-#	RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+###############
+# Testing Tag #
+###############
+catkin_add_gtest(ros_arithmetic_test test/number_arithmetic_test.cc)
+
+install(TARGETS ros_arithmetic
+	RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 	
 #install(FILES
 #	launch/ros_multiplier.launch

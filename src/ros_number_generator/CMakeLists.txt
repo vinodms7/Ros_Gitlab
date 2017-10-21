@@ -120,9 +120,16 @@ include_directories(include
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(ros_number_generator src/app/number_generator_node.cc src/core/communication_factory.cc src/core/communication_interface.cc src/core/number_generator_factory.cc src/core/number_generator_interface.cc src/app/number_generator_lcg.cc src/app/generator_node_handler.cc src/app/number_generator_srand.cc src/app/publish_subscriber.cc)
+
+add_executable(ros_number_generator src/app/number_generator_node.cc src/core/communication_factory.cc src/core/number_generator_factory.cc src/app/number_generator_lcg.cc src/app/generator_node_handler.cc src/app/number_generator_srand.cc src/app/publish_subscriber.cc)
 target_link_libraries(ros_number_generator ${catkin_LIBRARIES})
 add_dependencies(ros_number_generator ros_ran_num_msg_gencpp)
+
+###############
+# Testing Tag #
+###############
+catkin_add_gtest(ros_number_generator_test test/number_generator_test.cc)
+
 
 #install(TARGETS ros_number_generator
 #	RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
