@@ -39,10 +39,7 @@ PublishSubscribe::PublishSubscribe(GeneratorNodeHandler *p_generator_node_handle
 * @brief Implements the destructor to the PublishSubscribe class
 **/
 PublishSubscribe::~PublishSubscribe() {
-  if ( generator_node_handler != NULL ) {
-       delete generator_node_handler;
-       generator_node_handler = NULL;
-  }   
+  nodeHandle.shutdown();  
 }
 
 /**

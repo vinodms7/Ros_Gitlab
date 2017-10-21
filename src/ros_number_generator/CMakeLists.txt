@@ -133,8 +133,11 @@ add_dependencies(ros_number_generator ros_ran_num_msg_gencpp)
 ###############
 # Testing Tag #
 ###############
-catkin_add_gtest(ros_number_generator_test test/number_generator_test.cc)
+catkin_add_gtest(ros_number_generator_test test/number_generator_test.cc src/core/communication_factory.cc src/core/number_generator_factory.cc src/app/number_generator_lcg.cc src/app/generator_node_handler.cc src/app/number_generator_srand.cc  src/app/publish_subscriber.cc)
 
+target_link_libraries(ros_number_generator_test ${catkin_LIBRARIES})
+
+add_dependencies(ros_number_generator_test ros_ran_num_msg_gencpp)
 
 #install(TARGETS ros_number_generator
 #	RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
