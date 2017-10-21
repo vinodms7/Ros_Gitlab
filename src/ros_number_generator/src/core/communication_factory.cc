@@ -1,8 +1,7 @@
 /****************************************************************************
-* 		Copyright (C) 2017 by KPIT Technologies                     *
+*     Copyright (C) 2017 by KPIT Technologies                               *
 *                                                                           *
 ****************************************************************************/
-
 /**
 * @file      communication_factory.cc
 *
@@ -52,9 +51,9 @@ void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
   }  
   communication_interface_ = comm_int;
 }
-void CommFactory::ExecuteCommunication()
-{
-  if( nullptr != communication_interface_ )
+void CommFactory::ExecuteCommunication() {
+  if ( nullptr != communication_interface_ ) {
     communication_interface_->SendMessage();
+  }
 }
 

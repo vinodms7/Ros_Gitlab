@@ -3,10 +3,10 @@
 *                                                                          *
 ****************************************************************************/
 /**
-* @file		Multiplier Node Handler
+* @file    Multiplier Node Handler
 * @author       Sasi Kiran <Sasi.Alur@kpit.com>
-* @author       Rajat Jayanth Shetty  <rajat.shetty@kpit.com>	
-* @author       Sujeyndra Tummala	<Tummala.Sujeyendra@kpit.com>
+* @author       Rajat Jayanth Shetty  <rajat.shetty@kpit.com>  
+* @author       Sujeyndra Tummala  <Tummala.Sujeyendra@kpit.com>
 * @date         18 oct 2017
 * @brief        Perform factory creation and processing data functionalities
 *
@@ -17,26 +17,17 @@
 #define MULTIPLIER_NODE_HANDLER_H
 
 /* include files */
-#include "ros_arithmetic/core/arithmetic_node_handler_interface.h"
 #include "ros_arithmetic/core/communication_factory.h"
 #include "ros_arithmetic/core/number_arithmetic_interface.h"
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
 
-class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface {
+class MultiplierNodeHandler {
 public:
-  // Enumeration type for arithmetic operation
-  enum OperationType {
-    NONE = 0,
-    MUL,
-    ADD,
-    SUB  
-  };
-
   /**
   * Constructor
   * @brief Constructs MultiplierNodeHandler object
   **/
-  explicit MultiplierNodeHandler(OperationType operation_type = OperationType::MUL );
+  MultiplierNodeHandler();
   /**
   * Destructor
   * @brief Destructs MultiplierNodeHandler object
@@ -48,7 +39,7 @@ public:
   *
   * @brief Execute the multiplier and communication functionalities
   *
-  * @return	void
+  * @return  void
   **/
   void Execute();
 
@@ -58,11 +49,11 @@ public:
   * @brief process data and return value
   * 
   *
-  * @param[in]	uint32_t  value1 This is first parameter
+  * @param[in]  uint32_t  value1 This is first parameter
   *
-  * @param[in]	uint32_t  value2 This is second parameter 
+  * @param[in]  uint32_t  value2 This is second parameter 
   *
-  * @return	uint32_t  return value after result is computed
+  * @return  uint32_t  return value after result is computed
   **/
   uint32_t ProcessData(uint32_t, uint32_t);  
 
@@ -72,23 +63,24 @@ private:
   *
   * @brief Call arithmetic factory and create Multiplication operation object
   *
-  * @return	void
+  * @return  void
   *
   **/
-  void CreateMultiplierFactory();
+
+  void CreateArithmeticFactory();
   /**
   * Function name: CreateCommunicationFactory
   *
   * @brief Call communication factory and create communication object
   *
-  * @return	void
+  * @return  void
   *
   **/
   void CreateCommunicationFactory();
-  
-  OperationType operation_type_; // enum  type for arithmetic operation
-  NumberArithmeticFactory* arithmetic_factory_; //  pointer to arithmetic factory
-  CommFactory*   communication_factory_; //  pointer to comm factory
+
+  NumberArithmeticFactory* arithmetic_factory_;  //  pointer to arithmetic factory
+  CommFactory*   communication_factory_;  //  pointer to comm factory
 };
 
 #endif /*MULTIPLIER_NODE_H */
+

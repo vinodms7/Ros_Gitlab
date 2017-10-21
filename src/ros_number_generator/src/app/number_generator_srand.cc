@@ -48,7 +48,7 @@ uint32_t NumberGeneratorSRand::GenerateNumber() {
 *
 * @brief Function call to query Generator name or Implementation name
 **/
-std::string NumberGeneratorSRand::GetGeneratorName() const {
+std::string NumberGeneratorSRand::GetGeneratorName() {
   return "Default CPP SRand Generator";
 }
 

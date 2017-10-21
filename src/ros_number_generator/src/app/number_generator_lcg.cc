@@ -17,8 +17,7 @@
 #include "ros_number_generator/app/number_generator_lcg.h"
 #include "ros/ros.h"
 
-namespace constValues
-{
+namespace constValues {
   /** This uses the Park & Miller algorithm found in "Numerical Recipes"
   *  Define the constants for the Park & Miller algorithm */
   constexpr uint64_t APMA = 16807;       // 7^5
@@ -28,7 +27,7 @@ namespace constValues
   constexpr uint64_t QSA = 127773;
   constexpr uint64_t RSA = 2836;
 }
- 
+
 /**
 * Function name: NumberGeneratorLCG()
 *
@@ -71,7 +70,7 @@ uint32_t NumberGeneratorLCG::GenerateNumber() {
 *
 * @brief Function call to query Generator name or Implementation name
 **/
-std::string NumberGeneratorLCG::GetGeneratorName() const {
+std::string NumberGeneratorLCG::GetGeneratorName() {
   return "Linear Congruential Generator";
 }
 
@@ -106,3 +105,4 @@ uint32_t NumberGeneratorLCG::GetGeneratedNumber() {
   current_random_number_ = min_random_value_ + (GenerateNumber() % (max_random_value_ - min_random_value_));
   return current_random_number_;
 }
+

@@ -1,5 +1,5 @@
 /****************************************************************************
-* 		Copyright (C) 2017 by KPIT Technologies                     *
+*     Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
 
@@ -33,11 +33,15 @@ public:
   *             assigns the received generator node handle reference 
   *             and advertises the topic to be published
   *
-  * @param[in]  NodeHandlerInterface*
-  *              Pointer to the reference generator node handler 
+  * @param[in]  MultiplierNodeHandler*
+  *              Pointer to the reference generator node handler
+  *
+  * @param[out] None
+  *
+  * @return     None
   *
   **/
-  explicit PublishSubscribe(NodeHandlerInterface *);
+  explicit PublishSubscribe(GeneratorNodeHandler* node_handler);
 
   /**
   * Function name: ~PublishSubscribe
@@ -46,6 +50,9 @@ public:
   *
   * @param[in]  None
   *
+  * @param[out] None
+  *
+  * @return     None
   *
   **/
   ~PublishSubscribe();
@@ -81,13 +88,13 @@ public:
 
 private:
   /** Holds the reference to the generator node handler object */
-  NodeHandlerInterface *generator_node_handler_;
+  GeneratorNodeHandler *generator_node_handler;
 
   /** Holds the reference of the nodehandle object */
-  ros::NodeHandle node_handle_;
+  ros::NodeHandle nodeHandle;
 
   /** Holds the reference to the publisher object */
-  ros::Publisher rand_num_publisher_;
+  ros::Publisher rand_num_publisher;
 };
 #endif /*PUBLISHER_SUBSCRIBE_H */
 

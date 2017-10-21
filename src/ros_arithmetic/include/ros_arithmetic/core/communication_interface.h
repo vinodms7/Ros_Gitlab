@@ -1,8 +1,7 @@
 /****************************************************************************
-* 		Copyright (C) 2017 by KPIT Technologies                     *
+*     Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
-
 /**
 * @file      communication_interface.h
 *
@@ -34,7 +33,7 @@ class CommunicationInterface {
   *
   **/
   virtual void SendMessage() = 0;
-  
+
   /**
   * Function name: ReceiveMessage
   *
@@ -52,3 +51,4 @@ class CommunicationInterface {
 };
 
 #endif
+
