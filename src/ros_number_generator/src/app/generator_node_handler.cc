@@ -79,8 +79,8 @@ void GeneratorNodeHandler::CreateCommunicationFactory() {
 
 void GeneratorNodeHandler::Execute()
 {
-  if( communication_factory_->GetCommunicator() != NULL )
-      communication_factory_->GetCommunicator()->SendMessage();
+  if( nullptr != communication_factory_ )  
+    communication_factory_->ExecuteCommunication();
 }
 
 /**
@@ -90,7 +90,8 @@ void GeneratorNodeHandler::Execute()
 * 
 **/
 uint32_t GeneratorNodeHandler::GetNumber() {
-  if( number_generator_->GetGenerator() != NULL)
-    return number_generator_->GetGenerator()->GetGeneratedNumber();
+  if( nullptr != number_generator_ )
+    return number_generator_->ExecuteGenerator();
+  return 0;
 }
 

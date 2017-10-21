@@ -22,7 +22,7 @@
 * Initializes the Number Generator factory class
 **/
 NumberGeneratorFactory::NumberGeneratorFactory() {
-  number_generator_ = NULL;
+  number_generator_ = nullptr;
 }
 
 /**
@@ -32,9 +32,9 @@ NumberGeneratorFactory::NumberGeneratorFactory() {
 *
 **/
 NumberGeneratorFactory::~NumberGeneratorFactory() {
-  if (NULL != number_generator_) {
+  if ( nullptr != number_generator_ ) {
     delete number_generator_;
-    number_generator_ = NULL;
+    number_generator_ = nullptr;
   }
 }
 
@@ -47,19 +47,16 @@ NumberGeneratorFactory::~NumberGeneratorFactory() {
 * delete the previous instance before assigning a new Number Generator
 *
 **/
-void NumberGeneratorFactory::CreateGenerator(NumberGenerator *pNumberGen) {
-  if (NULL != number_generator_) {
+void NumberGeneratorFactory::CreateGenerator(NumberGenerator *p_number_generator) {
+  if ( nullptr != number_generator_ ) {
     delete number_generator_;
-    number_generator_ = NULL;
+    number_generator_ = nullptr;
   }
-  number_generator_ = pNumberGen;
+  number_generator_ = p_number_generator;
 }
-/**
-* Function name: GetGenerator() const
-*
-* @brief Returns a pointer to the instance of the Number generator
-*
-*/
-NumberGenerator * NumberGeneratorFactory::GetGenerator() {
-  return number_generator_;
+
+uint32_t NumberGeneratorFactory::ExecuteGenerator() const {  
+  if ( nullptr != number_generator_ )  
+    return  number_generator_->GetGeneratedNumber();
+  return 0;
 }

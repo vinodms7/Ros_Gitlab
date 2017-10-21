@@ -25,6 +25,7 @@ class NumberArithmeticFactory {
   * @brief Construct NumberArithmeticFactory object
   **/
   NumberArithmeticFactory();
+
   /**
   * Destructor
   * @brief Destruct NumberArithmeticFactory object
@@ -42,16 +43,18 @@ class NumberArithmeticFactory {
   * @return	void
   **/
   void CreateArithmeticOperation(NumberArithmeticInterface *multiplier_int);
+  
   /**
-  * Function name: GetArithmeticOperation
+  * Function name: ExecuteArithmeticOperation
   *
-  * @brief Get Created number arithmetic operation object   
+  * @brief Execute arithmetic operation and return value
   *
-  * @return	NumberArithmeticInterface* 
-  *             returns created object to base class pointer 
+  * @param[in]	None
+  *
+  * @return	uint32_t  return generated value
   **/
-  NumberArithmeticInterface* GetArithmeticOperation();
-
+  uint32_t ExecuteArithmeticOperation(uint32_t value1, uint32_t value2);
+  
  private:
   NumberArithmeticInterface *number_arithmetic_; //  Pointer to Interface
 };

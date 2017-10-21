@@ -22,7 +22,11 @@ NumberMultiplier::NumberMultiplier(): multiplier_value_(0) {
 NumberMultiplier::~NumberMultiplier() {
 }
 
-uint32_t NumberMultiplier::DoArithmeticOperation(uint32_t value1, uint32_t value2) {
+uint32_t NumberMultiplier::DoArithmeticOperation(uint32_t value1, uint32_t value2) { 
+  return DoMultiplication(value1, value2);
+}
+
+uint32_t NumberMultiplier::DoMultiplication(uint32_t value1, uint32_t value2) {
   multiplier_value_ = (value1)*(value2);
   return multiplier_value_;
 }

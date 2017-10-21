@@ -68,23 +68,18 @@ class CommFactory {
   *
   **/
   void CreateCommunicator(CommunicationInterface* comm_int);
-
+  
   /**
-  * Function name: GetCommunicator
+  * Function name: ExecuteCommunication
   *
-  * @brief      Defines the functionality to return the reference to the 
-  *             communication interface object
+  * @brief Execute communication to send message
   *
-  * @param[in]  None
+  * @param[in]	None
   *
-  * @param[out] None
-  *
-  * @return     CommunicationInterface*
-  *               Returns the pointer to the communicaiton interface object
-  *
+  * @return	void
   **/
-  CommunicationInterface* GetCommunicator();
- 
+  void ExecuteCommunication();
+  
  private:
   /** Holds the pointer to communication interface object */
   CommunicationInterface* communication_interface_;  

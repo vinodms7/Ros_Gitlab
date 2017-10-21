@@ -52,15 +52,15 @@ class NumberGeneratorFactory {
   void CreateGenerator(NumberGenerator* pGenerator);
   
   /**
-  * Function name: GetGenerator() const
+  * Function name: ExecuteGenerator
   *
-  * @brief Returns a pointer to the instance of the Number generator
+  * @brief Execute generator and return generated value
   *
   * @param[in]	None
   *
-  * @return		  NumberGenerator  Data pointer to the instance of Number Generator
+  * @return	uint32_t  return generated value
   **/
-  NumberGenerator* GetGenerator();
+  uint32_t ExecuteGenerator() const;
 
  private:
   NumberGenerator *number_generator_;   //  Data pointer to the number generator 

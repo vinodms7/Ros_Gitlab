@@ -54,7 +54,21 @@ class NumberMultiplier : public NumberArithmeticInterface {
   void DisplayResult(uint32_t value);
 
  private:
-  uint32_t multiplier_value_; //  multiplier value
+  /**
+  * Function name: DoMultiplication
+  *
+  * @brief Perfom multiplication operation
+  * 
+  *
+  * @param[in]	uint32_t  value1 This is first parameter for multiplication operation
+  *
+  * @param[in]	uint32_t  value2 This is second parameter for multiplication operation
+  *
+  * @return	uint32_t  return value after operation is done
+  **/
+  uint32_t DoMultiplication(uint32_t value1, uint32_t value2);
+  //  Multiplier value member variable
+  uint32_t multiplier_value_; 
 };
 
 #endif /* __MULTIPLIER_ARITHMETIC_H_ */
