@@ -31,6 +31,4 @@ uint32_t NumberMultiplier::DoMultiplication(uint32_t value1, uint32_t value2) {
   return multiplier_value_;
 }
 
-void NumberMultiplier::DisplayResult(uint32_t value) {
-}
 

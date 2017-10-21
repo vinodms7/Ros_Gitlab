@@ -17,6 +17,7 @@
 /** Include files */
 #include <gtest/gtest.h>
 #include <ros/ros.h>
+#include <boost/thread/thread.hpp>
 
 #include "ros_arithmetic/app/multiplier_node_handler.h"
 #include "ros_arithmetic/app/multiplier_arithmetic.h"
@@ -48,47 +49,167 @@ void receivercallback(const ros_ran_num_msg::rand_num::ConstPtr& value) {
 
 /** Multiplier Node Handler Tests */
 /*
- * @brief 
+ * @brief Check if created multiplier object is created
  */
-/*TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_1) {
-  CommFactory *comm_ptr_;
-  unique_ptr<MultiplierNodeHandler> multiplierObj(new MultiplierNodeHandler());
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_1) {
+  unique_ptr<MultiplierNodeHandler>multiplierObj(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
 
-  comm_ptr_ = multiplierObj->GetCommunicationFactory();
-
-  EXPECT_TRUE(comm_ptr_ != NULL);
-}*/
+  EXPECT_TRUE(multiplierObj != NULL);
+}
 
 /*
- * @brief Fail test to show numberarithmeticfactory is null - TBD
+ * @brief Check if created arithmetic factory object is created
  */
-TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_) {
-/*  unique_ptr<MultiplierNodeHandler> multiplierObj(new MultiplierNodeHandler());
-  NumberArithmeticFactory* multiplier_factory_;
-  NumberMultiplier number_multiplier;
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_2) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
 
-  uint32_t number1 = 100;
-  uint32_t number2 = 200;
-  uint32_t number_expected = 20000;
-  uint32_t number_actual =number_multiplier.DoArithmeticOperation(number1,number2);
+  NumberArithmeticFactory* arithmetic_factory_ = multiplier_node_handler_->GetArithmeticFactory();
 
-  EXPECT_EQ(number_expected,number_actual);
-*/
- EXPECT_TRUE(NULL == NULL);
+  EXPECT_TRUE(arithmetic_factory_ != NULL);
+}
+
+/*
+ * @brief Check if node handler object is deleted and initialized to null
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_3) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+  
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_= 200;
+
+  uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_, value2_);
+  
+  EXPECT_TRUE(actual_result_ == expected_result_);
+}
+
+/*
+ * @brief Check if created communication factory object is created
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_4) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+
+  CommFactory *communication_factory_ = multiplier_node_handler_->GetCommunicationFactory();
+
+  EXPECT_TRUE(communication_factory_ != NULL);
+}
+
+/*
+ * @brief Fail test to show multiply is happening correctly
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_5) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_= 200;
+
+  uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_, value2_);
+
+  EXPECT_EQ(expected_result_,actual_result_);
+}
+
+void PublishData()
+{
+  /** Holds the reference to the publisher object */
+  ros::Publisher rand_num_publisher1_;
+  /** Holds the reference of the nodehandle object */
+  ros::NodeHandle node_handle1_;
+
+  rand_num_publisher1_ = node_handle1_.advertise<ros_ran_num_msg::rand_num>("random_number_srand", 100);
+
+  ros::Rate loop_rate(1);
+  
+  ros_ran_num_msg::rand_num value; 
+
+  while (ros::ok())
+  {
+    value.number1 = 10;
+    value.number2 = 10;
+
+    rand_num_publisher1_.publish(value);
+    loop_rate.sleep();
+
+   ROS_INFO("\n I am in publishing data");
+  }
+}
+
+/*
+ * @brief Fail test to show ADD doesnt create an operation
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_6) {
+  
+  uint8_t initial_value = 0;
+
+  uint8_t final_value_ = 1;
+  
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+
+  boost::thread thread1(PublishData);
+  
+  ros::spinOnce();
+
+  ros::NodeHandle node_handle_;
+
+  multiplier_node_handler_->Execute(); 
+
+  pthread_cancel(thread1.native_handle());
+
+  ros::shutdown();
+
+  final_value_ = 0;
+  
+  ROS_INFO("\n I am out of loop");
+
+  EXPECT_EQ(initial_value,final_value_);
+}
+
+
+/*
+ * @brief Fail test to show ADD doesnt create an operation
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_7) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::ADD));
+
+  EXPECT_TRUE(multiplier_node_handler_ == NULL);
+}
+
+/*
+ * @brief Fail test to show multiply is wrong
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_8) {
+  MultiplierNodeHandler *multiplier_node_handler_ = new MultiplierNodeHandler(MultiplierNodeHandler::ADD);
+
+  uint32_t number_actual_ = 0;
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 10;
+  
+  uint32_t number_expected_ = multiplier_node_handler_->ProcessData(value1_, value2_);
+
+  EXPECT_EQ(number_expected_,number_actual_);
 }
 
 /** Multiplier Node Handler Tests */
 /*
  * @brief 
  */
-/*TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_3) {
-  MultiplierNodeHandler *multiplierObj_ = new MultiplierNodeHandler();
+TEST(Number_Multiplier_test, Number_Multiplier_test_1) {
+  NumberMultiplier *multiplierObj_ = new NumberMultiplier();
 
-  MultiplierNodeHandler *multiplierObj_new_ = new MultiplierNodeHandler();
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 10;
 
-  EXPECT_TRUE(multiplierObj_ != NULL);
+  uint32_t expected_result_ = 100;
+
+  uint32_t actual_result_ = multiplierObj_->DoArithmeticOperation(value1_, value2_);
+
+  delete multiplierObj_;
+  
+  EXPECT_EQ(actual_result_, expected_result_);
 }
-*/
+
 /** Multiplier Node Handler Tests */
 /*
  * @brief 
@@ -135,41 +256,76 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_) {
 /*
  * @brief Fail test to show numberarithmeticfactory is null - TBD
  */
-/*TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_1) {
-  NumberMultiplier number_multiplier_;
-
-  uint32_t value1 = 10;
-  uint32_t value2 = 20;
-
-  uint32_t number_expected = 200;
+TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_1) {
+  NumberArithmeticFactory *number_factory_ = new NumberArithmeticFactory();
   
-  uint32_t number_actual = number_multiplier_.DoArithmeticOperation(value1,value2);
+  number_factory_->CreateArithmeticOperation(new NumberMultiplier()); 
 
-  EXPECT_EQ(number_expected,number_actual);
+  number_factory_->CreateArithmeticOperation(new NumberMultiplier()); 
+
+  EXPECT_TRUE(number_factory_ != NULL);
 }
-*/
+
 /*
  * @brief Fail test to show multiply is wrong
  */
 TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
-  NumberMultiplier number_multiplier_;
+  NumberArithmeticFactory *number_factory_ = new NumberArithmeticFactory();
 
   uint32_t value1 = 10;
   uint32_t value2 = 10;
 
-  uint32_t number_expected = 200;
-  
-  uint32_t number_actual = number_multiplier_.DoArithmeticOperation(value1,value2);
+  uint32_t number_expected = 0;
+
+  uint32_t number_actual = number_factory_->ExecuteArithmeticOperation(value1, value2);
 
   EXPECT_EQ(number_expected,number_actual);
 }
+
+
+/** Communication Factory Tests */
+/*
+ * @brief Fail test to show communication factory deletes the previous instance of publish subscribe
+ */
+TEST(Communication_factory_test, Communication_factory_test_1) {
+  CommFactory *communication_factory_ = new CommFactory();
+  
+  communication_factory_->CreateCommunicator(new PublishSubscribe(NULL));
+
+  communication_factory_->CreateCommunicator(new PublishSubscribe(NULL));
+
+  EXPECT_TRUE(communication_factory_ != NULL);
+}
+
+/*
+ * @brief Fail test to execute communication doesnt happen
+ */
+TEST(Communication_factory_test, Communication_factory_test_2) {
+  CommFactory *communication_factory_ = new CommFactory();
+
+  communication_factory_->ExecuteCommunication();
+
+  EXPECT_TRUE(communication_factory_ != nullptr);
+}
+
+/*
+ * @brief Fail test to execute communication doesnt happen
+ */
+TEST(Communication_factory_test, Communication_factory_test_3) {
+  CommFactory *communication_factory_ = new CommFactory();
+
+  delete communication_factory_;
+
+  EXPECT_TRUE(communication_factory_ != nullptr);
+}
+
 
 
 /** Publish Subscribe Tests */
 /*
  * @brief //to check if receive is happening through right channel
  */
-/*TEST(PublishSubscribe_test, PublishSubscribe_test_1) {
+TEST(PublishSubscribe_test, PublishSubscribe_test_1) {
   ros::Subscriber multiplier_subscriber_;	
   
   ros::NodeHandle node_handle_;
@@ -183,12 +339,12 @@ TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
   ros::spinOnce();
 
   ros::spinOnce();	
-}*/
+}
 
 /*
  * @brief Subscribe test - To check if random numbers are coming
  */
-/*TEST(PublishSubscribe_test, PublishSubscribe_test_2) {	
+TEST(PublishSubscribe_test, PublishSubscribe_test_2) {	
   ros::NodeHandle node_handle_;
   ros::Subscriber test_subscriber;	
 	
@@ -198,11 +354,11 @@ TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
         
   ros::spinOnce();	
 }
-*/
+
 /*
  * @brief Subscribe test - To check if random numbers are coming
  */
-/*TEST(PublishSubscribe_test, PublishSubscribe_test_3) {	
+TEST(PublishSubscribe_test, PublishSubscribe_test_3) {	
   ros::NodeHandle node_handle_;
   ros::Subscriber test_subscriber;	
 	
@@ -212,15 +368,13 @@ TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
         
   ros::spinOnce();	
 }
-*/
+
 /*
  * @brief Subscribe test - To check if random numbers are coming
  */
-/*TEST(PublishSubscribe_test, PublishSubscribe_test_4) {	
+TEST(PublishSubscribe_test, PublishSubscribe_test_4) {	
   
-  MultiplierNodeHandler *node_handler_ = new MultiplierNodeHandler();
- 
-  PublishSubscribe *pub_sub_ = new PublishSubscribe(node_handler_);
+  PublishSubscribe *pub_sub_ = new PublishSubscribe(NULL);
 
   pub_sub_->ReceiveMessage();
   
@@ -228,94 +382,10 @@ TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
   
   ros::spinOnce();
         
-  ros::spinOnce();	
+  ros::spinOnce();
+
+  delete pub_sub_;  	
 }
-*/
-/** Communication Factory Tests */
-/*
- * @brief //to check if receive is happening through right channel
- */
-/*TEST(communication_factory_test, communication_factory_test_1) {
-  CommFactory comm_controller_factory_;
-  
-  comm_controller_factory_.CreateCommunicator(new PublishSubscribe(NULL));
-  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
-  
-  EXPECT_TRUE(comm_interface != NULL);
-}*/
-
-
-/*
- * @brief //to check assignment of communication_interface_ with check to cover IF TRUE part
- *        // IF ensures to delete previously allocated communication_interface_ to release memory
- */
-/*TEST(communication_factory_test, communication_factory_test_2) {
-  CommFactory comm_controller_factory_;
-
-  comm_controller_factory_.CreateCommunicator(new PublishSubscribe(NULL));
-  comm_controller_factory_.CreateCommunicator(new PublishSubscribe(NULL));
-  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
-  
-  EXPECT_TRUE(comm_interface != NULL);
-}*/
-
-/*
- * @brief //to check assignment of communication_interface_ to non-garbage when NULL is passed to CreateCommunicator
- */
-/*TEST(communication_factory_test, communication_factory_test_3) {
-  CommFactory comm_controller_factory_;
-
-  comm_controller_factory_.CreateCommunicator(NULL);
-  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
-  
-  EXPECT_TRUE(comm_interface == NULL);
-}*/
-
-/*
- * @brief //To check communication_interface_ without CreateCommunicator
- */
-//To check communication_interface_ without CreateCommunicator
-/*TEST(communication_factory_test, communication_factory_test_4) {
-  CommFactory comm_controller_factory_;
-
-  CommunicationInterface *comm_interface = comm_controller_factory_.GetCommunicator();
-  
-  EXPECT_TRUE(comm_interface == NULL);
-}*/
-
-
-/** Number Arithmetic Factory tests */
-/*
- * @brief 
- */
-/*TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_1) {
-  NumberArithmeticFactory *number_factory_;
-
-  NumberArithematicInterface *number_multiplier_;
-
-  number_factory_ = new NumberArithmeticFactory();
-  number_factory_->CreateMultiplier(new NumberMultiplier());
-
-  number_multiplier_ = number_factory_->GetMultiplier();
-  
-  EXPECT_TRUE(number_multiplier_ != NULL);
-}*/
-
-/** Number Arithmetic Factory tests */
-/*
- * @brief 
- */
-/*TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_2) {
-  NumberArithmeticFactory number_factory_;
-
-  NumberArithematicInterface *number_multiplier_;
-
-  number_factory_.CreateMultiplier(new NumberMultiplier());
-  number_factory_.CreateMultiplier(new NumberMultiplier());
-  number_multiplier_ = number_factory_.GetMultiplier();
-  
-  EXPECT_TRUE(number_multiplier_ != NULL);
-}*/
 
 /** Number Arithmetic Factory tests */
 /*
@@ -332,32 +402,6 @@ TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_3) {
   EXPECT_TRUE(number_factory_ != NULL);
 }
 
-
-/** Number Arithmetic Factory tests */
-/*
- * @brief 
- */
-/*TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_4) {
-  NumberArithmeticFactory number_factory_;
-  
-  number_factory_.CreateMultiplier(NULL);
-  
-  NumberArithematicInterface *arithmetic_int_obj = number_factory_.GetMultiplier();;
- 
-  EXPECT_TRUE(arithmetic_int_obj == NULL);
-}
-*/
-/** Number Arithmetic Factory tests */
-/*
- * @brief 
- */
-/*TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_5) {
-  NumberArithmeticFactory number_factory_;
-  
-  NumberArithematicInterface *arithmetic_int_obj = number_factory_.GetMultiplier();;
- 
-  EXPECT_TRUE(arithmetic_int_obj == NULL);
-}*/
 
 /**---------------------------------------- MAIN ---------------------------------------*/
 

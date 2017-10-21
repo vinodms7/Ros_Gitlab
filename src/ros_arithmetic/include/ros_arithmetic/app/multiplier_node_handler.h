@@ -66,6 +66,10 @@ public:
   **/
   uint32_t ProcessData(uint32_t, uint32_t);  
 
+  CommFactory* GetCommunicationFactory();
+
+  NumberArithmeticFactory* GetArithmeticFactory();
+
 private:
   /**
   * Function name: CreateMultiplierFactory

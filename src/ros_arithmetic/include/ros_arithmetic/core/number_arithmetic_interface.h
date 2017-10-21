@@ -33,18 +33,6 @@ class NumberArithmeticInterface {
   **/
   virtual uint32_t DoArithmeticOperation(uint32_t, uint32_t) = 0;
 
- protected:
-  /**
-  * Function name: DisplayResult
-  *
-  * @brief Display result
-  *
-  * @param[in]	uint32_t value this is first number for arithmetic operation
-  *
-  * @return	void 
-  **/
-  virtual void DisplayResult(uint32_t value) = 0;
-
 };
 
 #endif

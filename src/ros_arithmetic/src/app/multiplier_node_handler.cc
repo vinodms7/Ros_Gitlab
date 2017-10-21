@@ -41,6 +41,8 @@ void MultiplierNodeHandler::CreateMultiplierFactory() {
     arithmetic_factory_->CreateArithmeticOperation(new NumberMultiplier());  
   else {
     std::cout<< "No object Created, Invalid type";
+    delete arithmetic_factory_;
+    arithmetic_factory_ = nullptr;
   }   
 }
 
@@ -49,13 +51,28 @@ void MultiplierNodeHandler::CreateCommunicationFactory() {
   communication_factory_->CreateCommunicator(new PublishSubscribe(this));
 }
 
+CommFactory* MultiplierNodeHandler::GetCommunicationFactory() {
+  return communication_factory_;
+}
+
+NumberArithmeticFactory* MultiplierNodeHandler::GetArithmeticFactory() {
+  return arithmetic_factory_;
+}
+
 void MultiplierNodeHandler::Execute() { 
   if( nullptr != communication_factory_ ) 
     communication_factory_->ExecuteCommunication();
 }
 
 uint32_t MultiplierNodeHandler::ProcessData(uint32_t value1, uint32_t value2) {  
-  if( nullptr != arithmetic_factory_ )   
-    return arithmetic_factory_->ExecuteArithmeticOperation(value1, value2);
-  return 0;
+  uint32_t operator_value_;
+  
+  if( nullptr != arithmetic_factory_) {
+    operator_value_ = arithmetic_factory_->ExecuteArithmeticOperation(value1, value2);
+  }
+  else
+  {
+    operator_value_ = 0;
+  }
+  return operator_value_;
 }

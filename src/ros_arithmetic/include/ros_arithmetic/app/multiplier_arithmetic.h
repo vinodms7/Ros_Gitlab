@@ -67,6 +67,7 @@ class NumberMultiplier : public NumberArithmeticInterface {
   * @return	uint32_t  return value after operation is done
   **/
   uint32_t DoMultiplication(uint32_t value1, uint32_t value2);
+  
   //  Multiplier value member variable
   uint32_t multiplier_value_; 
 };
