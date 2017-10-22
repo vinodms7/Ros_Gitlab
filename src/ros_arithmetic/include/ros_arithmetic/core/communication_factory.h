@@ -24,24 +24,22 @@
 class CommFactory {
  public:
   /**
-  * Function name: CommFactory
+  * Function name: Constructor
   *
-  * @brief      Defines the constructor that initialises the comm interface
+  * @brief      Declares the constructor that initialises the comm interface
   *             object to NULL
   *
   * @param[in]  None
-  *
-  *
   **/
   CommFactory();
 
   /**
-  * Function name: ~CommFactory
+  * Function name: Destructor
   *
-  * @brief      Implements the destructor that deletes the communication 
+  * @brief      Declares the destructor that deletes the communication 
   *             interface object if existing and intializes it to NULL
   *
-  *
+  * @param[in]  None
   **/  
   ~CommFactory();
 
@@ -50,13 +48,24 @@ class CommFactory {
   *
   * @brief      Creating communication object
   *
-  * @param[in]  CommunicationInterface* comm_int 
-  *               Holds the communication interface object to be assigned
+  * @param[in]  CommunicationInterface* 
+  *               Holds the reference of communication interface object
   *
-  * @return     Void
-  *
+  * @return     void
   **/
-  void CreateCommunicator(CommunicationInterface* comm_int);
+  void CreateCommunicator(CommunicationInterface* );
+
+  /**
+  * Function name: GetCommunicator
+  *
+  * @brief Implements the functionality get the pointer to CommunicationInterface
+  *
+  * @param[in]  None
+  *
+  * @return     CommunicationInterface* 
+  *               Holds the pointer to communication interface  
+  **/
+  CommunicationInterface* GetCommunicator();
 
   /**
   * Function name: ExecuteCommunication
@@ -65,7 +74,7 @@ class CommFactory {
   *
   * @param[in]  None
   *
-  * @return  void
+  * @return     void
   **/
   void ExecuteCommunication();
 
@@ -73,4 +82,6 @@ class CommFactory {
   /** Holds the pointer to communication interface object */
   CommunicationInterface* communication_interface_;
 };
+
 #endif
+

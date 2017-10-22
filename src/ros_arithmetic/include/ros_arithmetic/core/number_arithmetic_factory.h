@@ -4,30 +4,33 @@
 ****************************************************************************/
 
 /**
-* @file    Number Arithmetic Factory
-* @author       Sasi Kiran  
-* @date         18 oct 2017
-* @brief        Factory class for creation of number arithmetic operations
+* @file        number_arithmetic_factory.h
 *
+* @author      Sasi Kiran  
+*
+* @date        18-Oct-2017
+*
+* @brief       Factory class for creation of number arithmetic operations
 *
 **/
 #ifndef NUMBER_ARITHMETIC_FACTORY_H_
 #define NUMBER_ARITHMETIC_FACTORY_H_
 
-/* include files */
+/*! Include files */
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
 #include "ros_arithmetic/core/number_arithmetic_interface.h"
 
+/*! Class Declarations */
 class NumberArithmeticFactory {
  public:
   /**
-  * Constructor
+  * Function name: Constructor
   * @brief Construct NumberArithmeticFactory object
   **/
   NumberArithmeticFactory();
 
   /**
-  * Destructor
+  * Function name: Destructor
   * @brief Destruct NumberArithmeticFactory object
   **/
   ~NumberArithmeticFactory();
@@ -37,25 +40,41 @@ class NumberArithmeticFactory {
   *
   * @brief Create number arithmetic operation object
   *
-  * @param[in]  NumberArithmeticInterface*  multiplier_int 
-  *             This is pointer to interface  
+  * @param[in]  NumberArithmeticInterface*
+  *             Holds the pointer to arithmetic interface object  
   *
   * @return  void
   **/
-  void CreateArithmeticOperation(NumberArithmeticInterface *multiplier_int);
+  void CreateArithmeticOperation(NumberArithmeticInterface * );
+
+  /**
+  * Function name: GetArithmeticOperation
+  *
+  * @brief Create number arithmetic operation object
+  *
+  * @return    NumberArithmeticInterface*
+  *             Returns pointer to NumberArithmeticInterface*
+  **/
+  NumberArithmeticInterface* GetArithmeticOperation();
 
   /**
   * Function name: ExecuteArithmeticOperation
   *
   * @brief Execute arithmetic operation and return value
   *
-  * @param[in]  None
+  * @param[in]  uint32_t
+  *                Holds the first input value for operation
   *
-  * @return  uint32_t  return generated value
+  * @param[in]  uint32_t
+  *                Holds the second input value for operation
+  *
+  * @return     uint32_t  
+  *                Holds the return result
   **/
-  uint32_t ExecuteArithmeticOperation(uint32_t value1, uint32_t value2);
+  uint32_t ExecuteArithmeticOperation(uint32_t , uint32_t );
 
  private:
-  NumberArithmeticInterface *number_arithmetic_;  //  Arithmetic Interface Ptr
+  NumberArithmeticInterface *number_arithmetic_;  /*! Arithmetic Interface Ptr */
 };
 #endif /* __NUMBER_MULTIPLIER_FACTORY_H_ */
+
