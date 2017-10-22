@@ -66,7 +66,7 @@ CommunicationInterface* CommFactory::GetCommunicator() {
 void CommFactory::ExecuteCommunication() {
   if( nullptr != communication_interface_ )
     communication_interface_->ReceiveMessage();
-  //else
-    //ROS_WARN("Communication is not established");
+  else
+    ROS_WARN("Communication is not established");
 }
 

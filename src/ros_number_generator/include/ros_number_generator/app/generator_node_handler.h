@@ -52,7 +52,7 @@ class GeneratorNodeHandler : public NodeHandlerInterface {
   * 
   * @brief Destructor for the Node Handler
   **/
-  virtual ~GeneratorNodeHandler();
+  ~GeneratorNodeHandler();
 
   /**
   * Function name: GetNumber

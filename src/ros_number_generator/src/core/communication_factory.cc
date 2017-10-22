@@ -56,7 +56,7 @@ void CommFactory::ExecuteCommunication() {
   if ( nullptr != communication_interface_ ) {
     communication_interface_->SendMessage();
   } else {
-    ROS_WARN(" Communication could not be eastablished");
+    ROS_WARN(" Communication could not be established");
   }
 }
 

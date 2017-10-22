@@ -51,10 +51,7 @@ PublishSubscribe::~PublishSubscribe() {
 *        random number and publish it
 **/
 void PublishSubscribe::SendMessage() {
-  if (nullptr == generator_node_handler_) {
-    ROS_WARN("No Generator Node instance. No messages to publish");
-    return;
-  } else {
+  if (nullptr != generator_node_handler_) {
     float frequency = 0.1;
     if ( !node_handle_.getParam("frequency", frequency) ) {
       ROS_WARN("Frequency Param not received...");
@@ -77,6 +74,8 @@ void PublishSubscribe::SendMessage() {
       ros::spinOnce();
       rate.sleep();
     }
+  } else {
+    ROS_WARN("No Generator Node instance. No messages to publish");
   }
 }
 

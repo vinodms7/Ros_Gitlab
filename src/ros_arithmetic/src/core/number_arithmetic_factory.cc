@@ -28,6 +28,9 @@ NumberArithmeticFactory::~NumberArithmeticFactory() {
   }
 }
 
+/**
+* @brief Implements the creation of arithmetic operation object
+**/
 void NumberArithmeticFactory::CreateArithmeticOperation(NumberArithmeticInterface *number_arithmetic) {
   if ( nullptr != number_arithmetic_ ) {
     delete number_arithmetic_;

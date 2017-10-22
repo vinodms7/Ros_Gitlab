@@ -32,14 +32,16 @@
 using namespace std;
 
 void cbfunction(const ros_ran_num_msg::rand_num::ConstPtr& value) {
-  EXPECT_TRUE(value->number1 != NULL && value->number2 != NULL);
+  EXPECT_TRUE(value->number1 != 0 && value->number2 != 0);
 }
 
 
 void receivercallback(const ros_ran_num_msg::rand_num::ConstPtr& value) {
-  unique_ptr<MultiplierNodeHandler>multiplierObj(new MultiplierNodeHandler());
+  unique_ptr<MultiplierNodeHandler>multiplierObj(
+                                            new MultiplierNodeHandler());
 
-  uint32_t vresult = multiplierObj->ProcessData(value->number1, value->number2);
+  uint32_t vresult = multiplierObj->ProcessData(value->number1,
+                                               value->number2);
 
   EXPECT_GT(vresult, 0);
 }
@@ -47,58 +49,51 @@ void receivercallback(const ros_ran_num_msg::rand_num::ConstPtr& value) {
 
 /** Multiplier Node Handler Tests */
 /*
- * @brief Check if created multiplier object is created
+ * @brief Check if created multiplier object is created for MUL
  */
 TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_1) {
-  unique_ptr<MultiplierNodeHandler>multiplierObj(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+  unique_ptr<MultiplierNodeHandler>multiplierObj(
+                   new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
 
-  EXPECT_TRUE(multiplierObj != NULL);
+  EXPECT_TRUE(multiplierObj != nullptr);
 }
 
+/** Multiplier Node Handler Tests */
 /*
- * @brief Check if created arithmetic factory object is created
+ * @brief Check if created multiplier object is created for NONE
  */
-TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_2) {
-  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test2) {
+  unique_ptr<MultiplierNodeHandler>multiplierObj(
+                   new MultiplierNodeHandler(MultiplierNodeHandler::NONE));
 
-  NumberArithmeticFactory* arithmetic_factory_ =
-            multiplier_node_handler_->GetArithmeticFactory();
-
-  EXPECT_TRUE(arithmetic_factory_ != NULL);
+  EXPECT_FALSE(multiplierObj == nullptr);
 }
 
 /*
- * @brief Check if node handler object is deleted and initialized to null
+ * @brief Check if Check if object creation is fine and flow is correct
+ * is valid and gets expected result
  */
 TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_3) {
-  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                     new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
 
   uint32_t value1_ = 10;
   uint32_t value2_ = 20;
 
   uint32_t expected_result_= 200;
 
-  uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_, value2_);
+  uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_,
+                                                      value2_);
 
   EXPECT_TRUE(actual_result_ == expected_result_);
 }
 
 /*
- * @brief Check if created communication factory object is created
+ * @brief Check if object creation is not done and flow is valid
  */
 TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_4) {
-  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
-
-  CommFactory *communication_factory_ = multiplier_node_handler_->GetCommunicationFactory();
-
-  EXPECT_TRUE(communication_factory_ != NULL);
-}
-
-/*
- * @brief Fail test to show multiply is happening correctly
- */
-TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_5) {
-  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                     new MultiplierNodeHandler(MultiplierNodeHandler::NONE));
 
   uint32_t value1_ = 10;
   uint32_t value2_ = 20;
@@ -108,7 +103,120 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_5) {
   uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_,
                                                                   value2_);
 
-  EXPECT_EQ(expected_result_, actual_result_);
+  EXPECT_FALSE(actual_result_ == expected_result_);
+}
+
+
+/*
+ * @brief Check if communication factory object is created
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_5) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                      new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+
+  CommFactory *communication_factory_ = 
+                      multiplier_node_handler_->GetCommunicationFactory();
+
+  EXPECT_TRUE(communication_factory_ != nullptr);
+}
+
+/*
+ * @brief Check if arithmetic factory object is created
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_6) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                    new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+
+  EXPECT_TRUE(multiplier_node_handler_->GetArithmeticFactory() != nullptr);
+}
+
+/*
+ * @brief Test to pass invalid value for multiplication
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_7) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                         new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+
+  uint32_t value1_;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_;
+
+  uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_,
+                                                                  value2_);
+
+  EXPECT_FALSE(expected_result_ == actual_result_);
+}
+
+/*
+ * @brief Test to show passing multiply type is not computing addition
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_8) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                      new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_ = 30;
+
+  uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_,
+                                                                  value2_);
+
+  EXPECT_FALSE(expected_result_ == actual_result_);
+}
+
+
+/*
+ * @brief Test to show passing multiply type is not computing substraction
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_9) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                      new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_= 10;
+
+  uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_,
+                                                                  value2_);
+
+  EXPECT_FALSE(expected_result_ == actual_result_);
+}
+
+/*
+ * @brief Test to execute
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_10) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                      new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+ multiplier_node_handler_->Execute();
+ 
+ EXPECT_TRUE(multiplier_node_handler_->GetCommunicationFactory() != nullptr);
+}
+
+/*
+ * @brief false , Test to execute
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_11) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                      new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+ multiplier_node_handler_->Execute();
+ 
+ EXPECT_FALSE(multiplier_node_handler_->GetCommunicationFactory() == nullptr);
+}
+
+/*
+ * @brief Fail test to show ADD doesnt create an object of factory
+ */
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_13) {
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                 new MultiplierNodeHandler(MultiplierNodeHandler::ADD));
+  NumberArithmeticFactory *num_factory_ = 
+                       multiplier_node_handler_->GetArithmeticFactory();
+  
+  EXPECT_TRUE(num_factory_->GetArithmeticOperation() == nullptr);  
 }
 
 void PublishData() {
@@ -117,7 +225,8 @@ void PublishData() {
   /** Holds the reference of the nodehandle object */
   ros::NodeHandle node_handle1_;
 
-  rand_num_publisher1_ = node_handle1_.advertise<ros_ran_num_msg::rand_num>("random_number_srand", 100);
+  rand_num_publisher1_ = node_handle1_.advertise<ros_ran_num_msg::rand_num>(
+                                                  "random_number_srand", 100);
 
   ros::Rate loop_rate(1);
 
@@ -135,14 +244,15 @@ void PublishData() {
 }
 
 /*
- * @brief Fail test to show ADD doesnt create an operation
+ * @brief 
  */
-TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_6) {
+TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_publish) {
   uint8_t initial_value = 0;
 
   uint8_t final_value_ = 1;
 
-  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
+                       new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
 
   boost::thread thread1(PublishData);
 
@@ -163,138 +273,20 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_6) {
   EXPECT_EQ(initial_value, final_value_);
 }
 
-
-/*
- * @brief Fail test to show ADD doesnt create an operation
- */
-TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_7) {
-  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(new MultiplierNodeHandler(MultiplierNodeHandler::ADD));
-
-  EXPECT_TRUE(multiplier_node_handler_ == NULL);
-}
-
-/*
- * @brief Fail test to show multiply is wrong
- */
-TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_8) {
-  MultiplierNodeHandler *multiplier_node_handler_ = new MultiplierNodeHandler(MultiplierNodeHandler::ADD);
-
-  uint32_t number_actual_ = 0;
-  uint32_t value1_ = 10;
-  uint32_t value2_ = 10;
-
-  uint32_t number_expected_ = multiplier_node_handler_->ProcessData(value1_,
-                                                                    value2_);
-
-  EXPECT_EQ(number_expected_, number_actual_);
-}
-
-/** Multiplier Node Handler Tests */
-/*
- * @brief 
- */
-TEST(Number_Multiplier_test, Number_Multiplier_test_1) {
-  NumberMultiplier *multiplierObj_ = new NumberMultiplier();
-
-  uint32_t value1_ = 10;
-  uint32_t value2_ = 10;
-
-  uint32_t expected_result_ = 100;
-
-  uint32_t actual_result_ = multiplierObj_->DoArithmeticOperation(value1_,
-                                                                  value2_);
-
-  delete multiplierObj_;
-
-  EXPECT_EQ(actual_result_, expected_result_);
-}
-
-/** Multiplier Node Handler Tests */
-/*
- * @brief 
- */
-/*TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_4) {
-  unique_ptr<MultiplierNodeHandler> multiplierObj(new MultiplierNodeHandler());
-  
-  NumberMultiplier NumberMultiplier;
-
-  uint32_t number1 = 10;
-  uint32_t number2 = 20;
-  uint32_t number_expected = 200;
-
-  uint32_t number_actual = multiplierObj->ProcessData(number1, number2);
-
-  NumberMultiplier.DisplayResult(number_actual);
-
-  EXPECT_EQ(number_expected,number_actual);
-}*/
-
-/** Multiplier Node Handler Tests */
-/*
- * @brief 
- */
-/*TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_5) {
-  MultiplierNodeHandler *multiplier_obj_ = new MultiplierNodeHandler();
-  
-  //NumberMultiplier number_multiplier_; 
-  
-  //number_multiplier_ = new NumberMultiplier();
-
-  uint32_t number1 = 10;
-  uint32_t number2 = 10;
-  uint32_t number_expected = 200;
-
-  uint32_t number_actual = multiplier_obj_->ProcessData(number1, number2);
-
-//  number_multiplier_.PrintValue();
-
-  EXPECT_EQ(number_expected,number_actual);
-}*/
-
-/** Multiplier Arithmetic tests */
-/*
- * @brief Fail test to show numberarithmeticfactory is null - TBD
- */
-TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_1) {
-  NumberArithmeticFactory *number_factory_ = new NumberArithmeticFactory();
-
-  number_factory_->CreateArithmeticOperation(new NumberMultiplier());
-
-  number_factory_->CreateArithmeticOperation(new NumberMultiplier());
-
-  EXPECT_TRUE(number_factory_ != NULL);
-}
-
-/*
- * @brief Fail test to show multiply is wrong
- */
-TEST(Multiplier_arithmetic_test, Multiplier_arithmetic_test_2) {
-  NumberArithmeticFactory *number_factory_ = new NumberArithmeticFactory();
-
-  uint32_t value1 = 10;
-  uint32_t value2 = 10;
-
-  uint32_t number_expected = 0;
-
-  uint32_t number_actual = number_factory_->ExecuteArithmeticOperation(value1,
-                                                                      value2);
-
-  EXPECT_EQ(number_expected, number_actual);
-}
-
-
 /** Communication Factory Tests */
 /*
- * @brief Fail test to show communication factory deletes the previous instance of publish subscribe
+ * @brief Fail test to show communication factory deletes the previous 
+ * instance of publish subscribe
  */
 TEST(Communication_factory_test, Communication_factory_test_1) {
   CommFactory *communication_factory_ = new CommFactory();
 
-  communication_factory_->CreateCommunicator(new PublishSubscribe(NULL));
+  communication_factory_->CreateCommunicator(new PublishSubscribe(nullptr));
+  EXPECT_TRUE(communication_factory_ != nullptr);
 
-  communication_factory_->CreateCommunicator(new PublishSubscribe(NULL));
+  communication_factory_->CreateCommunicator(nullptr);
 
-  EXPECT_TRUE(communication_factory_ != NULL);
+  EXPECT_FALSE(communication_factory_->GetCommunicator() != nullptr);
 }
 
 /*
@@ -302,23 +294,35 @@ TEST(Communication_factory_test, Communication_factory_test_1) {
  */
 TEST(Communication_factory_test, Communication_factory_test_2) {
   CommFactory *communication_factory_ = new CommFactory();
-
+  communication_factory_->CreateCommunicator(nullptr);
   communication_factory_->ExecuteCommunication();
+
+  EXPECT_FALSE(communication_factory_->GetCommunicator() != nullptr);
+}
+
+/*
+ * @brief Test to create communication factory created and communication
+ * does not happen
+ */
+TEST(Communication_factory_test, Communication_factory_test_3) {
+  CommFactory *communication_factory_ = new CommFactory();
+
+  communication_factory_->CreateCommunicator(nullptr);
 
   EXPECT_TRUE(communication_factory_ != nullptr);
 }
 
 /*
- * @brief Fail test to execute communication doesnt happen
+ * @brief Failure Test to execute communication factory created and execute
+ * communication ivoked without creating communication object
  */
-TEST(Communication_factory_test, Communication_factory_test_3) {
+TEST(Communication_factory_test, Communication_factory_test_4) {
   CommFactory *communication_factory_ = new CommFactory();
 
-  delete communication_factory_;
+  communication_factory_->ExecuteCommunication();
 
-  EXPECT_TRUE(communication_factory_ != nullptr);
+  EXPECT_FALSE(communication_factory_->GetCommunicator() != nullptr);
 }
-
 
 
 /** Publish Subscribe Tests */
@@ -390,17 +394,175 @@ TEST(PublishSubscribe_test, PublishSubscribe_test_4) {
 
 /** Number Arithmetic Factory tests */
 /*
- * @brief 
+ * @brief Check whether previous instance is not invalid
  */
-TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_3) {
-  NumberArithmeticFactory *number_factory_ = new NumberArithmeticFactory();
+TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_1) {
+  unique_ptr<NumberArithmeticFactory> number_factory_(
+                               new NumberArithmeticFactory());
 
-  NumberArithmeticFactory *number_factory_new = new NumberArithmeticFactory();
+  unique_ptr<NumberArithmeticFactory> number_factory_new(
+                               new NumberArithmeticFactory());
 
   number_factory_->CreateArithmeticOperation(new NumberMultiplier());
   number_factory_new->CreateArithmeticOperation(new NumberMultiplier());
 
-  EXPECT_TRUE(number_factory_ != NULL);
+  EXPECT_TRUE(number_factory_ != nullptr);
+}
+
+/*
+ * @brief Fail Test to show numberarithmeticfactory does not create MUL object
+ * due to wrong param in switch
+ */
+TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_2) {
+  unique_ptr<NumberArithmeticFactory> number_factory_(
+                               new NumberArithmeticFactory());
+
+  number_factory_->CreateArithmeticOperation(nullptr);   
+  
+  EXPECT_FALSE(number_factory_->GetArithmeticOperation() != nullptr);
+}
+
+/*
+ * @brief failed case , Check if arithmetic factory perform execute
+ * arithmetic operation without creating operation object
+ */
+TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_3) {  
+  unique_ptr<NumberArithmeticFactory> num_arth_factory_(
+                                         new NumberArithmeticFactory());
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_ = 200;
+
+  uint32_t actual_result_ = 
+                      num_arth_factory_->ExecuteArithmeticOperation(value1_,
+                                                                  value2_);
+
+  EXPECT_FALSE(expected_result_ == actual_result_);
+}
+
+/*
+ * @brief failed case, Check if arithmetic factory perform execute
+ * arithmetic operation when operation is add and returns add
+ */
+TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_4) {  
+  unique_ptr<NumberArithmeticFactory> num_arth_factory_(
+                                      new NumberArithmeticFactory());
+  num_arth_factory_->CreateArithmeticOperation(new NumberMultiplier()); 
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_ = 30;
+
+  uint32_t actual_result_ = 
+                      num_arth_factory_->ExecuteArithmeticOperation(value1_,
+                                                                  value2_);
+
+  EXPECT_FALSE(expected_result_ == actual_result_);
+}
+
+/*
+ * @brief Check if arithmetic factory perform execute
+ * arithmetic operation and return value
+ */
+TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_5) {  
+  unique_ptr<NumberArithmeticFactory> num_arth_factory_(
+                                      new NumberArithmeticFactory());
+  num_arth_factory_->CreateArithmeticOperation(new NumberMultiplier()); 
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_ = 200;
+
+  uint32_t actual_result_ = 
+                      num_arth_factory_->ExecuteArithmeticOperation(value1_,
+                                                                  value2_);
+
+  EXPECT_EQ(expected_result_,actual_result_);
+}
+
+/*
+ * @brief Fail test to show create arithmetic is not null
+ */
+TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_6) {
+  unique_ptr<NumberArithmeticFactory> num_arth_factory_(
+                                      new NumberArithmeticFactory());
+
+  num_arth_factory_->CreateArithmeticOperation(new NumberMultiplier());
+  EXPECT_FALSE(num_arth_factory_->GetArithmeticOperation() == nullptr);
+}
+
+/** Number Multiplier Test */
+/*
+ * @brief Check Valid data is returned in DoArithmetic Operation
+ */
+TEST(number_multiplier_test,number_multiplier_test_1) {
+  unique_ptr<NumberMultiplier> number_factory_(
+                               new NumberMultiplier());
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_ = 200;
+
+  uint32_t actual_result_ = 
+                      number_factory_->DoArithmeticOperation(value1_,
+                                                                  value2_);
+
+  EXPECT_EQ(expected_result_,actual_result_);  
+}
+
+/*
+ * @brief Check Valid data is returned in DoMultiplication Operation
+ */
+TEST(number_multiplier_test,number_multiplier_test_2) {
+  unique_ptr<NumberMultiplier> number_factory_(
+                               new NumberMultiplier());
+  uint32_t value1_ = 10;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_ = 200;
+
+  uint32_t actual_result_ = 
+                      number_factory_->DoArithmeticOperation(value1_,
+                                                                  value2_);
+
+  EXPECT_EQ(expected_result_,actual_result_);  
+}
+
+/*
+ * @brief failure case, Check invalid data is returned in DoArithmetic Operation
+ */
+TEST(number_multiplier_test,number_multiplier_test_3) {
+  unique_ptr<NumberMultiplier> number_factory_(
+                               new NumberMultiplier());
+  uint32_t value1_;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_ = 200;
+
+  uint32_t actual_result_ = 
+                      number_factory_->DoArithmeticOperation(value1_,
+                                                                  value2_);
+
+  EXPECT_FALSE(expected_result_ == actual_result_);  
+}
+
+/*
+ * @brief failure case, Check invalid data is returned in DoMultiplication Operation
+ */
+TEST(number_multiplier_test,number_multiplier_test_4) {
+  unique_ptr<NumberMultiplier> number_factory_(
+                               new NumberMultiplier());
+  uint32_t value1_;
+  uint32_t value2_ = 20;
+
+  uint32_t expected_result_ = 200;
+
+  uint32_t actual_result_ = 
+                      number_factory_->DoArithmeticOperation(value1_,
+                                                                  value2_);
+
+  EXPECT_FALSE(expected_result_ == actual_result_);  
 }
 
 /**---------------------------------- MAIN ---------------------------------*/

@@ -55,7 +55,7 @@ void MultiplierNodeHandler::CreateMultiplierFactory() {
   else
     ROS_WARN("Arithmetic Factory object not Created");
 }
- 
+
 void MultiplierNodeHandler::CreateCommunicationFactory() {
   communication_factory_ = new CommFactory();
   if( nullptr != communication_factory_ )

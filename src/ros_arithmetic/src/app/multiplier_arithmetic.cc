@@ -14,6 +14,7 @@
 
 /*! Include files */
 #include "ros_arithmetic/app/multiplier_arithmetic.h"
+#include "ros/ros.h"
 
 /*! Class Defintions */
 NumberMultiplier::NumberMultiplier(): multiplier_value_(0) {
