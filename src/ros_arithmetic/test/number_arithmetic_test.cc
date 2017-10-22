@@ -31,11 +31,6 @@
 
 using namespace std;
 
-/* Local Functions */
-void cbfunction(const ros_ran_num_msg::rand_num::ConstPtr& value) {
-  EXPECT_TRUE(value->number1 != 0 && value->number2 != 0);
-}
-
 void receivercallback(const ros_ran_num_msg::mutliplier_num::ConstPtr& value) {
   uint32_t vresult = value->multiplier_value;
   ROS_INFO("In callback function");
@@ -139,7 +134,7 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_7) {
   uint32_t value1_;
   uint32_t value2_ = 20;
 
-  uint32_t expected_result_;
+  uint32_t expected_result_ = 20;
 
   uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_,
                                                                   value2_);
