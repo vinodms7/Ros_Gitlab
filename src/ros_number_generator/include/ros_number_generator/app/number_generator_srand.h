@@ -4,8 +4,11 @@
 ****************************************************************************/
 /**
 * @file number_generator_srand.h
+* 
 * @author Rajat Jayanth Shetty  <rajat.shetty@kpit.com>
+* 
 * @date 18 Oct 2017
+* 
 * @brief    Default C++ SRand implemenation of random number generator 
 *
 */
@@ -23,11 +26,11 @@ class NumberGeneratorSRand : public NumberGenerator {
    *
    * @brief Constructor for SRAND generator
    *
-   * The constructor initializes the Random generator and specifies the range between which random
-   * numbers need to be generator.
+   * The constructor initializes the Random generator and specifies the range
+   * between which random numbers need to be generator.
    *
-   * @param[in]  uint32_t max_random_value Maximum value the Random Generator  should generate
-   * @param[in]  uint32_t min_random_value Minimum value the Random Generator  should generate
+   * @param[in]  uint32_t max_random_value Maximum range for Random Generator
+   * @param[in]  uint32_t min_random_value Minimum range for Random Generator
    *
    **/
   NumberGeneratorSRand(uint32_t max_random_value = 1000,

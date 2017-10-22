@@ -32,7 +32,8 @@
 PublishSubscribe::PublishSubscribe(NodeHandlerInterface *gen_node_handler) {
   if (nullptr != gen_node_handler) {
     generator_node_handler_ = gen_node_handler;
-    rand_num_publisher_ = node_handle_.advertise<ros_ran_num_msg::rand_num>("random_number_srand", 100);
+    rand_num_publisher_ = node_handle_.advertise<ros_ran_num_msg::rand_num>
+                                               ("random_numbers", 100);
   } else {
     ROS_WARN("No Generator Node instance. No messages to publish");
   }
@@ -54,7 +55,14 @@ void PublishSubscribe::SendMessage() {
     ROS_WARN("No Generator Node instance. No messages to publish");
     return;
   } else {
-    ros::Rate rate(1);
+    float frequency = 0.1;
+    if ( !node_handle_.getParam("frequency", frequency) ) {
+      ROS_WARN("Frequency Param not received...");
+    } else {
+      ROS_INFO("Frequency Param is [%f]", frequency);
+    }
+
+    ros::Rate rate(frequency);
     ros_ran_num_msg::rand_num value;
 
     while ( node_handle_.ok() ) {

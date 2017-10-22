@@ -4,8 +4,11 @@
 ****************************************************************************/
 /**
 * @file     number_generator_factory.cc
+* 
 * @author   Rajat Jayanth Shetty <rajat.shetty@kpit.com>
+* 
 * @date     18 Oct 2017
+* 
 * @brief    This file declares Number Generator Factory Class
 *
 */
@@ -66,9 +69,18 @@ void NumberGeneratorFactory::CreateGenerator(NumberGenerator *number_gen) {
 NumberGenerator* NumberGeneratorFactory::getGenerator() {
   return number_generator_;
 }
+/**
+* Function name: ExecuteGenerator()
+*  
+* @brief Execute the Number Generator functionality to get Number
+*
+**/
 
 uint32_t NumberGeneratorFactory::ExecuteGenerator() const {
+  uint32_t number_generated;
   if ( nullptr != number_generator_ )
-    return  number_generator_->GetGeneratedNumber();
-  return 0;
+    number_generated =  number_generator_->GetGeneratedNumber();
+  else
+    number_generated = 0;
+  return number_generated;
 }

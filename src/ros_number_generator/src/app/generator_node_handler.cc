@@ -3,11 +3,14 @@
 *                                                                          *
 ****************************************************************************/
 /**
-* @file    Generator Node Handler
+* @file         generator_node_handler.cc
+* 
 * @author       Rajat Jayanth Shetty <Rajat.Shetty@kpit.com>
 * @author       Sujeyendra Tummala <Tummala.Sujeyendra@kpit.com>
 * @author       Sasi Kiran Alur  <Sasi.Alur@kpit.com> 
+* 
 * @date         18 Oct 2017
+* 
 * @brief        Perform factory creation and processing data functionalities
 *
 *
@@ -53,7 +56,7 @@ GeneratorNodeHandler::~GeneratorNodeHandler() {
 
   if (nullptr != communication_factory_) {
     delete communication_factory_;
-  communication_factory_ = nullptr;
+    communication_factory_ = nullptr;
   }
 }
 
@@ -65,16 +68,18 @@ GeneratorNodeHandler::~GeneratorNodeHandler() {
 **/
 void GeneratorNodeHandler::CreateNumberFactory() {
   number_generator_ = new NumberGeneratorFactory();
-  if (generator_type_ == GeneratorType::LCG) {
-    number_generator_->CreateGenerator(new NumberGeneratorLCG(
-      constVariables::MAX_RANDOM_VALUE,
-      constVariables::MIN_RANDOM_VALUE));
-  } else if (generator_type_ == GeneratorType::SRAND) {
-    number_generator_->CreateGenerator(new NumberGeneratorSRand(
-      constVariables::MAX_RANDOM_VALUE,
-      constVariables::MIN_RANDOM_VALUE));
+  if ( nullptr != number_generator_ ) {
+    if ( generator_type_ == GeneratorType::LCG ) {
+      number_generator_->CreateGenerator(new NumberGeneratorLCG(
+          constVariables::MAX_RANDOM_VALUE, constVariables::MIN_RANDOM_VALUE));
+    } else if ( generator_type_ == GeneratorType::SRAND ) {
+      number_generator_->CreateGenerator(new NumberGeneratorSRand(
+          constVariables::MAX_RANDOM_VALUE, constVariables::MIN_RANDOM_VALUE));
+    } else {
+      ROS_WARN("No Generator type object Created, Invalid type");
+    }
   } else {
-    std::cout<< "No object Created, Invalid type"<< std::endl;
+    ROS_WARN("Number factory object could not be created");
   }
 }
 
@@ -89,14 +94,14 @@ void GeneratorNodeHandler::CreateCommunicationFactory() {
   if (nullptr != communication_factory_)
     communication_factory_->CreateCommunicator(new PublishSubscribe(this));
   else
-    std::cout<< "Failed to  to create Communication Interface"<< std::endl;
+    ROS_WARN("Commnication factory object could not be created");
 }
 
 void GeneratorNodeHandler::Execute() {
   if ( nullptr != communication_factory_ )
     communication_factory_->ExecuteCommunication();
   else
-    std::cout<< "No instance of Communication Interface available"<< std::endl;
+    ROS_WARN("No instance of Communication Interface available");
 }
 /**
 * Function name: GetNumber
