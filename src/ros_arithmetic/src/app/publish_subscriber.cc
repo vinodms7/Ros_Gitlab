@@ -41,13 +41,13 @@ ReceiverCallback::~ReceiverCallback() {
 /**
 * @brief Implements the callback function that get the multiplier of received values         
 **/
-void ReceiverCallback::MultiplierCallback(const ros_ran_num_msg::rand_num::ConstPtr& value) {
-  ROS_INFO("Node Received Value 1: [%u] and Value 2: [%u]", value->number1,
-                                                            value->number2);
-
-  uint32_t vresult = arithmetic_node_handler_->ProcessData(value->number1,
-                                                          value->number2);
-  ROS_INFO("The Multiplier value is [%u]", vresult);
+void ReceiverCallback::MultiplierCallback(const ros_ran_num_msg::rand_num::ConstPtr& value) {  
+  if( nullptr != arithmetic_node_handler_ ) {
+    uint32_t vresult = arithmetic_node_handler_->ProcessData(value->number1, value->number2);
+    ROS_INFO("The Multiplier value is [%u]", vresult);
+  }
+  else
+    ROS_WARN("Invalid handler in Receiver Callback");
 }
 
 /*! Class Declarations */
@@ -80,7 +80,11 @@ void PublishSubscribe::SendMessage() {
 *        and calls the receiver callback function
 **/
 void PublishSubscribe::ReceiveMessage() {
-  multiplier_subscriber_ = node_handle_.subscribe("random_number_srand", 100,
-                   &ReceiverCallback::MultiplierCallback, receiver_callback_);
+  if(nullptr != receiver_callback_)    
+    multiplier_subscriber_ = node_handle_.subscribe("random_numbers", 100, 
+                             &ReceiverCallback::MultiplierCallback, receiver_callback_);
+  else
+   ROS_WARN("Receiver callback object not created");
   ros::spinOnce();
 }
+

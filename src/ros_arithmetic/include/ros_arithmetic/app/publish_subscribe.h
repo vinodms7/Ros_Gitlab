@@ -8,7 +8,7 @@
 *
 * @author    Sujeyendra Tummala (Tummala.Sujeyendra@kpit.com)
 *
-* @date      18-Oct- 2017
+* @date      18-Oct-2017
 *
 * @brief     This file declares the Receiver callback and Publish subscribe 
 *            class that implements the communication interface class
@@ -27,7 +27,7 @@
 class ReceiverCallback {
  public:
   /**
-  * Function name: ReceiverCallback
+  * Function name: Constructor
   *
   * @brief      Constructor to the receiver callback class that 
   *             assigns the multiplier node handle reference to 
@@ -35,24 +35,20 @@ class ReceiverCallback {
   *
   * @param[in]  ArithmeticNodeHandlerInterface*
   *              Pointer to the reference multiplier node handler  
-  *  
-  *
   **/
   explicit ReceiverCallback(ArithmeticNodeHandlerInterface* node_handler);
 
   /**
-  * Function name: ~ReceiverCallback
+  * Function name: Destructor
   *
   * @brief      Destructor to the receiver callback class
-  *
-  *
   **/
   ~ReceiverCallback();
 
   /**
   * Function name: MultiplierCallback
   *
-  * @brief      Defines the callback function that get the multiplier
+  * @brief      Declaration to the callback function that get the multiplier
   *             of received values
   *
   * @param[in]  ros_ran_num_msg::rand_num::ConstPtr& value
@@ -75,7 +71,7 @@ class ReceiverCallback {
 class PublishSubscribe : public CommunicationInterface {
  public:
   /**
-  * Function name: PublishSubscribe
+  * Function name: Constructor
   *
   * @brief      Constructor to the publishSubsribe class that 
   *             creates an object of receiver callback class and 
@@ -84,38 +80,33 @@ class PublishSubscribe : public CommunicationInterface {
   *
   * @param[in]  ArithmeticNodeHandlerInterface*
   *              Pointer to the reference multiplier node handler
-  *  
-  *
   **/
   explicit PublishSubscribe(ArithmeticNodeHandlerInterface* node_handler);
 
   /**
-  * Function name: ~PublishSubscribe
+  * Function name: Destructor
   *
-  * @brief      Defines the destructor to the PublishSubscribe class
-  *  
-  *
+  * @brief      Destructor to the PublishSubscribe class
   **/
   ~PublishSubscribe();
 
   /**
   * Function name: SendMessage
   *
-  * @brief      Defines the functionality to send the message
+  * @brief      Declares the functionality to send the message
   *
   * @param[in]  None
   *
   * @param[out] None
   *
   * @return     Void
-  *
   **/
   void SendMessage();
 
   /**
   * Function name: ReceiveMessage
   *
-  * @brief      Defines the functionality to receive the message through ros subscribe
+  * @brief      Declares the functionality to receive the message through ros subscribe
   *             and calls the receiver callback function
   *
   * @param[in]  None
@@ -140,4 +131,6 @@ class PublishSubscribe : public CommunicationInterface {
   /** Holds the reference to the subscriber object */
   ros::Subscriber multiplier_subscriber_;
 };
+
 #endif /* PUBLISHER_SUBSCRIBE_H */
+

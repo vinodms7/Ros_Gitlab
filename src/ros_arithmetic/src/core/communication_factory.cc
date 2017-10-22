@@ -53,8 +53,20 @@ void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
   communication_interface_ = comm_int;
 }
 
+/**
+* @brief Implements the functionality to get the reference of CommunicationInterface     
+**/
+CommunicationInterface* CommFactory::GetCommunicator() {
+  return communication_interface_;
+}
+
+/**
+* @brief Implements the functionality receive the message    
+**/
 void CommFactory::ExecuteCommunication() {
-  if ( nullptr != communication_interface_ )
+  if( nullptr != communication_interface_ )
     communication_interface_->ReceiveMessage();
+  //else
+    //ROS_WARN("Communication is not established");
 }
 

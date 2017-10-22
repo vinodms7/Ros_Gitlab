@@ -4,17 +4,20 @@
 ****************************************************************************/
 
 /**
-* @file    Number Arithmetic Factory
-* @author       Sasi Kiran  
-* @date         18 oct 2017
-* @brief        Implementation class for factory
+* @file       Number Arithmetic Factory
 *
+* @author     Sasi Kiran <Sasi.Alur@kpit.com>
 *
+* @date       18-Oct-2017
+*
+* @brief      Implementation class for factory
 **/
-#include <cstddef>
 
+/*! Include files */
+#include <cstddef>
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
 
+/*! Class Definitions */
 NumberArithmeticFactory::NumberArithmeticFactory() {
   number_arithmetic_ = nullptr;
 }
@@ -33,10 +36,24 @@ void NumberArithmeticFactory::CreateArithmeticOperation(NumberArithmeticInterfac
   number_arithmetic_ = number_arithmetic;
 }
 
-uint32_t NumberArithmeticFactory::ExecuteArithmeticOperation(uint32_t value1,
-                                                            uint32_t value2) {
-  if ( nullptr != number_arithmetic_ )
-    return number_arithmetic_->DoArithmeticOperation(value1, value2);
-  return 0;
+/**
+* @brief Implements returning pointer to NumberArithmeticInterface
+**/
+NumberArithmeticInterface* NumberArithmeticFactory::GetArithmeticOperation() {
+  return number_arithmetic_;
+}
+
+/**
+* @brief Implements arithmetic operation Execution
+**/
+uint32_t NumberArithmeticFactory::ExecuteArithmeticOperation(uint32_t value1, uint32_t value2) {
+ uint32_t number_arithmetic;
+
+ if(nullptr != number_arithmetic_)
+   number_arithmetic = number_arithmetic_->DoArithmeticOperation(value1, value2);
+ else
+   number_arithmetic = 0;
+
+ return number_arithmetic;
 }
 

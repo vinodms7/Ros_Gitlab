@@ -3,20 +3,22 @@
 *                                                                          *
 ****************************************************************************/
 /**
-* @file    Arithmetic Node Handler Interface
-* @author       Sasi Kiran <Sasi.Alur@kpit.com>
-* @date         18 oct 2017
-* @brief        This is a interface class for Arithmetic Node Handler
+* @file       arithmetic_node_handler_interface.h
 *
+* @author     Sasi Kiran <Sasi.Alur@kpit.com>
 *
+* @date       18-Oct-2017
+*
+* @brief      This is a interface class for Arithmetic Node Handler
 **/
 
 #ifndef ARITHMETIC_NODE_HANDLER_INTERFACE_H
 #define ARITHMETIC_NODE_HANDLER_INTERFACE_H
 
-/* include files */
+/*! Include files */
 #include <string>
 
+/*! Class Declarations */
 class ArithmeticNodeHandlerInterface {
  public:
   /**
@@ -34,13 +36,17 @@ class ArithmeticNodeHandlerInterface {
   * @brief process data and return value
   * 
   *
-  * @param[in]  uint32_t  value1 This is first parameter
+  * @param[in]  uint32_t
+  *               Holds the value1 parameter
   *
-  * @param[in]  uint32_t  value2 This is second parameter 
+  * @param[in]  uint32_t
+  *               Holds the value2 parameter
   *
-  * @return  uint32_t  return value after result is computed
+  * @return     uint32_t
+  *               Holds the return value after result is computed
   **/
   virtual uint32_t ProcessData(uint32_t, uint32_t) = 0;
 };
 
 #endif /*MULTIPLIER_NODE_H */
+
