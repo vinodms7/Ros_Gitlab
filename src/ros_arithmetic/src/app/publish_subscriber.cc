@@ -30,6 +30,9 @@
 ReceiverCallback::ReceiverCallback(ArithmeticNodeHandlerInterface*
                                                     node_handler) {
   arithmetic_node_handler_ = node_handler;
+
+  multiplier_publisher_ = node_handle_multiplier_.advertise<ros_ran_num_msg::mutliplier_num>("multiplier_output",10);
+
 }
 
 /**
@@ -45,6 +48,14 @@ void ReceiverCallback::MultiplierCallback(const ros_ran_num_msg::rand_num::Const
   if( nullptr != arithmetic_node_handler_ ) {
     uint32_t vresult = arithmetic_node_handler_->ProcessData(value->number1, value->number2);
     ROS_INFO("The Multiplier value is [%u]", vresult);
+
+    ros_ran_num_msg::mutliplier_num output;
+
+    output.multiplier_value = vresult;
+
+    multiplier_publisher_.publish(output);
+
+    ros::spinOnce();
   }
   else
     ROS_WARN("Invalid handler in Receiver Callback");

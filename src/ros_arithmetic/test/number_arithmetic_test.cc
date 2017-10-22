@@ -3,18 +3,18 @@
 *                                                                          *
 ****************************************************************************/
 /**
-* @file    number_arithmetic_test
+* @file         number_arithmetic_test.cc
 * 
 * @author       Sujeyendra Tummala <Tummala.Sujeyendra@kpit.com>
 *
-* @date         18 Oct 2017
+* @date         18-Oct-2017
 *
 * @brief        Perform unit tests for arithmetic node
 *
 *
 **/
 
-/** Include files */
+/*! Include files */
 #include <gtest/gtest.h>
 #include <ros/ros.h>
 #include <boost/thread/thread.hpp>
@@ -27,25 +27,24 @@
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
 #include "ros_arithmetic/core/number_arithmetic_interface.h"
 #include "ros_ran_num_msg/rand_num.h"
-
+#include "ros_ran_num_msg/mutliplier_num.h"
 
 using namespace std;
 
+/* Local Functions */
 void cbfunction(const ros_ran_num_msg::rand_num::ConstPtr& value) {
   EXPECT_TRUE(value->number1 != 0 && value->number2 != 0);
 }
 
-
-void receivercallback(const ros_ran_num_msg::rand_num::ConstPtr& value) {
-  unique_ptr<MultiplierNodeHandler>multiplierObj(
-                                            new MultiplierNodeHandler());
-
-  uint32_t vresult = multiplierObj->ProcessData(value->number1,
-                                               value->number2);
-
+void receivercallback(const ros_ran_num_msg::mutliplier_num::ConstPtr& value) {
+  uint32_t vresult = value->multiplier_value;
+  ROS_INFO("In callback function");
   EXPECT_GT(vresult, 0);
+  
+  ros::shutdown();
 }
 
+/* Test Cases Start */
 
 /** Multiplier Node Handler Tests */
 /*
@@ -114,7 +113,7 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_5) {
   unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
                       new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
 
-  CommFactory *communication_factory_ = 
+  CommFactory *communication_factory_ =
                       multiplier_node_handler_->GetCommunicationFactory();
 
   EXPECT_TRUE(communication_factory_ != nullptr);
@@ -191,9 +190,9 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_9) {
 TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_10) {
   unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
                       new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
- multiplier_node_handler_->Execute();
- 
- EXPECT_TRUE(multiplier_node_handler_->GetCommunicationFactory() != nullptr);
+  multiplier_node_handler_->Execute();
+
+  EXPECT_TRUE(multiplier_node_handler_->GetCommunicationFactory() != nullptr);
 }
 
 /*
@@ -202,9 +201,9 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_10) {
 TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_11) {
   unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
                       new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
- multiplier_node_handler_->Execute();
- 
- EXPECT_FALSE(multiplier_node_handler_->GetCommunicationFactory() == nullptr);
+  multiplier_node_handler_->Execute();
+
+  EXPECT_FALSE(multiplier_node_handler_->GetCommunicationFactory() == nullptr);
 }
 
 /*
@@ -213,64 +212,10 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_11) {
 TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_13) {
   unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
                  new MultiplierNodeHandler(MultiplierNodeHandler::ADD));
-  NumberArithmeticFactory *num_factory_ = 
+  NumberArithmeticFactory *num_factory_ =
                        multiplier_node_handler_->GetArithmeticFactory();
-  
-  EXPECT_TRUE(num_factory_->GetArithmeticOperation() == nullptr);  
-}
 
-void PublishData() {
-  /** Holds the reference to the publisher object */
-  ros::Publisher rand_num_publisher1_;
-  /** Holds the reference of the nodehandle object */
-  ros::NodeHandle node_handle1_;
-
-  rand_num_publisher1_ = node_handle1_.advertise<ros_ran_num_msg::rand_num>(
-                                                  "random_number_srand", 100);
-
-  ros::Rate loop_rate(1);
-
-  ros_ran_num_msg::rand_num value;
-
-  while (ros::ok()) {
-    value.number1 = 10;
-    value.number2 = 10;
-
-    rand_num_publisher1_.publish(value);
-    loop_rate.sleep();
-
-    ROS_INFO("\n I am in publishing data");
-  }
-}
-
-/*
- * @brief 
- */
-TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_publish) {
-  uint8_t initial_value = 0;
-
-  uint8_t final_value_ = 1;
-
-  unique_ptr<MultiplierNodeHandler> multiplier_node_handler_(
-                       new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
-
-  boost::thread thread1(PublishData);
-
-  ros::spinOnce();
-
-  ros::NodeHandle node_handle_;
-
-  multiplier_node_handler_->Execute();
-
-  pthread_cancel(thread1.native_handle());
-
-  ros::shutdown();
-
-  final_value_ = 0;
-
-  ROS_INFO("\n I am out of loop");
-
-  EXPECT_EQ(initial_value, final_value_);
+  EXPECT_TRUE(num_factory_->GetArithmeticOperation() == nullptr);
 }
 
 /** Communication Factory Tests */
@@ -327,69 +272,46 @@ TEST(Communication_factory_test, Communication_factory_test_4) {
 
 /** Publish Subscribe Tests */
 /*
- * @brief //to check if receive is happening through right channel
+ * @brief Create a publish node to test the subscribe and receiver callback
+ *        Success case
  */
-TEST(PublishSubscribe_test, PublishSubscribe_test_1) {
+TEST(PublishSubscribe_test, DISABLED_PublishSubscribe_test_1) {
+  ros::start();
+
+  MultiplierNodeHandler multiplierobj;
+  PublishSubscribe publish_subscribe(&multiplierobj);
+  publish_subscribe.ReceiveMessage();
+
+  /** Holds the reference of the nodehandle object */
+  ros::NodeHandle node_handle_;
+
+  /** Holds the reference to the Subscriber object */
   ros::Subscriber multiplier_subscriber_;
 
-  ros::NodeHandle node_handle_;
-
-  MultiplierNodeHandler *multiplierobj_ = new MultiplierNodeHandler();
-
-  ReceiverCallback *receiverobj_ = new ReceiverCallback(multiplierobj_);
-
-  multiplier_subscriber_ = node_handle_.subscribe("random_number_srand",
+  multiplier_subscriber_ = node_handle_.subscribe("multiplier_output",
                                                   100, receivercallback);
+  /** Holds the reference of the nodehandle object */
+  ros::NodeHandle test_nh;
 
-  ros::spinOnce();
+  /** Holds the reference to the publisher object */
+  ros::Publisher rand_num_publisher_;
+  ROS_INFO("Registered for callback");
+  rand_num_publisher_ = test_nh.advertise<ros_ran_num_msg::rand_num>
+                                               ("random_numbers", 100);
 
-  ros::spinOnce();
-}
+  ros_ran_num_msg::rand_num value;
+  value.number1 = 20;
+  value.number2 = 5;
 
-/*
- * @brief Subscribe test - To check if random numbers are coming
- */
-TEST(PublishSubscribe_test, PublishSubscribe_test_2) {
-  ros::NodeHandle node_handle_;
-  ros::Subscriber test_subscriber;
+  rand_num_publisher_.publish(value);
+  
+  ROS_INFO("Published value");
+  
+  ros::spin();
+  
+  ROS_INFO("Out of Spin");
 
-  test_subscriber = node_handle_.subscribe("random_number_srand",
-                                              100, &cbfunction);
-
-  ros::spinOnce();
-
-  ros::spinOnce();
-}
-
-/*
- * @brief Subscribe test - To check if random numbers are coming
- */
-TEST(PublishSubscribe_test, PublishSubscribe_test_3) {
-  ros::NodeHandle node_handle_;
-  ros::Subscriber test_subscriber;
-
-  test_subscriber = node_handle_.subscribe("random_number_srand",
-                                                100, &cbfunction);
-
-  ros::spinOnce();
-
-  ros::spinOnce();
-}
-
-/*
- * @brief Subscribe test - To check if random numbers are coming
- */
-TEST(PublishSubscribe_test, PublishSubscribe_test_4) {
-  PublishSubscribe *pub_sub_ = new PublishSubscribe(NULL);
-
-  pub_sub_->ReceiveMessage();
-
-  pub_sub_->SendMessage();
-
-  ros::spinOnce();
-  ros::spinOnce();
-
-  delete pub_sub_;
+  ros::shutdown();
 }
 
 /** Number Arithmetic Factory tests */
@@ -417,8 +339,8 @@ TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_2) {
   unique_ptr<NumberArithmeticFactory> number_factory_(
                                new NumberArithmeticFactory());
 
-  number_factory_->CreateArithmeticOperation(nullptr);   
-  
+  number_factory_->CreateArithmeticOperation(nullptr);
+
   EXPECT_FALSE(number_factory_->GetArithmeticOperation() != nullptr);
 }
 
@@ -426,7 +348,7 @@ TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_2) {
  * @brief failed case , Check if arithmetic factory perform execute
  * arithmetic operation without creating operation object
  */
-TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_3) {  
+TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_3) {
   unique_ptr<NumberArithmeticFactory> num_arth_factory_(
                                          new NumberArithmeticFactory());
   uint32_t value1_ = 10;
@@ -434,7 +356,7 @@ TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_3) {
 
   uint32_t expected_result_ = 200;
 
-  uint32_t actual_result_ = 
+  uint32_t actual_result_ =
                       num_arth_factory_->ExecuteArithmeticOperation(value1_,
                                                                   value2_);
 
@@ -445,16 +367,16 @@ TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_3) {
  * @brief failed case, Check if arithmetic factory perform execute
  * arithmetic operation when operation is add and returns add
  */
-TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_4) {  
+TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_4) {
   unique_ptr<NumberArithmeticFactory> num_arth_factory_(
                                       new NumberArithmeticFactory());
-  num_arth_factory_->CreateArithmeticOperation(new NumberMultiplier()); 
+  num_arth_factory_->CreateArithmeticOperation(new NumberMultiplier());
   uint32_t value1_ = 10;
   uint32_t value2_ = 20;
 
   uint32_t expected_result_ = 30;
 
-  uint32_t actual_result_ = 
+  uint32_t actual_result_ =
                       num_arth_factory_->ExecuteArithmeticOperation(value1_,
                                                                   value2_);
 
@@ -465,20 +387,20 @@ TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_4) {
  * @brief Check if arithmetic factory perform execute
  * arithmetic operation and return value
  */
-TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_5) {  
+TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_5) {
   unique_ptr<NumberArithmeticFactory> num_arth_factory_(
                                       new NumberArithmeticFactory());
-  num_arth_factory_->CreateArithmeticOperation(new NumberMultiplier()); 
+  num_arth_factory_->CreateArithmeticOperation(new NumberMultiplier());
   uint32_t value1_ = 10;
   uint32_t value2_ = 20;
 
   uint32_t expected_result_ = 200;
 
-  uint32_t actual_result_ = 
+  uint32_t actual_result_ =
                       num_arth_factory_->ExecuteArithmeticOperation(value1_,
                                                                   value2_);
 
-  EXPECT_EQ(expected_result_,actual_result_);
+  EXPECT_EQ(expected_result_, actual_result_);
 }
 
 /*
@@ -496,7 +418,7 @@ TEST(number_arithmetic_factory_test, number_arithmetic_factory_test_6) {
 /*
  * @brief Check Valid data is returned in DoArithmetic Operation
  */
-TEST(number_multiplier_test,number_multiplier_test_1) {
+TEST(number_multiplier_test, number_multiplier_test_1) {
   unique_ptr<NumberMultiplier> number_factory_(
                                new NumberMultiplier());
   uint32_t value1_ = 10;
@@ -504,17 +426,17 @@ TEST(number_multiplier_test,number_multiplier_test_1) {
 
   uint32_t expected_result_ = 200;
 
-  uint32_t actual_result_ = 
+  uint32_t actual_result_ =
                       number_factory_->DoArithmeticOperation(value1_,
                                                                   value2_);
 
-  EXPECT_EQ(expected_result_,actual_result_);  
+  EXPECT_EQ(expected_result_, actual_result_);
 }
 
 /*
  * @brief Check Valid data is returned in DoMultiplication Operation
  */
-TEST(number_multiplier_test,number_multiplier_test_2) {
+TEST(number_multiplier_test, number_multiplier_test_2) {
   unique_ptr<NumberMultiplier> number_factory_(
                                new NumberMultiplier());
   uint32_t value1_ = 10;
@@ -522,17 +444,17 @@ TEST(number_multiplier_test,number_multiplier_test_2) {
 
   uint32_t expected_result_ = 200;
 
-  uint32_t actual_result_ = 
+  uint32_t actual_result_ =
                       number_factory_->DoArithmeticOperation(value1_,
                                                                   value2_);
 
-  EXPECT_EQ(expected_result_,actual_result_);  
+  EXPECT_EQ(expected_result_, actual_result_);
 }
 
 /*
  * @brief failure case, Check invalid data is returned in DoArithmetic Operation
  */
-TEST(number_multiplier_test,number_multiplier_test_3) {
+TEST(number_multiplier_test, number_multiplier_test_3) {
   unique_ptr<NumberMultiplier> number_factory_(
                                new NumberMultiplier());
   uint32_t value1_;
@@ -540,17 +462,17 @@ TEST(number_multiplier_test,number_multiplier_test_3) {
 
   uint32_t expected_result_ = 200;
 
-  uint32_t actual_result_ = 
+  uint32_t actual_result_ =
                       number_factory_->DoArithmeticOperation(value1_,
                                                                   value2_);
 
-  EXPECT_FALSE(expected_result_ == actual_result_);  
+  EXPECT_FALSE(expected_result_ == actual_result_);
 }
 
 /*
  * @brief failure case, Check invalid data is returned in DoMultiplication Operation
  */
-TEST(number_multiplier_test,number_multiplier_test_4) {
+TEST(number_multiplier_test, number_multiplier_test_4) {
   unique_ptr<NumberMultiplier> number_factory_(
                                new NumberMultiplier());
   uint32_t value1_;
@@ -558,11 +480,11 @@ TEST(number_multiplier_test,number_multiplier_test_4) {
 
   uint32_t expected_result_ = 200;
 
-  uint32_t actual_result_ = 
+  uint32_t actual_result_ =
                       number_factory_->DoArithmeticOperation(value1_,
                                                                   value2_);
 
-  EXPECT_FALSE(expected_result_ == actual_result_);  
+  EXPECT_FALSE(expected_result_ == actual_result_);
 }
 
 /**---------------------------------- MAIN ---------------------------------*/

@@ -20,6 +20,7 @@
 /*! Include Files */
 #include <cstddef>
 #include "ros_arithmetic/core/communication_factory.h"
+#include <ros/ros.h>
 
 /*! Class Definitions */
 /**

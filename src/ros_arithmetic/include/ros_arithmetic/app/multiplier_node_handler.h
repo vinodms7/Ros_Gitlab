@@ -22,7 +22,6 @@
 #include "ros_arithmetic/core/communication_factory.h"
 #include "ros_arithmetic/core/number_arithmetic_interface.h"
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
-#include <ros/console.h>
 
 /*! Class Declarations */
 class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface {

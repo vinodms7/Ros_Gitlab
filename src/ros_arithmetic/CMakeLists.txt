@@ -138,6 +138,7 @@ catkin_add_gtest(ros_arithmetic_test test/number_arithmetic_test.cc src/core/com
 
 target_link_libraries(ros_arithmetic_test ${catkin_LIBRARIES})
 
+add_dependencies(ros_arithmetic_test ros_ran_num_msg_gencpp)
 
 install(TARGETS ros_arithmetic
 	RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

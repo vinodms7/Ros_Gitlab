@@ -27,6 +27,26 @@
 
 
 /*
+ * @brief  receiveCallback implementattion for Subscriber based Test Cases 
+ */
+void receiveCallback(const ros_ran_num_msg::rand_num& msg) {
+  std::cerr << "Received message using Subscribe.." << std::endl;
+
+  ros::shutdown();
+  EXPECT_NE(msg.number1, msg.number2);
+}
+
+/*
+ * @brief  timer_lapsed function callback in case no publisher available 
+ */
+void timer_lapsed(const ros::TimerEvent& evt) {
+  std::cerr << "Time elapsed and no message received.." << std::endl;
+
+  ros::shutdown();
+  EXPECT_TRUE(0);
+}
+
+/*
  * @brief  To verify GetGeneratedNumber - GenerateNumber generating random number 
  *         within given range using LCG Implementation
  */

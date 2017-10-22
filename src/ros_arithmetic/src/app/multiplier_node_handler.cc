@@ -18,6 +18,7 @@
 #include "ros_arithmetic/app/multiplier_node_handler.h"
 #include "ros_arithmetic/app/publish_subscribe.h"
 #include "ros_arithmetic/app/multiplier_arithmetic.h"
+#include <ros/ros.h>
 
 /*! Class Definitions */
 MultiplierNodeHandler::MultiplierNodeHandler(OperationType operation_type):

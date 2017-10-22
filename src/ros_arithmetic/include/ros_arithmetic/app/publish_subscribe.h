@@ -22,6 +22,7 @@
 #include "ros_arithmetic/core/communication_interface.h"
 #include "ros/ros.h"
 #include "ros_ran_num_msg/rand_num.h"
+#include "ros_ran_num_msg/mutliplier_num.h"
 
 /*! Class Declarations */
 class ReceiverCallback {
@@ -65,6 +66,12 @@ class ReceiverCallback {
  private:
   /*! Holds the reference of the multiplier node handler */
   ArithmeticNodeHandlerInterface *arithmetic_node_handler_;
+
+  /** Holds the reference to the publisher object */
+  ros::Publisher multiplier_publisher_;
+
+  /** Holds the reference of the nodehandle object */
+  ros::NodeHandle node_handle_multiplier_;
 };
 
 /*! Class Declarations */
