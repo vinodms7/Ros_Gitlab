@@ -3,9 +3,12 @@
 *                                                                          *
 ****************************************************************************/
 /**
-* @file    Number Generator Node
+* @file         number_generator_node.cc
+* 
 * @author       Rajat Jayanth Shetty <Rajat.Shetty@kpit.com>
+* 
 * @date         18 Oct 2017
+* 
 * @brief        Entry point for the Random Generator Node
 *
 **/
@@ -20,8 +23,8 @@
 int main(int argc, char **argv) {
   ros::init(argc, argv, "NumberGeneratorNode");
 
-  std::unique_ptr<NodeHandlerInterface> randNumberObj(new GeneratorNodeHandler(GeneratorNodeHandler::LCG));
+  std::unique_ptr<NodeHandlerInterface> randNumberObj(
+                        new GeneratorNodeHandler(GeneratorNodeHandler::LCG));
   randNumberObj->Execute();
   return 0;
 }
-

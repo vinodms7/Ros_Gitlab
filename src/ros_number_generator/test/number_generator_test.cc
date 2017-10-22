@@ -4,8 +4,11 @@
 ****************************************************************************/
 /**
 * @file     number_generator_test.cc
+* 
 * @author   Rajat Jayanth Shetty <rajat.shetty@kpit.com>
+* 
 * @date     18 Oct 2017
+* 
 * @brief    This file declares Number Generator Factory Class
 *
 */
@@ -16,11 +19,11 @@
 #include <boost/thread/thread.hpp>
 
 #include "ros/ros.h"
-
-#include "ros_number_generator/app/generator_node_handler.h"
-#include "ros_number_generator/core/communication_factory.h"
-#include "ros_number_generator/app/publish_subscribe.h"
 #include "ros_ran_num_msg/rand_num.h"
+
+#include "ros_number_generator/core/communication_factory.h"
+#include "ros_number_generator/app/generator_node_handler.h"
+#include "ros_number_generator/app/publish_subscribe.h"
 
 
 /*

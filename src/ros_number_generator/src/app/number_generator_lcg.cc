@@ -3,10 +3,13 @@
 *                                                                          *
 ****************************************************************************/
 /**
-* @file number_generator_lcg.cc
-* @author Rajat Jayanth Shetty  <rajat.shetty@kpit.com>
-* @date 18 Oct 2017
-* @brief    Linear Congruential Generator Implementation
+* @file    number_generator_lcg.cc
+* 
+* @author  Rajat Jayanth Shetty  <rajat.shetty@kpit.com>
+* 
+* @date    18 Oct 2017
+* 
+* @brief   Linear Congruential Generator Implementation
 *
 * The Linear Congruential Generator (LCG) is based on Park & Miller
 * algorithm found in "Numerical Recipes".
@@ -52,13 +55,14 @@ NumberGeneratorLCG::~NumberGeneratorLCG() {
 /**
 * Function name: GenerateNumber()
 *
-* @brief       Function call containing the actual implementation of the Number Generator
+* @brief Function call containing the actual implementation 
+*         of the Number Generator
 *
 **/
 uint32_t NumberGeneratorLCG::GenerateNumber() {
   uint64_t kRatio = (current_seed_ / constValues::QSA);
 
-  current_seed_= constValues::APMA*(current_seed_-(kRatio * constValues::QSA))
+  current_seed_ = constValues::APMA*(current_seed_-(kRatio * constValues::QSA))
                       - (constValues::RSA * kRatio);
 
   return current_seed_;

@@ -3,19 +3,25 @@
 *                                                                          *
 ****************************************************************************/
 /**
-* @file    Generator Node Handler
+* @file         generator_node_handler.h
+* 
 * @author       Rajat Jayanth Shetty <Rajat.Shetty@kpit.com>
+* 
 * @author       Sujeyendra Tummala <Tummala.Sujeyendra@kpit.com>
+* 
 * @author       Sasi Kiran Alur  <Sasi.Alur@kpit.com> 
+* 
 * @date         18 Oct 2017
+* 
 * @brief        Perform factory creation and processing data functionalities
-*
 *
 **/
 #ifndef GENERATOR_NODE_H
 #define GENERATOR_NODE_H
 
 /*  include files  */
+#include <ros/console.h>
+
 #include "ros_number_generator/core/generator_ node_handler_interface.h"
 #include "ros_number_generator/core/communication_factory.h"
 #include "ros_number_generator/core/number_generator_factory.h"

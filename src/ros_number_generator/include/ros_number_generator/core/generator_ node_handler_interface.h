@@ -4,9 +4,9 @@
 ****************************************************************************/
 
 /**
-* @file      generator_Node_Handler_ Interface.h
+* @file      generator_Node_Handler_Interface.h
 *
-* @author    Sasi Kiran
+* @author    Sasi Kiran <Sasi.Alur@kpit.com>
 *
 * @date      18-Oct- 2017
 *
@@ -16,13 +16,10 @@
 
 #ifndef GENERATOR_NODE_HANDLER_INTERFACE_H
 #define GENERATOR_NODE_HANDLER_INTERFACE_H
+
 #include <string>
 
-#include "ros_number_generator/core/communication_factory.h"
-#include "ros_number_generator/core/number_generator_factory.h"
-
 /* Class Declarations */
-
 class NodeHandlerInterface {
  public:
   /**

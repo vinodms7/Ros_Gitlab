@@ -4,8 +4,11 @@
 ****************************************************************************/
 /**
 * @file number_generator_interface.h
+* 
 * @author Rajat Jayanth Shetty  <rajat.shetty@kpit.com>
+* 
 * @date 18 Oct 2017
+* 
 * @brief    Interface file for Number generator implementation
 *
 * This file contains the interface details based on which the Random Generator 
@@ -27,8 +30,8 @@ class NumberGenerator {
   *
   * The implementation is defined in the derived class of the interface file
   *
-  * @param[in]  uint32_t  max_random_value Maximum range the Random Generator should generate values within
-  * @param[in   uint32_t  min_random_value Minimum range the Random Generator should generate values within
+  * @param[in]  uint32_t  max_random_value Maximum range for Random Generator
+  * @param[in   uint32_t  min_random_value Minimum range for Random Generator
   *
   * @return     void
   **/

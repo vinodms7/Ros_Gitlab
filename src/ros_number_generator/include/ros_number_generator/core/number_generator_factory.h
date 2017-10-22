@@ -4,8 +4,11 @@
 ****************************************************************************/
 /**
 * @file     number_generator_factory.h
+* 
 * @author   Rajat Jayanth Shetty <rajat.shetty@kpit.com>
+* 
 * @date     18 Oct 2017
+* 
 * @brief    This file declares Number Generator Factory Class
 *
 */
@@ -36,12 +39,12 @@ class NumberGeneratorFactory {
   ~NumberGeneratorFactory();
 
   /**
-  * Function name: CreateGenerator
+  * Function name: CreateGenerator()
   *
   * @brief Receives an instance for the Number Generator
   *
-  * @param[in]  NumberGenerator number_generator contains the data pointer to the 
-  *             instance of the Number generator
+  * @param[in]  NumberGenerator number_generator contains the data pointer to
+  *              the instance of the Number generator
   *
   * @return    void
   **/

@@ -18,6 +18,7 @@
 
 /*! Include Files */
 #include "ros_number_generator/core/communication_interface.h"
+#include <ros/console.h>
 
 /*! Class Declarations */
 class CommFactory {

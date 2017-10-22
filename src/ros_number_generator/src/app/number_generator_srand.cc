@@ -3,10 +3,13 @@
 *                                                                          *
 ****************************************************************************/
 /**
-* @file number_generator_srand.cc
-* @author Rajat Jayanth Shetty  <rajat.shetty@kpit.com>
-* @date   18 Oct 2017
-* @brief  Default C++ SRand implemenation of random number generator 
+* @file    number_generator_srand.cc
+* 
+* @author  Rajat Jayanth Shetty  <rajat.shetty@kpit.com>
+* 
+* @date    18 Oct 2017
+* 
+* @brief   Default C++ SRand implemenation of random number generator 
 *
 */
 

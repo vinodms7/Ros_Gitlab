@@ -55,8 +55,15 @@ void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
 void CommFactory::ExecuteCommunication() {
   if ( nullptr != communication_interface_ ) {
     communication_interface_->SendMessage();
-  } else { }
+  } else {
+    ROS_WARN(" Communication could not be eastablished");
+  }
 }
+
+/**
+* @brief  Get the reference to the instance of the Communication interface
+*        
+**/
 CommunicationInterface* CommFactory::GetCommunicator() {
   return communication_interface_;
 }
