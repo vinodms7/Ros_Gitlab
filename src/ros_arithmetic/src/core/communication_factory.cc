@@ -1,5 +1,5 @@
 /****************************************************************************
-* 		Copyright (C) 2017 by KPIT Technologies                     *
+*     Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
 
@@ -49,13 +49,12 @@ void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
   if (nullptr != communication_interface_) {
     delete communication_interface_;
     communication_interface_ = nullptr;
-  }  
+  }
   communication_interface_ = comm_int;
 }
 
-void CommFactory::ExecuteCommunication()
-{
-  if( nullptr != communication_interface_ )
+void CommFactory::ExecuteCommunication() {
+  if ( nullptr != communication_interface_ )
     communication_interface_->ReceiveMessage();
 }
 

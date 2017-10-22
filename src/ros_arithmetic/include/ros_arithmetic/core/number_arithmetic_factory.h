@@ -4,8 +4,8 @@
 ****************************************************************************/
 
 /**
-* @file		Number Arithmetic Factory
-* @author       Sasi Kiran	
+* @file    Number Arithmetic Factory
+* @author       Sasi Kiran  
 * @date         18 oct 2017
 * @brief        Factory class for creation of number arithmetic operations
 *
@@ -37,25 +37,25 @@ class NumberArithmeticFactory {
   *
   * @brief Create number arithmetic operation object
   *
-  * @param[in]	NumberArithmeticInterface*  multiplier_int 
+  * @param[in]  NumberArithmeticInterface*  multiplier_int 
   *             This is pointer to interface  
   *
-  * @return	void
+  * @return  void
   **/
   void CreateArithmeticOperation(NumberArithmeticInterface *multiplier_int);
-  
+
   /**
   * Function name: ExecuteArithmeticOperation
   *
   * @brief Execute arithmetic operation and return value
   *
-  * @param[in]	None
+  * @param[in]  None
   *
-  * @return	uint32_t  return generated value
+  * @return  uint32_t  return generated value
   **/
   uint32_t ExecuteArithmeticOperation(uint32_t value1, uint32_t value2);
-  
+
  private:
-  NumberArithmeticInterface *number_arithmetic_; //  Pointer to arithmetic Interface
+  NumberArithmeticInterface *number_arithmetic_;  //  Arithmetic Interface Ptr
 };
 #endif /* __NUMBER_MULTIPLIER_FACTORY_H_ */

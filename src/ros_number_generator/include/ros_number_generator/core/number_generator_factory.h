@@ -22,11 +22,11 @@ class NumberGeneratorFactory {
   *
   * @brief Constructor for the Number Generator Factory class
   *
-  * @param[in]	None
+  * @param[in]  None
   *  
   **/
   NumberGeneratorFactory();
-  
+
   /**
   * Function name: ~NumberGeneratorFactory
   *
@@ -40,21 +40,21 @@ class NumberGeneratorFactory {
   *
   * @brief Receives an instance for the Number Generator
   *
-  * @param[in]	NumberGenerator number_generator contains the data pointer to the 
+  * @param[in]  NumberGenerator number_generator contains the data pointer to the 
   *             instance of the Number generator
   *
-  * @return		void
+  * @return    void
   **/
   void CreateGenerator(NumberGenerator* number_generator);
-  
+
   /**
   * Function name: ExecuteGenerator
   *
   * @brief Execute generator and return generated value
   *
-  * @param[in]	None
+  * @param[in]  None
   *
-  * @return	uint32_t  return generated value
+  * @return  uint32_t  return generated value
   **/
   uint32_t ExecuteGenerator() const;
 
@@ -67,9 +67,9 @@ class NumberGeneratorFactory {
  * return the instance 
  *
  **/
- NumberGenerator* getGenerator();
- 
+  NumberGenerator* getGenerator();
+
  private:
-  NumberGenerator *number_generator_;   //  Data pointer to the number generator 
+  NumberGenerator *number_generator_;   //  Ptr to the number generator
 };
 #endif

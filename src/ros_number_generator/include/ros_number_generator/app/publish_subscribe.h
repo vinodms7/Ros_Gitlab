@@ -1,5 +1,5 @@
 /****************************************************************************
-* 		Copyright (C) 2017 by KPIT Technologies                     *
+*     Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
 
@@ -25,7 +25,7 @@
 
 /*! Class Declarations */
 class PublishSubscribe : public CommunicationInterface {
-public:
+ public:
   /**
   * Function name: PublishSubscribe
   *
@@ -37,7 +37,7 @@ public:
   *              Pointer to the reference generator node handler 
   *
   **/
-  explicit PublishSubscribe(NodeHandlerInterface *);
+  explicit PublishSubscribe(NodeHandlerInterface* node_handler_interface);
 
   /**
   * Function name: ~PublishSubscribe
@@ -79,7 +79,7 @@ public:
   **/
   void ReceiveMessage();
 
-private:
+ private:
   /** Holds the reference to the generator node handler object */
   NodeHandlerInterface *generator_node_handler_;
 

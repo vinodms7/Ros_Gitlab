@@ -14,11 +14,11 @@
 */
 
 /* include files */
+#include <string>
 #include "ros_number_generator/app/number_generator_lcg.h"
 #include "ros/ros.h"
 
-namespace constValues
-{
+namespace constValues {
   /** This uses the Park & Miller algorithm found in "Numerical Recipes"
   *  Define the constants for the Park & Miller algorithm */
   constexpr uint64_t APMA = 16807;       // 7^5
@@ -27,8 +27,8 @@ namespace constValues
   /**  Schrage's algorithm constants  */
   constexpr uint64_t QSA = 127773;
   constexpr uint64_t RSA = 2836;
-}
- 
+}  //  namespace constValues
+
 /**
 * Function name: NumberGeneratorLCG()
 *
@@ -38,7 +38,8 @@ namespace constValues
 * numbers need to be generator.
 * The seed value is initialize using inbuilt srandom()  and random() function call
 **/
-NumberGeneratorLCG::NumberGeneratorLCG(uint32_t max_random_value, uint32_t min_random_value)
+NumberGeneratorLCG::NumberGeneratorLCG(uint32_t max_random_value,
+                                        uint32_t min_random_value)
   : current_random_number_(0) {
     SetRandomValRange(max_random_value, min_random_value);
 
@@ -57,7 +58,7 @@ NumberGeneratorLCG::~NumberGeneratorLCG() {
 uint32_t NumberGeneratorLCG::GenerateNumber() {
   uint64_t kRatio = (current_seed_ / constValues::QSA);
 
-  current_seed_ = constValues::APMA * (current_seed_ - (kRatio * constValues::QSA)) \
+  current_seed_= constValues::APMA*(current_seed_-(kRatio * constValues::QSA))
                       - (constValues::RSA * kRatio);
 
   return current_seed_;
@@ -81,12 +82,12 @@ std::string NumberGeneratorLCG::GetGeneratorName() const {
 * The method does a basic check to verify is the max_random_value is greater than min_random_value
 * If the min_random_value is greater than max_random_value, the values swapped
 **/
-void NumberGeneratorLCG::SetRandomValRange(uint32_t max_random_value, uint32_t min_random_value) {
+void NumberGeneratorLCG::SetRandomValRange(uint32_t max_random_value,
+                                          uint32_t min_random_value) {
   if (max_random_value > min_random_value) {
     max_random_value_ = max_random_value;
     min_random_value_ = min_random_value;
-  }
-  else {
+  } else {
     max_random_value_ = min_random_value;
     min_random_value_ = max_random_value;
   }
@@ -100,6 +101,7 @@ void NumberGeneratorLCG::SetRandomValRange(uint32_t max_random_value, uint32_t m
 * The function internally call the Implementation method for random number generator 
 **/
 uint32_t NumberGeneratorLCG::GetGeneratedNumber() {
-  current_random_number_ = min_random_value_ + (GenerateNumber() % (max_random_value_ - min_random_value_));
+  current_random_number_ = min_random_value_ +
+        (GenerateNumber() % (max_random_value_ - min_random_value_));
   return current_random_number_;
 }

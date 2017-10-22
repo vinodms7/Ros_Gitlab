@@ -1,5 +1,5 @@
 /****************************************************************************
-* 		Copyright (C) 2017 by KPIT Technologies                     *
+*     Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
 
@@ -29,21 +29,20 @@
 *        assigns the received generator node handle reference 
 *        and advertises the topic to be published
 **/
-PublishSubscribe::PublishSubscribe(NodeHandlerInterface *p_generator_node_handler) {
-  if(nullptr != p_generator_node_handler) {
-    generator_node_handler_ = p_generator_node_handler;
+PublishSubscribe::PublishSubscribe(NodeHandlerInterface *gen_node_handler) {
+  if (nullptr != gen_node_handler) {
+    generator_node_handler_ = gen_node_handler;
     rand_num_publisher_ = node_handle_.advertise<ros_ran_num_msg::rand_num>("random_number_srand", 100);
   } else {
     ROS_WARN("No Generator Node instance. No messages to publish");
   }
-
 }
 
 /**
 * @brief Implements the destructor to the PublishSubscribe class
 **/
 PublishSubscribe::~PublishSubscribe() {
-  node_handle_.shutdown();   
+  node_handle_.shutdown();
 }
 
 /**
@@ -51,21 +50,22 @@ PublishSubscribe::~PublishSubscribe() {
 *        random number and publish it
 **/
 void PublishSubscribe::SendMessage() {
-  if(nullptr == generator_node_handler_) {
+  if (nullptr == generator_node_handler_) {
     ROS_WARN("No Generator Node instance. No messages to publish");
     return;
   } else {
     ros::Rate rate(1);
     ros_ran_num_msg::rand_num value;
-  
-    while( node_handle_.ok() ) {
+
+    while ( node_handle_.ok() ) {
       value.number1 = generator_node_handler_->GetNumber();
       value.number2 = generator_node_handler_->GetNumber();
 
       rand_num_publisher_.publish(value);
 
-      ROS_INFO("Number Generator Value 1: [%u] and Value 2: [%u]", value.number1, value.number2);
-    
+      ROS_INFO("Number Generator Value 1: [%u] and Value 2: [%u]",
+                                    value.number1, value.number2);
+
       ros::spinOnce();
       rate.sleep();
     }

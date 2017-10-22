@@ -3,10 +3,10 @@
 *                                                                          *
 ****************************************************************************/
 /**
-* @file		Generator Node Handler
+* @file    Generator Node Handler
 * @author       Rajat Jayanth Shetty <Rajat.Shetty@kpit.com>
 * @author       Sujeyendra Tummala <Tummala.Sujeyendra@kpit.com>
-* @author       Sasi Kiran Alur	<Sasi.Alur@kpit.com> 
+* @author       Sasi Kiran Alur  <Sasi.Alur@kpit.com> 
 * @date         18 Oct 2017
 * @brief        Perform factory creation and processing data functionalities
 *
@@ -31,7 +31,8 @@ namespace constVariables {
  *
  * @brief Constructor for the Node Handler
 **/
-GeneratorNodeHandler::GeneratorNodeHandler(GeneratorType generator_type) : generator_type_(generator_type) {
+GeneratorNodeHandler::GeneratorNodeHandler(GeneratorType generator_type)
+                                  : generator_type_(generator_type) {
   CreateNumberFactory();
   CreateCommunicationFactory();
 }
@@ -45,14 +46,14 @@ GeneratorNodeHandler::GeneratorNodeHandler(GeneratorType generator_type) : gener
  * number generator factory 
 **/
 GeneratorNodeHandler::~GeneratorNodeHandler() {
-  if(nullptr != number_generator_){
-	  delete  number_generator_;
-	  number_generator_ = nullptr;
+  if (nullptr != number_generator_) {
+    delete  number_generator_;
+    number_generator_ = nullptr;
   }
 
-  if(nullptr != communication_factory_) {
-  	delete communication_factory_;
-	communication_factory_ = nullptr;
+  if (nullptr != communication_factory_) {
+    delete communication_factory_;
+  communication_factory_ = nullptr;
   }
 }
 
@@ -64,12 +65,16 @@ GeneratorNodeHandler::~GeneratorNodeHandler() {
 **/
 void GeneratorNodeHandler::CreateNumberFactory() {
   number_generator_ = new NumberGeneratorFactory();
-  if( generator_type_ == GeneratorType::LCG )
-    number_generator_->CreateGenerator(new NumberGeneratorLCG(constVariables::MAX_RANDOM_VALUE,constVariables::MIN_RANDOM_VALUE)); 
-  else if( generator_type_ == GeneratorType::SRAND )
-    number_generator_->CreateGenerator(new NumberGeneratorSRand(constVariables::MAX_RANDOM_VALUE,constVariables::MIN_RANDOM_VALUE));
-  else {
-    std::cout<< "No object Created, Invalid type"<<std::endl;
+  if (generator_type_ == GeneratorType::LCG) {
+    number_generator_->CreateGenerator(new NumberGeneratorLCG(
+      constVariables::MAX_RANDOM_VALUE,
+      constVariables::MIN_RANDOM_VALUE));
+  } else if (generator_type_ == GeneratorType::SRAND) {
+    number_generator_->CreateGenerator(new NumberGeneratorSRand(
+      constVariables::MAX_RANDOM_VALUE,
+      constVariables::MIN_RANDOM_VALUE));
+  } else {
+    std::cout<< "No object Created, Invalid type"<< std::endl;
   }
 }
 
@@ -81,18 +86,17 @@ void GeneratorNodeHandler::CreateNumberFactory() {
 **/
 void GeneratorNodeHandler::CreateCommunicationFactory() {
   communication_factory_ = new CommFactory();
-  if(nullptr != communication_factory_)
+  if (nullptr != communication_factory_)
     communication_factory_->CreateCommunicator(new PublishSubscribe(this));
   else
-    std::cout<< "Failed to  to create Communication Interface..."<<std::endl;
+    std::cout<< "Failed to  to create Communication Interface"<< std::endl;
 }
 
-void GeneratorNodeHandler::Execute()
-{
-  if( nullptr != communication_factory_ )
+void GeneratorNodeHandler::Execute() {
+  if ( nullptr != communication_factory_ )
     communication_factory_->ExecuteCommunication();
   else
-    std::cout<< "No instance of Communication Interface available..."<<std::endl;
+    std::cout<< "No instance of Communication Interface available"<< std::endl;
 }
 /**
 * Function name: GetNumber
@@ -102,9 +106,9 @@ void GeneratorNodeHandler::Execute()
 **/
 uint32_t GeneratorNodeHandler::GetNumber() {
   uint32_t gen_number = 0;
-  if(nullptr != number_generator_){
+  if (nullptr != number_generator_) {
     gen_number =  number_generator_->ExecuteGenerator();
-  } else { 
+  } else {
     gen_number =  0;
   }
   return gen_number;
@@ -129,4 +133,3 @@ CommFactory* GeneratorNodeHandler::GetCommunicationFactory() {
 NumberGeneratorFactory* GeneratorNodeHandler::GetNumberFactory() {
   return number_generator_;
 }
-

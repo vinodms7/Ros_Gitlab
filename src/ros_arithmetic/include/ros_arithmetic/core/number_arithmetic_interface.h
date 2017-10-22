@@ -4,8 +4,8 @@
 ****************************************************************************/
 
 /**
-* @file		Number Arithmetic Interface
-* @author       Sasi Kiran	
+* @file    Number Arithmetic Interface
+* @author       Sasi Kiran  
 * @date         18 oct 2017
 * @brief        Interface class for Number Arithmetic Operations
 *
@@ -19,20 +19,19 @@
 #include <ros/types.h>
 
 class NumberArithmeticInterface {
- public:  
+ public:
   /**
   * Function name: DoArithmeticOperation
   *
   * @brief Perform number arithmetic operation
   *
-  * @param[in]	uint32_t value1 this is first number for arithmetic operation
+  * @param[in]  uint32_t value1 this is first number for arithmetic operation
   *
-  * @param[in]	uint32_t value2 this is second number for arithmetic operation
+  * @param[in]  uint32_t value2 this is second number for arithmetic operation
   *
-  * @return	uint32_t retrun value after arithmetic opeation is done 
+  * @return  uint32_t retrun value after arithmetic opeation is done 
   **/
   virtual uint32_t DoArithmeticOperation(uint32_t, uint32_t) = 0;
-
 };
 
 #endif

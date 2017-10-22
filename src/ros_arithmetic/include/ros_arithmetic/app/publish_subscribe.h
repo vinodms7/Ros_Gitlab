@@ -1,5 +1,5 @@
 /****************************************************************************
-* 		Copyright (C) 2017 by KPIT Technologies                     *
+*     Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
 
@@ -38,8 +38,8 @@ class ReceiverCallback {
   *  
   *
   **/
-  ReceiverCallback(ArithmeticNodeHandlerInterface* );
-  
+  explicit ReceiverCallback(ArithmeticNodeHandlerInterface* node_handler);
+
   /**
   * Function name: ~ReceiverCallback
   *
@@ -48,7 +48,7 @@ class ReceiverCallback {
   *
   **/
   ~ReceiverCallback();
-  
+
   /**
   * Function name: MultiplierCallback
   *
@@ -65,8 +65,8 @@ class ReceiverCallback {
   *
   **/
   void MultiplierCallback(const ros_ran_num_msg::rand_num::ConstPtr& value);
- 
- private:  
+
+ private:
   /*! Holds the reference of the multiplier node handler */
   ArithmeticNodeHandlerInterface *arithmetic_node_handler_;
 };
@@ -87,8 +87,8 @@ class PublishSubscribe : public CommunicationInterface {
   *  
   *
   **/
-  PublishSubscribe(ArithmeticNodeHandlerInterface* node_handler);
-  
+  explicit PublishSubscribe(ArithmeticNodeHandlerInterface* node_handler);
+
   /**
   * Function name: ~PublishSubscribe
   *
@@ -97,7 +97,7 @@ class PublishSubscribe : public CommunicationInterface {
   *
   **/
   ~PublishSubscribe();
-  
+
   /**
   * Function name: SendMessage
   *
@@ -111,7 +111,7 @@ class PublishSubscribe : public CommunicationInterface {
   *
   **/
   void SendMessage();
-  
+
   /**
   * Function name: ReceiveMessage
   *
@@ -126,17 +126,17 @@ class PublishSubscribe : public CommunicationInterface {
   *
   **/
   void ReceiveMessage();
- 
+
  private:
   /** Holds the reference to the receiver callback object */
   ReceiverCallback *receiver_callback_;
-  
+
   /** Holds the reference to the multiplier node handler object */
   ArithmeticNodeHandlerInterface *arithmetic_node_handler_;
-  
+
   /** Holds the reference of the nodehandle object */
   ros::NodeHandle node_handle_;
-  
+
   /** Holds the reference to the subscriber object */
   ros::Subscriber multiplier_subscriber_;
 };

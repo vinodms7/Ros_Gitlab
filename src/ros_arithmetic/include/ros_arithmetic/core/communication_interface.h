@@ -1,5 +1,5 @@
 /****************************************************************************
-* 		Copyright (C) 2017 by KPIT Technologies                     *
+*     Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
 
@@ -19,7 +19,7 @@
 
 /* Class Declarations */
 class CommunicationInterface {
- public:   
+ public:
   /**
   * Function name: SendMessage
   *
@@ -34,7 +34,7 @@ class CommunicationInterface {
   *
   **/
   virtual void SendMessage() = 0;
-  
+
   /**
   * Function name: ReceiveMessage
   *

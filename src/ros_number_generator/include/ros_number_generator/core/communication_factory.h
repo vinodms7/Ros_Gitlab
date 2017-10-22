@@ -1,5 +1,5 @@
 /****************************************************************************
-* 		Copyright (C) 2017 by KPIT Technologies                     *
+*     Copyright (C) 2017 by KPIT Technologies                     *
 *                                                                           *
 ****************************************************************************/
 
@@ -33,7 +33,7 @@ class CommFactory {
   *
   **/
   CommFactory();
- 
+
   /**
   * Function name: ~CommFactory
   *
@@ -43,7 +43,7 @@ class CommFactory {
   *
   **/  
   ~CommFactory();
-  
+
   /**
   * Function name: CreateCommunicator
   *
@@ -65,12 +65,12 @@ class CommFactory {
   *
   * @brief Execute communication to send message
   *
-  * @param[in]	None
+  * @param[in]  None
   *
-  * @return	void
+  * @return  void
   **/
   void ExecuteCommunication();
-  
+
  /**
   * Function name: GetCommunicator
   *
@@ -86,8 +86,9 @@ class CommFactory {
   *
   **/
   CommunicationInterface* GetCommunicator();
+
  private:
   /** Holds the pointer to communication interface object */
-  CommunicationInterface* communication_interface_;  
+  CommunicationInterface* communication_interface_;
 };
 #endif

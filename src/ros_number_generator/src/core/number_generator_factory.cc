@@ -47,12 +47,12 @@ NumberGeneratorFactory::~NumberGeneratorFactory() {
 * delete the previous instance before assigning a new Number Generator
 *
 **/
-void NumberGeneratorFactory::CreateGenerator(NumberGenerator *p_number_generator) {
+void NumberGeneratorFactory::CreateGenerator(NumberGenerator *number_gen) {
   if ( nullptr != number_generator_ ) {
     delete number_generator_;
     number_generator_ = nullptr;
   }
-  number_generator_ = p_number_generator;
+  number_generator_ = number_gen;
 }
 /**
 * Function name: getGenerator()
@@ -67,8 +67,8 @@ NumberGenerator* NumberGeneratorFactory::getGenerator() {
   return number_generator_;
 }
 
-uint32_t NumberGeneratorFactory::ExecuteGenerator() const {  
-  if ( nullptr != number_generator_ )  
+uint32_t NumberGeneratorFactory::ExecuteGenerator() const {
+  if ( nullptr != number_generator_ )
     return  number_generator_->GetGeneratedNumber();
   return 0;
 }
