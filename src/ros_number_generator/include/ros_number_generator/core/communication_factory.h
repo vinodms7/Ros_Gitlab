@@ -17,8 +17,8 @@
 #define COMMUNICATION_FACTORY_H
 
 /*! Include Files */
-#include "ros_number_generator/core/communication_interface.h"
 #include <ros/console.h>
+#include "ros_number_generator/core/communication_interface.h"
 
 /*! Class Declarations */
 class CommFactory {

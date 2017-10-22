@@ -15,36 +15,15 @@
 
 /*  include files */
 #include <string>
+#include "ros/ros.h"
 #include <gtest/gtest.h>
 #include <boost/thread/thread.hpp>
-
-#include "ros/ros.h"
 #include "ros_ran_num_msg/rand_num.h"
 
 #include "ros_number_generator/core/communication_factory.h"
 #include "ros_number_generator/app/generator_node_handler.h"
 #include "ros_number_generator/app/publish_subscribe.h"
 
-
-/*
- * @brief  receiveCallback implementattion for Subscriber based Test Cases 
- */
-void receiveCallback(const ros_ran_num_msg::rand_num& msg) {
-  std::cerr << "Received message using Subscribe.." << std::endl;
-
-  ros::shutdown();
-  EXPECT_NE(msg.number1, msg.number2);
-}
-
-/*
- * @brief  timer_lapsed function callback in case no publisher available 
- */
-void timer_lapsed(const ros::TimerEvent& evt) {
-  std::cerr << "Time elapsed and no message received.." << std::endl;
-
-  ros::shutdown();
-  EXPECT_TRUE(0);
-}
 
 /*
  * @brief  To verify GetGeneratedNumber - GenerateNumber generating random number 
@@ -263,8 +242,8 @@ void receiveCallback(const ros_ran_num_msg::rand_num& msg) {
  * @brief  timer_lapsed function callback in case negative unit test 
  */
 void timer_lapsed_negative_test(const ros::TimerEvent& evt) {
-  std::cerr << "             Time elapsed and no message received.." << std::endl;
-  std::cerr << "             Negative Test case callback function" << std::endl;  
+  std::cerr<< "             Time elapsed and no message received"<< std::endl;
+  std::cerr<< "             Negative Test case callback function"<< std::endl;
   ros::shutdown();
 
   EXPECT_TRUE(1);
@@ -311,11 +290,11 @@ TEST(CommunicationFactory_test, GetCommunicationFactory_test_6) {
 */
 TEST(CommunicationFactory_test, GetCommunicationFactory_test_7) {
   ros::start();
-  
+
   ros::NodeHandle nh;
   ros::Subscriber sub = nh.subscribe("random_numbers",
                                             1000, receiveCallback);
-  std::cerr << "             Testing Send Message using Publish..." << std::endl;
+  std::cerr << "             Testing Send Message using Publish."<< std::endl;
 
   GeneratorNodeHandler generator_node_handler;
 
@@ -332,14 +311,15 @@ TEST(CommunicationFactory_test, GetCommunicationFactory_test_7) {
 */
 TEST(CommunicationFactory_test, GetCommunicationFactory_test_8) {
   ros::start();
-  
+
   ros::NodeHandle nh;
   ros::Subscriber sub = nh.subscribe("random_numbers",
                                             1000, receiveCallback);
-  std::cerr << "             Testing Send Message using Publish and setParam for frequency as 5..." << std::endl;
+  std::cerr << "             Testing Publish and setParam for frequency as 5";
+  std::cerr<< std::endl;
 
   nh.setParam("frequency", 5);
- 
+
   GeneratorNodeHandler generator_node_handler;
 
   ros::Timer timer = nh.createTimer(ros::Duration(5), &timer_lapsed,
@@ -406,11 +386,11 @@ TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_4) {
 */
 TEST(PublisherSuscribe_test, SendMessage_test_1) {
   ros::start();
-  
+
   ros::NodeHandle nh;
   ros::Subscriber sub = nh.subscribe("random_numbers",
                                             1000, receiveCallback);
-  std::cerr << "             Testing Send Message using Publish..." << std::endl;
+  std::cerr<< "             Testing Send Message using Publish."<< std::endl;
 
   GeneratorNodeHandler generator_node_handler;
   PublishSubscribe publish_subcribe(&generator_node_handler);
@@ -427,12 +407,13 @@ TEST(PublisherSuscribe_test, SendMessage_test_1) {
 */
 TEST(PublisherSuscribe_test, SendMessage_test_2) {
   ros::start();
-  
+
   ros::NodeHandle nh;
   nh.setParam("frequency", 5);
   ros::Subscriber sub = nh.subscribe("random_numbers",
                                             1000, receiveCallback);
-  std::cerr << "             Testing Send Message using Publish with setParam for frequency..." << std::endl;
+  std::cerr << "             Testing Publish with setParam for frequency.";
+  std::cerr << std::endl;
 
   GeneratorNodeHandler generator_node_handler;
   PublishSubscribe publish_subcribe(&generator_node_handler);
@@ -454,8 +435,8 @@ TEST(PublisherSuscribe_Negtest, SendMessage_test_1) {
   ros::NodeHandle nh;
   ros::Subscriber sub = nh.subscribe("not_random_number",
                                               1000, receiveCallback);
-  std::cerr << "             Testing Send Message using Publish..." << std::endl;
-
+  std::cerr << "             Testing Send Message using Publish...";
+  std::cerr << std::endl;
   GeneratorNodeHandler generator_node_handler;
   PublishSubscribe publish_subcribe(&generator_node_handler);
 
@@ -472,12 +453,13 @@ TEST(PublisherSuscribe_Negtest, SendMessage_test_2) {
   ros::start();
 
   unsigned int nTimer = 0;
-  
+
   ros::NodeHandle nh;
   ros::Subscriber sub = nh.subscribe("random_numbers",
                                                 1000, receiveCallback);
-  std::cerr << "             Subscribed to topic random_numbers!" << std::endl;
-  std::cerr << "             Create Subscriber instance with no Handler" << std::endl;
+  std::cerr << "             Subscribed to topic random_numbers!"<< std::endl;
+  std::cerr << "             Create Subscriber instance with no Handler";
+  std::cerr<< std::endl;
 
   PublishSubscribe publish_subscribe(nullptr);
 
@@ -496,7 +478,7 @@ TEST(PublisherSuscribe_Negtest, SendMessage_test_2) {
     std::cerr << "             No Publishers available"<< std::endl;
 
   ros::shutdown();
-  EXPECT_TRUE(1); 
+  EXPECT_TRUE(1);
 }
 
 /*

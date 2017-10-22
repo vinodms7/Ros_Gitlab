@@ -53,7 +53,7 @@ class CommFactory {
   *
   * @return     void
   **/
-  void CreateCommunicator(CommunicationInterface* );
+  void CreateCommunicator(CommunicationInterface* comm_inteface);
 
   /**
   * Function name: GetCommunicator

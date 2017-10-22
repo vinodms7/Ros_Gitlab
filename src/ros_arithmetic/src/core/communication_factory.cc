@@ -18,9 +18,9 @@
 **/
 
 /*! Include Files */
+#include <ros/ros.h>
 #include <cstddef>
 #include "ros_arithmetic/core/communication_factory.h"
-#include <ros/ros.h>
 
 /*! Class Definitions */
 /**
@@ -65,7 +65,7 @@ CommunicationInterface* CommFactory::GetCommunicator() {
 * @brief Implements the functionality receive the message    
 **/
 void CommFactory::ExecuteCommunication() {
-  if( nullptr != communication_interface_ )
+  if ( nullptr != communication_interface_ )
     communication_interface_->ReceiveMessage();
   else
     ROS_WARN("Communication is not established");

@@ -121,9 +121,9 @@ class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface {
   **/
   void CreateCommunicationFactory();
 
-  OperationType operation_type_;  /*! enum  type for arithmetic operation */
-  NumberArithmeticFactory* arithmetic_factory_;  /*!  ptr to arithmetic factory */
-  CommFactory*   communication_factory_;  /*!  ptr to comm factory */
+  OperationType operation_type_;  // enum  type for arithmetic operation
+  NumberArithmeticFactory* arithmetic_factory_;  //  ptr to arithmetic factory
+  CommFactory*   communication_factory_;  //  ptr to comm factory
 };
 
 #endif /*MULTIPLIER_NODE_H */

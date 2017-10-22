@@ -45,7 +45,7 @@ class NumberArithmeticFactory {
   *
   * @return  void
   **/
-  void CreateArithmeticOperation(NumberArithmeticInterface * );
+  void CreateArithmeticOperation(NumberArithmeticInterface * numb_interface);
 
   /**
   * Function name: GetArithmeticOperation
@@ -71,10 +71,10 @@ class NumberArithmeticFactory {
   * @return     uint32_t  
   *                Holds the return result
   **/
-  uint32_t ExecuteArithmeticOperation(uint32_t , uint32_t );
+  uint32_t ExecuteArithmeticOperation(uint32_t num1, uint32_t num2);
 
  private:
-  NumberArithmeticInterface *number_arithmetic_;  /*! Arithmetic Interface Ptr */
+  NumberArithmeticInterface *number_arithmetic_;  // Arithmetic Interface Ptr
 };
 #endif /* __NUMBER_MULTIPLIER_FACTORY_H_ */
 

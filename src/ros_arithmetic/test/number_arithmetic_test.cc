@@ -40,7 +40,7 @@ void receivercallback(const ros_ran_num_msg::mutliplier_num::ConstPtr& value) {
   uint32_t vresult = value->multiplier_value;
   ROS_INFO("In callback function");
   EXPECT_GT(vresult, 0);
-  
+
   ros::shutdown();
 }
 
@@ -79,7 +79,7 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_3) {
   uint32_t value1_ = 10;
   uint32_t value2_ = 20;
 
-  uint32_t expected_result_= 200;
+  uint32_t expected_result_ = 200;
 
   uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_,
                                                       value2_);
@@ -97,7 +97,7 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_4) {
   uint32_t value1_ = 10;
   uint32_t value2_ = 20;
 
-  uint32_t expected_result_= 200;
+  uint32_t expected_result_ = 200;
 
   uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_,
                                                                   value2_);
@@ -176,7 +176,7 @@ TEST(Multiplier_node_handler_test, Multiplier_node_handler_test_9) {
   uint32_t value1_ = 10;
   uint32_t value2_ = 20;
 
-  uint32_t expected_result_= 10;
+  uint32_t expected_result_ = 10;
 
   uint32_t actual_result_ = multiplier_node_handler_->ProcessData(value1_,
                                                                   value2_);
@@ -304,11 +304,11 @@ TEST(PublishSubscribe_test, DISABLED_PublishSubscribe_test_1) {
   value.number2 = 5;
 
   rand_num_publisher_.publish(value);
-  
+
   ROS_INFO("Published value");
-  
+
   ros::spin();
-  
+
   ROS_INFO("Out of Spin");
 
   ros::shutdown();

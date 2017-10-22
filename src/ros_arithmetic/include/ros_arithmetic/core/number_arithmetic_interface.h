@@ -4,9 +4,9 @@
 ****************************************************************************/
 
 /**
-* @file		number_artihmetic_interface.h
+* @file    number_artihmetic_interface.h
 *
-* @author       Sasi Kiran <Sasi.Alur@kpit.com>	
+* @author       Sasi Kiran <Sasi.Alur@kpit.com>  
 *
 * @date         18-Oct-2017
 *
@@ -41,12 +41,12 @@ class NumberArithmeticInterface {
   *
   * @brief Display result
   *
-  * @param[in]	uint32_t 
+  * @param[in]  uint32_t 
   *                Holds the value to be displayed
   *
-  * @return	void 
+  * @return  void 
   **/
-  virtual void DisplayResult(uint32_t ) = 0;
+  virtual void DisplayResult(uint32_t) = 0;
 };
 
 #endif /* NUMBER_MULTIPLIER_H_ */
