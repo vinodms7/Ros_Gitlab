@@ -33,7 +33,7 @@ PublishSubscribe::PublishSubscribe(NodeHandlerInterface *gen_node_handler) {
   if (nullptr != gen_node_handler) {
     generator_node_handler_ = gen_node_handler;
     rand_num_publisher_ = node_handle_.advertise<ros_ran_num_msg::rand_num>
-                                               ("random_number_srand", 100);
+                                               ("random_numbers", 100);
   } else {
     ROS_WARN("No Generator Node instance. No messages to publish");
   }

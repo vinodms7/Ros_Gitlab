@@ -236,9 +236,9 @@ TEST(CommunicationFactory_test, GetCommunicationFactory_test_5) {
   unsigned int nTimer = 0;
 
   ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe("random_number_srand",
+  ros::Subscriber sub = nh.subscribe("random_numbers",
                                                 1000, receiveCallback);
-  std::cerr << "Subscribed to topic random_number_srand!" << std::endl;
+  std::cerr << "Subscribed to topic random_numbers!" << std::endl;
 
   PublishSubscribe publish_subscribe(nullptr);
   publish_subscribe.SendMessage();
@@ -264,9 +264,9 @@ TEST(CommunicationFactory_test, GetCommunicationFactory_test_6) {
 
   ros::NodeHandle nh;
 
-  ros::Subscriber sub = nh.subscribe("random_number_srand",
+  ros::Subscriber sub = nh.subscribe("random_numbers",
           1000, receiveCallback);
-  std::cerr << "Subscribed to topic random_number_srand!" << std::endl;
+  std::cerr << "Subscribed to topic random_numbers!" << std::endl;
 
   communication_factory_->CreateCommunicator(nullptr);
   communication_factory_->ExecuteCommunication();
@@ -315,7 +315,7 @@ TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_2) {
 */
 TEST(PublisherSuscribe_test, SendMessage_test_1) {
   ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe("random_number_srand",
+  ros::Subscriber sub = nh.subscribe("random_numbers",
                                             1000, receiveCallback);
   std::cerr << "Testing Send Message using Publish..." << std::endl;
 
@@ -336,7 +336,7 @@ TEST(PublisherSuscribe_test, SendMessage_test_1) {
 
 TEST(PublisherSuscribe_Negtest, SendMessage_test_1) {
   ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe("Wrong_random_number",
+  ros::Subscriber sub = nh.subscribe("not_random_number",
                                               1000, receiveCallback);
   std::cerr << "Testing Send Message using Publish..." << std::endl;
 
