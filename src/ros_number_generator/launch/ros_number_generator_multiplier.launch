@@ -1,14 +1,12 @@
 <launch>
 <group ns = "ros_multiplier">
 
-  <arg name="num_gen_type" value="1" />
-
   <node name= "number_multiplier_node" pkg= "ros_arithmetic" type= "ros_arithmetic" output="screen" respawn="false"/>
 
-  <node name= "random_number_generator_node" pkg= "ros_number_generator" type= "ros_number_generator" output="screen" respawn="false" args='-num_gen_type $(arg num_gen_type)'/>
+  <node name= "random_number_generator_node" pkg= "ros_number_generator" type= "ros_number_generator" output="screen" respawn="false" />
      <rosparam command="load" file="src/ros_number_generator/config/number_generator/frequency.yaml" />
      
-  <node pkg='rqt_plot' name='rqt_plot' type='rqt_plot' args='/random_number/random_number_srand'/>
+  <node pkg='rqt_plot' name='rqt_plot' type='rqt_plot' args='/random_number/random_numbers'/>
 
   <node pkg='rqt_console' name='rqt_console' type='rqt_console'/>
 
