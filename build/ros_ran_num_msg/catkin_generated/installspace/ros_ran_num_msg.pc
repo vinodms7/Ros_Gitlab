@@ -1,8 +1,0 @@
-prefix=/home/ubuntu/bmw_ros_multiplicator/ROS_Example/install
-
-Name: ros_ran_num_msg
-Description: Description of ros_ran_num_msg
-Version: 0.0.0
-Cflags: -I/home/ubuntu/bmw_ros_multiplicator/ROS_Example/install/include
-Libs: -L/home/ubuntu/bmw_ros_multiplicator/ROS_Example/install/lib 
-Requires: message_runtime std_msgs
