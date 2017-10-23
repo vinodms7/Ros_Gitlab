@@ -26,7 +26,8 @@
 * @brief Implements the constructor that initialises the communication 
 *        interface object to NULL
 **/
-CommFactory::CommFactory() {
+template <class T>
+CommFactory<T>::CommFactory() {
   communication_interface_ = nullptr;
 }
 
@@ -34,7 +35,8 @@ CommFactory::CommFactory() {
 * @brief Implements the destructor that deletes the communication 
 *        interface object if existing and intializes it to NULL
 **/
-CommFactory::~CommFactory() {
+template <class T>
+CommFactory<T>::~CommFactory() {
   if ( nullptr != communication_interface_ ) {
     delete communication_interface_;
     communication_interface_ = nullptr;
@@ -45,25 +47,26 @@ CommFactory::~CommFactory() {
 * @brief Implements the functionality to delete the existing reference to 
 *        the the communication object and initialize to the received object
 **/
-void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
+template <class T>
+void CommFactory<T>::CreateCommunicator(CommunicationInterface<T> *comm_int) {
   if ( nullptr != communication_interface_ ) {
     delete communication_interface_;
     communication_interface_ = nullptr;
   }
   communication_interface_ = comm_int;
 }
-void CommFactory::ExecuteCommunication() {
-  if ( nullptr != communication_interface_ ) {
-    communication_interface_->SendMessage();
-  } else {
-    ROS_WARN(" Communication could not be established");
-  }
+
+template <class T>
+void CommFactory<T>::ExecuteCommunication() {
+  // Do Nothing
 }
 
 /**
 * @brief  Get the reference to the instance of the Communication interface
 *        
 **/
-CommunicationInterface* CommFactory::GetCommunicator() {
+template <class T>
+CommunicationInterface<T>* CommFactory<T>::GetCommunicator() {
   return communication_interface_;
 }
+

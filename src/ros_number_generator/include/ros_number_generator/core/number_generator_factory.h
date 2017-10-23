@@ -15,9 +15,10 @@
 #ifndef NUMBER_GENERATOR_FACTORY_H
 #define NUMBER_GENERATOR_FACTORY_H
 
-/* include files */
+/*! Include files */
 #include "ros_number_generator/core/number_generator_interface.h"
 
+template<class T>
 class NumberGeneratorFactory {
  public:
   /**
@@ -48,7 +49,7 @@ class NumberGeneratorFactory {
   *
   * @return    void
   **/
-  void CreateGenerator(NumberGenerator* number_generator);
+  void CreateGenerator(NumberGenerator<T>* number_generator);
 
   /**
   * Function name: ExecuteGenerator
@@ -57,22 +58,25 @@ class NumberGeneratorFactory {
   *
   * @param[in]  None
   *
-  * @return  uint32_t  return generated value
+  * @return  T  return generated value
   **/
-  uint32_t ExecuteGenerator() const;
+  T ExecuteGenerator() const;
 
- /**
- * Function name: getGenerator()
- *  
- * @brief Returns the instance of the Number Generator
- *
- * If an instance of Number generator already exist, the current method will 
- * return the instance 
- *
- **/
-  NumberGenerator* getGenerator();
+  /**
+  * Function name: getGenerator()
+  *  
+  * @brief If an instance of Number generator already exist, the current method will 
+  * return the instance 
+  *  
+  * @returns Instance of the Number Generator
+  **/
+  NumberGenerator<T>* getGenerator();
 
  private:
-  NumberGenerator *number_generator_;   //  Ptr to the number generator
+  NumberGenerator<T>* number_generator_;   /*! Ptr to the number generator */
 };
-#endif
+  template class NumberGeneratorFactory<uint32_t>;
+  template class NumberGeneratorFactory<float>;
+
+#endif /* NUMBER_GENERATOR_FACTORY_H */
+

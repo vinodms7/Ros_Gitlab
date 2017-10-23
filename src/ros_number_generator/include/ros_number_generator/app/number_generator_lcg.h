@@ -18,11 +18,12 @@
 #ifndef NUMBER_GENERATOR_LCG_H
 #define NUMBER_GENERATOR_LCG_H
 
-/* include files */
+/*! Include files */
 #include <string>
 #include "ros_number_generator/core/number_generator_interface.h"
 
-class NumberGeneratorLCG : public NumberGenerator {
+template<class T>
+class NumberGeneratorLCG : public NumberGenerator<T> {
  public:
   /**
   * Function name: NumberGeneratorLCG()
@@ -32,12 +33,12 @@ class NumberGeneratorLCG : public NumberGenerator {
   * The constructor initializes the Random generator and specifies the range 
   * between which randomnumbers need to be generator.
   *
-  * @param[in]  uint32_t max_random_value Maximum range for Random Generator
-  * @param[in]  uint32_t min_random_value Minimum range for Random Generator
+  * @param[in]  T max_random_value Maximum range for Random Generator
+  * @param[in]  T min_random_value Minimum range for Random Generator
   *
   **/
-  NumberGeneratorLCG(uint32_t max_random_value = 1000,
-                          uint32_t min_random_value = 0);
+  NumberGeneratorLCG(T max_random_value = 1000,
+                          T min_random_value = 0);
 
   /**
   * Function name: ~NumberGeneratorLCG()
@@ -55,13 +56,13 @@ class NumberGeneratorLCG : public NumberGenerator {
   *
   * The Range between which the random numbers need to be generator 
   *
-  * @param[in]  uint32_t  max_random_value Maximum range for Random Generator
-  * @param[in   uint32_t  min_random_value Minimum range for Random Generator
+  * @param[in]  T  max_random_value Maximum range for Random Generator
+  * @param[in   T  min_random_value Minimum range for Random Generator
   *
   * @return     void
   **/
-  void SetRandomValRange(uint32_t max_random_value,
-                         uint32_t min_random_value);
+  void SetRandomValRange(T max_random_value,
+                         T min_random_value);
 
   /**
   * Function name: GetGeneratedNumber()
@@ -70,9 +71,9 @@ class NumberGeneratorLCG : public NumberGenerator {
   *
   * @param[in]  None
   *
-  * @return     uint32_t Returns a Random number generated
+  * @return     DataType Returns a Random number generated
   **/
-  uint32_t GetGeneratedNumber();
+  T GetGeneratedNumber();
 
   /**
   * Function name: GetGeneratorName()
@@ -95,15 +96,19 @@ class NumberGeneratorLCG : public NumberGenerator {
    *
    * @param[in]    None
    *
-   * @return      uint32_t Generates and returns the number generated 
+   * @return      DataType Generates and returns the number generated 
    * by the implementation
    **/
-  uint32_t GenerateNumber();
+  T GenerateNumber();
 
  private:
-  uint32_t max_random_value_;       // Max random value range
-  uint32_t min_random_value_;       // Min random value range
-  uint32_t current_seed_;           // Current random seed value
-  uint32_t current_random_number_;  // current random number
+  T max_random_value_;       /* Max random value range */
+  T min_random_value_;       /* Min random value range */
+  T current_seed_;           /* Current random seed value */
+  T current_random_number_;  /* current random number */
 };
+  template class NumberGeneratorLCG<uint32_t>;
+  template class NumberGeneratorLCG<float>;
+
 #endif  /* NUMBER_GENERATOR_LCG_H */
+

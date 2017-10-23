@@ -25,9 +25,11 @@
 int main(int argc, char **argv) {
   ros::init(argc, argv, "MultiplierNode");
 
-  std::unique_ptr<ArithmeticNodeHandlerInterface> multiplierObj(
-                      new MultiplierNodeHandler(MultiplierNodeHandler::MUL));
+  std::unique_ptr<ArithmeticNodeHandlerInterface<uint32_t, uint64_t>> 
+                   multiplierObj(
+                   new MultiplierNodeHandler<uint32_t, uint64_t>("MUL"));
   multiplierObj->Execute();
+
   ros::spin();
 
   return 0;

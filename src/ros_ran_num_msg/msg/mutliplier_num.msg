@@ -1,2 +1,2 @@
-uint32 multiplier_value
+uint64 multiplier_value
 

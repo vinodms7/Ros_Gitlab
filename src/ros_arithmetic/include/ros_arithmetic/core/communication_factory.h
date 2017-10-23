@@ -21,6 +21,7 @@
 #include "ros_arithmetic/core/communication_interface.h"
 
 /*! Class Declarations */
+template<class T, class RT>
 class CommFactory {
  public:
   /**
@@ -53,7 +54,7 @@ class CommFactory {
   *
   * @return     void
   **/
-  void CreateCommunicator(CommunicationInterface* comm_inteface);
+  void CreateCommunicator(CommunicationInterface<T, RT>* comm_inteface);
 
   /**
   * Function name: GetCommunicator
@@ -65,7 +66,7 @@ class CommFactory {
   * @return     CommunicationInterface* 
   *               Holds the pointer to communication interface  
   **/
-  CommunicationInterface* GetCommunicator();
+  CommunicationInterface<T, RT>* GetCommunicator();
 
   /**
   * Function name: ExecuteCommunication
@@ -80,8 +81,10 @@ class CommFactory {
 
  private:
   /** Holds the pointer to communication interface object */
-  CommunicationInterface* communication_interface_;
+  CommunicationInterface<T, RT>* communication_interface_;
 };
+  template class CommFactory<uint32_t, uint64_t>;
+  template class CommFactory<float, double>;
 
 #endif
 

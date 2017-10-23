@@ -21,6 +21,7 @@
 #include "ros_arithmetic/core/number_arithmetic_interface.h"
 
 /*! Class Declarations */
+template<class T, class RT>
 class NumberArithmeticFactory {
  public:
   /**
@@ -45,7 +46,7 @@ class NumberArithmeticFactory {
   *
   * @return  void
   **/
-  void CreateArithmeticOperation(NumberArithmeticInterface * numb_interface);
+  void CreateArithmeticOperation(NumberArithmeticInterface<T, RT>* numb_int);
 
   /**
   * Function name: GetArithmeticOperation
@@ -55,26 +56,30 @@ class NumberArithmeticFactory {
   * @return    NumberArithmeticInterface*
   *             Returns pointer to NumberArithmeticInterface*
   **/
-  NumberArithmeticInterface* GetArithmeticOperation();
+  NumberArithmeticInterface<T, RT>* GetArithmeticOperation();
 
   /**
   * Function name: ExecuteArithmeticOperation
   *
   * @brief Execute arithmetic operation and return value
   *
-  * @param[in]  uint32_t
+  * @param[in]  T
   *                Holds the first input value for operation
   *
-  * @param[in]  uint32_t
+  * @param[in]  T
   *                Holds the second input value for operation
   *
-  * @return     uint32_t  
+  * @return     RT  
   *                Holds the return result
   **/
-  uint32_t ExecuteArithmeticOperation(uint32_t num1, uint32_t num2);
+  RT ExecuteArithmeticOperation(T num1, T num2);
 
  private:
-  NumberArithmeticInterface *number_arithmetic_;  // Arithmetic Interface Ptr
+/*! Arithmetic Interface Ptr */
+  NumberArithmeticInterface<T, RT>* number_arithmetic_;
 };
+  template class NumberArithmeticFactory<uint32_t, uint64_t>;
+  template class NumberArithmeticFactory<float, double>;
+
 #endif /* __NUMBER_MULTIPLIER_FACTORY_H_ */
 

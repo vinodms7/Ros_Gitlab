@@ -1,5 +1,5 @@
 /****************************************************************************
-*     Copyright (C) 2017 by KPIT Technologies                     *
+*     Copyright (C) 2017 by KPIT Technologies                               *
 *                                                                           *
 ****************************************************************************/
 
@@ -18,13 +18,14 @@
 #define PUBLISHER_SUBSCRIBE_H
 
 /** Include files */
+#include "ros/ros.h"
 #include "ros_number_generator/core/communication_interface.h"
 #include "ros_number_generator/app/generator_node_handler.h"
-#include "ros/ros.h"
 #include "ros_ran_num_msg/rand_num.h"
 
 /*! Class Declarations */
-class PublishSubscribe : public CommunicationInterface {
+template<class T>
+class PublishSubscribe : public CommunicationInterface<T> {
  public:
   /**
   * Function name: PublishSubscribe
@@ -37,7 +38,7 @@ class PublishSubscribe : public CommunicationInterface {
   *              Pointer to the reference generator node handler 
   *
   **/
-  explicit PublishSubscribe(NodeHandlerInterface* node_handler_interface);
+  explicit PublishSubscribe(NodeHandlerInterface<T>* node_handler_interface);
 
   /**
   * Function name: ~PublishSubscribe
@@ -56,14 +57,15 @@ class PublishSubscribe : public CommunicationInterface {
   * @brief      Defines the functionality to get the generated 
   *             random number and publish it
   *
-  * @param[in]  None
+  * @param[in]  T Value1
+  *                Holds the first value to be sent
   *
-  * @param[out] None
+  * @param[in]  T Value1
+  *                Holds the second value to be sent
   *
-  * @return     Void
-  *
+  * @return     void
   **/
-  void SendMessage();
+  void SendMessage(T value1, T value2);
 
   /**
   * Function name: ReceiveMessage
@@ -81,13 +83,16 @@ class PublishSubscribe : public CommunicationInterface {
 
  private:
   /** Holds the reference to the generator node handler object */
-  NodeHandlerInterface *generator_node_handler_;
-
-  /** Holds the reference of the nodehandle object */
-  ros::NodeHandle node_handle_;
+  NodeHandlerInterface<T>* generator_node_handler_;
 
   /** Holds the reference to the publisher object */
   ros::Publisher rand_num_publisher_;
+
+  /* Holds the timer for publish callback */
+  ros::Timer timer_;
 };
+  template class PublishSubscribe<uint32_t>;
+  template class PublishSubscribe<float>;
+
 #endif /*PUBLISHER_SUBSCRIBE_H */
 

@@ -22,7 +22,8 @@
 #include "ros_arithmetic/app/multiplier_arithmetic.h"
 
 /*! Class Definitions */
-MultiplierNodeHandler::MultiplierNodeHandler(OperationType operation_type)
+template<class T, class RT>
+MultiplierNodeHandler<T, RT>::MultiplierNodeHandler(std::string operation_type)
                                              :operation_type_(operation_type),
                                              arithmetic_factory_(nullptr),
                                              communication_factory_(nullptr) {
@@ -30,13 +31,14 @@ MultiplierNodeHandler::MultiplierNodeHandler(OperationType operation_type)
   CreateCommunicationFactory();
 }
 
-MultiplierNodeHandler::~MultiplierNodeHandler() {
-  if (nullptr != arithmetic_factory_) {
+template<class T, class RT>
+MultiplierNodeHandler<T, RT>::~MultiplierNodeHandler() {
+  if ( nullptr != arithmetic_factory_ ) {
     delete  arithmetic_factory_;
     arithmetic_factory_ = nullptr;
   }
 
-  if (nullptr != communication_factory_) {
+  if ( nullptr != communication_factory_ ) {
     delete communication_factory_;
     communication_factory_ = nullptr;
   }
@@ -45,37 +47,43 @@ MultiplierNodeHandler::~MultiplierNodeHandler() {
 /**
 * @brief Create function for swithcing between arithmetic operation object creation     
 **/
-void MultiplierNodeHandler::CreateMultiplierFactory() {
-  arithmetic_factory_ = new NumberArithmeticFactory();
-  if (nullptr != arithmetic_factory_) {
-    if (operation_type_ == OperationType::MUL) {
-      arithmetic_factory_->CreateArithmeticOperation(new NumberMultiplier());
+template<class T, class RT>
+void MultiplierNodeHandler<T, RT>::CreateMultiplierFactory() {
+  arithmetic_factory_ = new NumberArithmeticFactory<T, RT>();
+  if ( nullptr != arithmetic_factory_ ) {
+    if (operation_type_ == "MUL") {
+      arithmetic_factory_->CreateArithmeticOperation(new NumberMultiplier<T, RT>());
     } else {
       ROS_WARN("No object Created, Invalid type");
     }
   } else {
     ROS_WARN("Arithmetic Factory object not Created");
-}
+  }
 }
 
-void MultiplierNodeHandler::CreateCommunicationFactory() {
-  communication_factory_ = new CommFactory();
-  if (nullptr != communication_factory_) {
-    communication_factory_->CreateCommunicator(new PublishSubscribe(this));
+template<class T, class RT>
+void MultiplierNodeHandler<T, RT>::CreateCommunicationFactory() {
+  communication_factory_ = new CommFactory<T, RT>();
+  if ( nullptr != communication_factory_ ) {
+    communication_factory_->CreateCommunicator(new PublishSubscribe<T, RT>(this));
   } else {
     ROS_WARN("Communication Factory object not Created");
   }
 }
 
-CommFactory* MultiplierNodeHandler::GetCommunicationFactory() {
+template<class T, class RT>
+CommFactory<T, RT>* MultiplierNodeHandler<T, RT>::GetCommunicationFactory() {
   return communication_factory_;
 }
 
-NumberArithmeticFactory* MultiplierNodeHandler::GetArithmeticFactory() {
+template<class T, class RT>
+NumberArithmeticFactory<T, RT>* MultiplierNodeHandler<T, RT>::
+                                GetArithmeticFactory() {
   return arithmetic_factory_;
 }
 
-void MultiplierNodeHandler::Execute() {
+template<class T, class RT>
+void MultiplierNodeHandler<T, RT>::Execute() {
   if ( nullptr != communication_factory_ )
     communication_factory_->ExecuteCommunication();
   else
@@ -86,10 +94,11 @@ void MultiplierNodeHandler::Execute() {
 * @brief Executes arithmetic operation execution and returns valid value
 *        Returns value 0 when arithmetic operation is not executed    
 **/
-uint32_t MultiplierNodeHandler::ProcessData(uint32_t value1,
-                                            uint32_t value2) {
-  uint32_t arithmetic_number;
-  if (nullptr != arithmetic_factory_) {
+template<class T, class RT>
+RT MultiplierNodeHandler<T, RT>::ProcessData(T value1,
+                                      T value2) {
+  RT arithmetic_number;
+  if ( nullptr != arithmetic_factory_ ) {
     arithmetic_number =
       arithmetic_factory_->ExecuteArithmeticOperation(value1, value2);
   } else {

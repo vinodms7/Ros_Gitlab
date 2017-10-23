@@ -17,10 +17,10 @@
 #define COMMUNICATION_FACTORY_H
 
 /*! Include Files */
-#include <ros/console.h>
 #include "ros_number_generator/core/communication_interface.h"
 
 /*! Class Declarations */
+template<class T>
 class CommFactory {
  public:
    /**
@@ -51,7 +51,7 @@ class CommFactory {
   * @brief      Defines the functionality to delete the existing reference to 
   *             the the communication object and initialize to the received object
   *
-  * @param[in]  CommunicationInterface* comm_int 
+  * @param[in]  CommunicationInterface<T>* comm_int 
   *               Holds the communication interface object to be assigned
   *
   * @param[out] None
@@ -59,7 +59,7 @@ class CommFactory {
   * @return     Void
   *
   **/
-  void CreateCommunicator(CommunicationInterface* comm_int);
+  void CreateCommunicator(CommunicationInterface<T>* comm_int);
 
   /**
   * Function name: ExecuteCommunication
@@ -82,14 +82,18 @@ class CommFactory {
   *
   * @param[out] None
   *
-  * @return     CommunicationInterface* Data pointer to the instance of 
-  *             communication factory
+  * @return     CommunicationInterface<T>*
+  *                Holds the instance of communication factory
   *
   **/
-  CommunicationInterface* GetCommunicator();
+  CommunicationInterface<T>* GetCommunicator();
 
  private:
   /** Holds the pointer to communication interface object */
-  CommunicationInterface* communication_interface_;
+  CommunicationInterface<T>* communication_interface_;
 };
-#endif
+  template class CommFactory<uint32_t>;
+  template class CommFactory<float>;
+
+#endif /* COMMUNICATION_FACTORY_H */
+

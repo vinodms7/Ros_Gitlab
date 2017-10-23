@@ -20,6 +20,7 @@
 #include <ros/types.h>
 
 /*! Class declarations */
+template<class T, class RT>
 class NumberArithmeticInterface {
  public:
   /**
@@ -27,26 +28,13 @@ class NumberArithmeticInterface {
   *
   * @brief Perform number arithmetic operation
   *
-  * @param[in]  uint32_t value1 this is first number for arithmetic operation
+  * @param[in]  T value1 this is first number for arithmetic operation
   *
-  * @param[in]  uint32_t value2 this is second number for arithmetic operation
+  * @param[in]  T value2 this is second number for arithmetic operation
   *
-  * @return  uint32_t retrun value after arithmetic opeation is done 
+  * @return  RT retrun value after arithmetic opeation is done 
   **/
-  virtual uint32_t DoArithmeticOperation(uint32_t, uint32_t) = 0;
-
- protected:
-  /**
-  * Function name: DisplayResult
-  *
-  * @brief Display result
-  *
-  * @param[in]  uint32_t 
-  *                Holds the value to be displayed
-  *
-  * @return  void 
-  **/
-  virtual void DisplayResult(uint32_t) = 0;
+  virtual RT DoArithmeticOperation(T, T) = 0;
 };
 
 #endif /* NUMBER_MULTIPLIER_H_ */

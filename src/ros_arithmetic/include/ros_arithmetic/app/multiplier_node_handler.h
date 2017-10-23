@@ -22,24 +22,18 @@
 #include "ros_arithmetic/core/communication_factory.h"
 #include "ros_arithmetic/core/number_arithmetic_interface.h"
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
+#include <string>
 
 /*! Class Declarations */
-class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface {
+template<class T, class RT>
+class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface<T, RT> {
  public:
-  /*! Enumeration type for arithmetic operation */
-  enum OperationType {
-    NONE = 0,
-    MUL,
-    ADD,
-    SUB
-  };
-
+  
   /**
   * Function name: Constructor
   * @brief Constructs MultiplierNodeHandler object
   **/
-  explicit MultiplierNodeHandler(OperationType operation_type =
-                                              OperationType::MUL);
+  explicit MultiplierNodeHandler(std::string operation_type = "MUL");
   /**
   * Function name: Destructor
   * @brief Destructs MultiplierNodeHandler object
@@ -61,16 +55,16 @@ class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface {
   * @brief process data and return value
   * 
   *
-  * @param[in]  uint32_t
+  * @param[in]  T
   *               Holds the first input value
   *
-  * @param[in]  uint32_t
+  * @param[in]  T
   *               Holds the second input value
   *
-  * @return     uint32_t
+  * @return     RT
   *               Holds the return value after result is computed
   **/
-  uint32_t ProcessData(uint32_t, uint32_t);
+  RT ProcessData(T, T);
 
   /**
   * Function name: GetCommunicationFactory
@@ -82,7 +76,7 @@ class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface {
   * @return     CommFactory
   *               Holds the reference to communication factory object
   **/
-  CommFactory* GetCommunicationFactory();
+  CommFactory<T, RT>* GetCommunicationFactory();
 
   /**
   * Function name: GetArithmeticFactory
@@ -94,7 +88,7 @@ class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface {
   * @return     NumberArithmeticFactory
   *               Holds the reference to communication factory object
   **/
-  NumberArithmeticFactory* GetArithmeticFactory();
+  NumberArithmeticFactory<T, RT>* GetArithmeticFactory();
 
  private:
   /**
@@ -121,10 +115,15 @@ class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface {
   **/
   void CreateCommunicationFactory();
 
-  OperationType operation_type_;  // enum  type for arithmetic operation
-  NumberArithmeticFactory* arithmetic_factory_;  //  ptr to arithmetic factory
-  CommFactory*   communication_factory_;  //  ptr to comm factory
+  /*!  string variable for arithmetic operation type */
+  std::string operation_type_;
+  /*!  ptr to arithmetic factory */
+  NumberArithmeticFactory<T, RT>* arithmetic_factory_;
+  /*!  ptr to comm factory */
+  CommFactory<T, RT>*   communication_factory_; 
 };
+  template class MultiplierNodeHandler<uint32_t, uint64_t>;
+  template class MultiplierNodeHandler<float, double>;
 
 #endif /*MULTIPLIER_NODE_H */
 

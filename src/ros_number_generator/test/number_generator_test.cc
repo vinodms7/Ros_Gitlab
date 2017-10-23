@@ -14,8 +14,8 @@
 */
 
 /*  include files */
-#include <string>
 #include "ros/ros.h"
+#include <string>
 #include <gtest/gtest.h>
 #include <boost/thread/thread.hpp>
 #include "ros_ran_num_msg/rand_num.h"
@@ -23,14 +23,14 @@
 #include "ros_number_generator/core/communication_factory.h"
 #include "ros_number_generator/app/generator_node_handler.h"
 #include "ros_number_generator/app/publish_subscribe.h"
-
+#include "ros_number_generator/core/generator_config.h"
 
 /*
- * @brief  To verify GetGeneratedNumber - GenerateNumber generating random number 
+ * @brief  Verify GetGeneratedNumber - GenerateNumber generating random number
  *         within given range using LCG Implementation
  */
 TEST(NumberGeneratorLCG_test, GenerateNumber_test_1) {
-  NumberGeneratorLCG number_generator_lcg(100, 0);
+  NumberGeneratorLCG<uint32_t> number_generator_lcg(100, 0);
 
   uint32_t number1 =  101;
   uint32_t number2 =  number_generator_lcg.GetGeneratedNumber();
@@ -42,7 +42,7 @@ TEST(NumberGeneratorLCG_test, GenerateNumber_test_1) {
  *         min_random_value with given value using LCG Implementation
 */
 TEST(NumberGeneratorLCG_test, GenerateNumber_test_2) {
-  NumberGeneratorLCG number_generator_lcg(1000);
+  NumberGeneratorLCG<uint32_t> number_generator_lcg(1000);
 
   number_generator_lcg.SetRandomValRange(100, 0);
 
@@ -55,7 +55,7 @@ TEST(NumberGeneratorLCG_test, GenerateNumber_test_2) {
  *         min_random_value_ using LCG Implementation
 */
 TEST(NumberGeneratorLCG_test, GenerateNumber_test_3) {
-  NumberGeneratorLCG number_generator_lcg(1000);
+  NumberGeneratorLCG<uint32_t> number_generator_lcg(1000, 0);
 
   number_generator_lcg.SetRandomValRange(100, 500);
 
@@ -68,7 +68,7 @@ TEST(NumberGeneratorLCG_test, GenerateNumber_test_3) {
  * @brief   To check Number generator's name based on instance
 */
 TEST(NumberGeneratorLCG_test, GenerateNumber_test_4) {
-  NumberGeneratorLCG number_generator_lcg(100);
+  NumberGeneratorLCG<uint32_t> number_generator_lcg(100, 0);
 
   std::string actual_string =  number_generator_lcg.GetGeneratorName();
   std::string expected_string = "Linear Congruential Generator";
@@ -80,7 +80,7 @@ TEST(NumberGeneratorLCG_test, GenerateNumber_test_4) {
  * within given value based on SRAND Implementation
 */
 TEST(NumberGeneratorSRand_test, GenerateNumber_test_1) {
-  NumberGeneratorSRand number_generator_srand(100, 0);
+  NumberGeneratorSRand<uint32_t> number_generator_srand(100, 0);
 
   uint32_t number1 =  101;
   uint32_t number2 =  number_generator_srand.GetGeneratedNumber();
@@ -91,7 +91,7 @@ TEST(NumberGeneratorSRand_test, GenerateNumber_test_1) {
  *         max_random_value_ < min_random_value_
 */
 TEST(NumberGeneratorSRand_test, GenerateNumber_test_2) {
-  NumberGeneratorSRand number_generator_srand(1000);
+  NumberGeneratorSRand<uint32_t> number_generator_srand(1000, 0);
 
   number_generator_srand.SetRandomValRange(500, 100);
 
@@ -105,7 +105,7 @@ TEST(NumberGeneratorSRand_test, GenerateNumber_test_2) {
  *         max_random_value_ < min_random_value_
 */
 TEST(NumberGeneratorSRand_test, GenerateNumber_test_3) {
-  NumberGeneratorSRand number_generator_srand(1000, 800);
+  NumberGeneratorSRand<uint32_t> number_generator_srand(1000, 800);
 
   number_generator_srand.SetRandomValRange(100, 500);
 
@@ -118,7 +118,7 @@ TEST(NumberGeneratorSRand_test, GenerateNumber_test_3) {
  * @brief   To check Number generator's name based on instance
 */
 TEST(NumberGeneratorSRand_test, GenerateNumber_test_4) {
-  NumberGeneratorSRand number_generator_srand(1000, 800);
+  NumberGeneratorSRand<uint32_t> number_generator_srand(1000, 800);
 
   std::string actual_string =  number_generator_srand.GetGeneratorName();
   std::string expected_string = "Default CPP SRand Generator";
@@ -131,7 +131,8 @@ TEST(NumberGeneratorSRand_test, GenerateNumber_test_4) {
 TEST(GeneratorNodeHandler_test, GetNumber_test_1) {
   ros::start();
 
-  GeneratorNodeHandler generator_node_handler(GeneratorNodeHandler::LCG);
+  GeneratorConfig<uint32_t>::ConfigInstance().generator_type_ = "LCG";
+  GeneratorNodeHandler<uint32_t> generator_node_handler;
 
   uint32_t number1 =  1001;
   uint32_t number2 =  generator_node_handler.GetNumber();
@@ -146,7 +147,7 @@ TEST(GeneratorNodeHandler_test, GetNumber_test_1) {
 */
 TEST(GeneratorNodeHandler_test, GetNumber_test_3) {
   ros::start();
-  GeneratorNodeHandler generator_node_handler(GeneratorNodeHandler::SRAND);
+  GeneratorNodeHandler<uint32_t> generator_node_handler;
 
   uint32_t number1 =  1001;
   uint32_t number2 =  generator_node_handler.GetNumber();
@@ -160,9 +161,9 @@ TEST(GeneratorNodeHandler_test, GetNumber_test_3) {
 */
 TEST(GeneratorNodeHandler_test, GetNumberFactory_test_1) {
   ros::start();
-  GeneratorNodeHandler *generator_node_handler =
-                    new GeneratorNodeHandler(GeneratorNodeHandler::LCG);
-  NumberGeneratorFactory *number_factory =
+  GeneratorNodeHandler<uint32_t>* generator_node_handler =
+                    new GeneratorNodeHandler<uint32_t>();
+  NumberGeneratorFactory<uint32_t> *number_factory =
                     generator_node_handler->GetNumberFactory();
   EXPECT_TRUE(number_factory != NULL);
 
@@ -172,28 +173,28 @@ TEST(GeneratorNodeHandler_test, GetNumberFactory_test_1) {
 }
 
 /*
- * @brief  to check GetCommunicationFactory instance from GeneratorNodeHandler LCG
+ * @brief Verify GetCommunicationFactory instance from GeneratorNodeHandler
 */
 TEST(CommunicationFactory_test, GetCommunicationFactory_test_1) {
   ros::start();
-  GeneratorNodeHandler *generator_node_handler =
-                          new GeneratorNodeHandler(GeneratorNodeHandler::LCG);
-  CommFactory *comm_factory =
-                          generator_node_handler->GetCommunicationFactory();
-  EXPECT_TRUE(comm_factory != NULL);
 
-  delete generator_node_handler;
+  GeneratorNodeHandler<uint32_t> generator_node_handler;
+  CommFactory<uint32_t> *comm_factory =
+                          generator_node_handler.GetCommunicationFactory();
+  EXPECT_TRUE(comm_factory != NULL);
 
   ros::shutdown();
 }
 /*
- * @brief  to check GetCommunicationFactory instance from GeneratorNodeHandler SRAND
+ * @brief  Verify GetCommunicationFactory instance from 
+ *         GeneratorNodeHandler SRAND
 */
 TEST(CommunicationFactory_test, GetCommunicationFactory_test_2) {
   ros::start();
-  GeneratorNodeHandler *generator_node_handler =
-                        new GeneratorNodeHandler(GeneratorNodeHandler::SRAND);
-  CommFactory *comm_factory = generator_node_handler->GetCommunicationFactory();
+  GeneratorNodeHandler<uint32_t> *generator_node_handler =
+                        new GeneratorNodeHandler<uint32_t>();
+  CommFactory<uint32_t> *comm_factory =
+                            generator_node_handler->GetCommunicationFactory();
   EXPECT_TRUE(comm_factory != NULL);
   delete generator_node_handler;
   ros::shutdown();
@@ -203,10 +204,11 @@ TEST(CommunicationFactory_test, GetCommunicationFactory_test_2) {
 */
 TEST(CommunicationFactory_test, GetCommunicationFactory_test_3) {
   ros::start();
-  CommFactory *communication_factory_ = new CommFactory();
-  communication_factory_->CreateCommunicator(new PublishSubscribe(nullptr));
+  CommFactory<uint32_t> *communication_factory_ = new CommFactory<uint32_t>();
+  communication_factory_->CreateCommunicator(
+                                     new PublishSubscribe<uint32_t>(nullptr));
 
-  CommunicationInterface *comm_interface =
+  CommunicationInterface<uint32_t> *comm_interface =
                   communication_factory_->GetCommunicator();
 
   EXPECT_TRUE(comm_interface != NULL);
@@ -217,11 +219,13 @@ TEST(CommunicationFactory_test, GetCommunicationFactory_test_3) {
 */
 TEST(CommunicationFactory_test, GetCommunicationFactory_test_4) {
   ros::start();
-  CommFactory *communication_factory_ = new CommFactory();
-  communication_factory_->CreateCommunicator(new PublishSubscribe(nullptr));
-  communication_factory_->CreateCommunicator(new PublishSubscribe(nullptr));
+  CommFactory<uint32_t> *communication_factory_ = new CommFactory<uint32_t>();
+  communication_factory_->CreateCommunicator(
+                                     new PublishSubscribe<uint32_t>(nullptr));
+  communication_factory_->CreateCommunicator(
+                                     new PublishSubscribe<uint32_t>(nullptr));
 
-  CommunicationInterface *comm_interface =
+  CommunicationInterface<uint32_t> *comm_interface =
                   communication_factory_->GetCommunicator();
 
   EXPECT_TRUE(comm_interface != NULL);
@@ -235,7 +239,7 @@ TEST(CommunicationFactory_test, GetCommunicationFactory_test_4) {
 void receiveCallback(const ros_ran_num_msg::rand_num& msg) {
   std::cerr << "             Received message using Subscribe.." << std::endl;
   ros::shutdown();
-  EXPECT_NE(msg.number1, msg.number2);
+  EXPECT_TRUE((msg.number1 == 20) && (msg.number2 == 10));
 }
 
 /*
@@ -263,13 +267,15 @@ void timer_lapsed(const ros::TimerEvent& evt) {
 TEST(CommunicationFactory_test, GetCommunicationFactory_test_6) {
   ros::start();
   unsigned int nTimer = 0;
-  CommFactory *communication_factory_ = new CommFactory();
+  CommFactory<uint32_t> *communication_factory_ = new CommFactory<uint32_t>();
 
-  ros::NodeHandle nh;
+  GeneratorConfig<uint32_t> & generator_config =
+                                  GeneratorConfig<uint32_t>::ConfigInstance();
 
-  ros::Subscriber sub = nh.subscribe("random_numbers",
-          1000, receiveCallback);
-  std::cerr << "             Subscribed to topic random_numbers!" << std::endl;
+
+  ros::Subscriber sub = generator_config.generator_handle_->subscribe(
+                            "random_numbers", 1000, receiveCallback);
+  std::cerr << "             Subscribed to topic random_numbers" << std::endl;
 
   communication_factory_->CreateCommunicator(nullptr);
   communication_factory_->ExecuteCommunication();
@@ -285,54 +291,14 @@ TEST(CommunicationFactory_test, GetCommunicationFactory_test_6) {
   ros::shutdown();
   EXPECT_NE(nTimer, 5);
 }
-/*
- * @brief  to check CommFactory Publishing message with no Publisher instance
-*/
-TEST(CommunicationFactory_test, GetCommunicationFactory_test_7) {
-  ros::start();
 
-  ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe("random_numbers",
-                                            1000, receiveCallback);
-  std::cerr << "             Testing Send Message using Publish."<< std::endl;
-
-  GeneratorNodeHandler generator_node_handler;
-
-  ros::Timer timer = nh.createTimer(ros::Duration(5), &timer_lapsed,
-                                                        false, true);
-
-  generator_node_handler.Execute();
-
-  ros::shutdown();
-}
-
-/*
- * @brief  to check CommFactory Publishing message with no Publisher instance
-*/
-TEST(CommunicationFactory_test, GetCommunicationFactory_test_8) {
-  ros::start();
-
-  ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe("random_numbers",
-                                            1000, receiveCallback);
-  std::cerr << "             Testing Publish and setParam for frequency as 5";
-  std::cerr<< std::endl;
-
-  nh.setParam("frequency", 5);
-
-  GeneratorNodeHandler generator_node_handler;
-
-  ros::Timer timer = nh.createTimer(ros::Duration(5), &timer_lapsed,
-                                                        false, true);
-
-  generator_node_handler.Execute();
-
-  ros::shutdown();
-}
 TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_1) {
-  NumberGeneratorFactory *generator_factory = new NumberGeneratorFactory();
-  generator_factory->CreateGenerator(new NumberGeneratorLCG(100, 0));
-  NumberGenerator *number_generator = generator_factory->getGenerator();
+  NumberGeneratorFactory<uint32_t> *generator_factory =
+                                       new NumberGeneratorFactory<uint32_t>();
+  generator_factory->CreateGenerator(
+                                    new NumberGeneratorLCG<uint32_t>(100, 0));
+  NumberGenerator<uint32_t> *number_generator =
+                                            generator_factory->getGenerator();
 
   EXPECT_TRUE(number_generator != NULL);
 
@@ -344,11 +310,15 @@ TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_1) {
 */
 
 TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_2) {
-  NumberGeneratorFactory *generator_factory = new NumberGeneratorFactory();
-  generator_factory->CreateGenerator(new NumberGeneratorLCG(1000, 0));
-  generator_factory->CreateGenerator(new NumberGeneratorSRand(100, 0));
+  NumberGeneratorFactory<uint32_t> *generator_factory =
+                                       new NumberGeneratorFactory<uint32_t>();
+  generator_factory->CreateGenerator(
+                                   new NumberGeneratorLCG<uint32_t>(1000, 0));
+  generator_factory->CreateGenerator(
+                                  new NumberGeneratorSRand<uint32_t>(100, 0));
 
-  NumberGenerator *number_generator = generator_factory->getGenerator();
+  NumberGenerator<uint32_t> *number_generator =
+                                         generator_factory->getGenerator();
 
   std::string actual_string =  number_generator->GetGeneratorName();
   std::string expected_string = "Default CPP SRand Generator";
@@ -361,19 +331,25 @@ TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_2) {
  * @brief Fail test to show numberarithmeticfactory is null - TBD
  */
 TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_3) {
-  NumberGeneratorFactory *generator_factory = new NumberGeneratorFactory();
+  NumberGeneratorFactory<uint32_t> *generator_factory =
+                                      new NumberGeneratorFactory<uint32_t>();
 
-  generator_factory->CreateGenerator(new NumberGeneratorLCG(1000, 0));
-  generator_factory->CreateGenerator(new NumberGeneratorLCG(1000, 0));
+  generator_factory->CreateGenerator(
+                                   new NumberGeneratorLCG<uint32_t>(1000, 0));
+  generator_factory->CreateGenerator(
+                                   new NumberGeneratorLCG<uint32_t>(1000, 0));
 
   EXPECT_TRUE(generator_factory != NULL);
+
+  delete generator_factory;
 }
 
 /*
  * @brief Fail test to show multiply is wrong
  */
 TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_4) {
-  NumberGeneratorFactory *generator_factory = new NumberGeneratorFactory();
+  NumberGeneratorFactory<uint32_t> *generator_factory =
+                                       new NumberGeneratorFactory<uint32_t>();
 
   uint32_t number_expected = 10001;
   uint32_t number_actual = generator_factory->ExecuteGenerator();
@@ -387,18 +363,20 @@ TEST(NumberGeneratorFactory_test, NumberGeneratorFactory_test_4) {
 TEST(PublisherSuscribe_test, SendMessage_test_1) {
   ros::start();
 
-  ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe("random_numbers",
-                                            1000, receiveCallback);
+  GeneratorConfig<uint32_t> & generator_config =
+                              GeneratorConfig<uint32_t>::ConfigInstance();
+
+  ros::Subscriber sub = generator_config.generator_handle_->subscribe(
+                                 "random_numbers", 1000, receiveCallback);
   std::cerr<< "             Testing Send Message using Publish."<< std::endl;
 
-  GeneratorNodeHandler generator_node_handler;
-  PublishSubscribe publish_subcribe(&generator_node_handler);
+  GeneratorNodeHandler<uint32_t> generator_node_handler;
+  PublishSubscribe<uint32_t> publish_subcribe(&generator_node_handler);
 
-  ros::Timer timer = nh.createTimer(ros::Duration(5), &timer_lapsed,
-                                                        false, true);
+  ros::Timer timer = generator_config.generator_handle_->createTimer(
+                   ros::Duration(5), &timer_lapsed, false, true);
 
-  publish_subcribe.SendMessage();
+  publish_subcribe.SendMessage(20, 10);
 
   ros::shutdown();
 }
@@ -408,17 +386,21 @@ TEST(PublisherSuscribe_test, SendMessage_test_1) {
 TEST(PublisherSuscribe_test, SendMessage_test_2) {
   ros::start();
 
-  ros::NodeHandle nh;
-  nh.setParam("frequency", 5);
-  ros::Subscriber sub = nh.subscribe("random_numbers",
-                                            1000, receiveCallback);
+  GeneratorConfig<uint32_t> & generator_config =
+                                GeneratorConfig<uint32_t>::ConfigInstance();
+
+  generator_config.generator_handle_->setParam("frequency", 5);
+  ros::Subscriber sub = generator_config.generator_handle_->subscribe(
+                                  "random_numbers", 1000, receiveCallback);
   std::cerr << "             Testing Publish with setParam for frequency.";
   std::cerr << std::endl;
 
-  GeneratorNodeHandler generator_node_handler;
-  PublishSubscribe publish_subcribe(&generator_node_handler);
+  GeneratorNodeHandler<uint32_t> generator_node_handler;
+  PublishSubscribe<uint32_t> publish_subcribe(&generator_node_handler);
 
-  publish_subcribe.SendMessage();
+  publish_subcribe.SendMessage(20, 10);
+
+  ros::spin();
 
   ros::shutdown();
 }
@@ -431,61 +413,32 @@ TEST(PublisherSuscribe_test, SendMessage_test_2) {
 
 TEST(PublisherSuscribe_Negtest, SendMessage_test_1) {
   ros::start();
+  GeneratorConfig<uint32_t> & generator_config =
+                       GeneratorConfig<uint32_t>::ConfigInstance();
 
-  ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe("not_random_number",
+  generator_config.generator_handle_->subscribe("not_random_number",
                                               1000, receiveCallback);
   std::cerr << "             Testing Send Message using Publish...";
   std::cerr << std::endl;
-  GeneratorNodeHandler generator_node_handler;
-  PublishSubscribe publish_subcribe(&generator_node_handler);
+  GeneratorNodeHandler<uint32_t> generator_node_handler;
+  PublishSubscribe<uint32_t> publish_subcribe(&generator_node_handler);
 
-  ros::Timer timer = nh.createTimer(ros::Duration(5),
-                      &timer_lapsed_negative_test, false, true);
+  ros::Timer timer = generator_config.generator_handle_->createTimer(
+                 ros::Duration(5), &timer_lapsed_negative_test, false, true);
 
-  publish_subcribe.SendMessage();
-  ros::shutdown();
+  publish_subcribe.SendMessage(20, 10);
+
+  ros::spin();
 }
-/*
- * @brief  to check PublishSubscribe Publishing message with no Handler instance
-*/
-TEST(PublisherSuscribe_Negtest, SendMessage_test_2) {
-  ros::start();
-
-  unsigned int nTimer = 0;
-
-  ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe("random_numbers",
-                                                1000, receiveCallback);
-  std::cerr << "             Subscribed to topic random_numbers!"<< std::endl;
-  std::cerr << "             Create Subscriber instance with no Handler";
-  std::cerr<< std::endl;
-
-  PublishSubscribe publish_subscribe(nullptr);
-
-  ros::Timer timer = nh.createTimer(ros::Duration(5),
-                      &timer_lapsed_negative_test, false, true);
-
-  publish_subscribe.SendMessage();
-  publish_subscribe.ReceiveMessage();  //  Does nothing
-
-
-  while ((sub.getNumPublishers() < 1) && (nTimer++ < 5)) {
-    boost::this_thread::sleep(boost::posix_time::seconds(1));
-    std::cerr << ".";
-  }
-  if (nTimer >= 5)
-    std::cerr << "             No Publishers available"<< std::endl;
-
-  ros::shutdown();
-  EXPECT_TRUE(1);
-}
-
 /*
  * @brief  Entry point for Unit Test implementation
 */
 int main(int argc, char **argv) {
   ros::init(argc, argv, "NumberGeneratorNode_Test");
+  GeneratorConfig<uint32_t> & generator_config =
+                              GeneratorConfig<uint32_t>::ConfigInstance();
+  generator_config.generator_handle_ = new ros::NodeHandle();
+
   testing::InitGoogleTest(&argc, argv);
   int result = RUN_ALL_TESTS();
   ros::shutdown();

@@ -22,6 +22,7 @@
 
 /*! Include Files */
 #include "ros_number_generator/app/publish_subscribe.h"
+#include "ros_number_generator/core/generator_config.h"
 
 /*! Class Declarations */
 /**
@@ -29,11 +30,18 @@
 *        assigns the received generator node handle reference 
 *        and advertises the topic to be published
 **/
-PublishSubscribe::PublishSubscribe(NodeHandlerInterface *gen_node_handler) {
-  if (nullptr != gen_node_handler) {
+template<class T>
+PublishSubscribe<T>::PublishSubscribe(NodeHandlerInterface<T> *gen_node_handler) {
+  if ( nullptr != gen_node_handler ) {
     generator_node_handler_ = gen_node_handler;
-    rand_num_publisher_ = node_handle_.advertise<ros_ran_num_msg::rand_num>
-                                               ("random_numbers", 100);
+
+    ros::NodeHandle *handle = GeneratorConfig<T>::ConfigInstance().generator_handle_;
+
+    rand_num_publisher_ = handle->advertise<ros_ran_num_msg::rand_num>("random_numbers", 100);
+
+    float nDuration = (1.0/GeneratorConfig<T>::ConfigInstance().frequency_);
+
+    timer_ = handle->createTimer(ros::Duration(nDuration), &GeneratorNodeHandler<T>::CommCallback);
   } else {
     ROS_WARN("No Generator Node instance. No messages to publish");
   }
@@ -42,45 +50,35 @@ PublishSubscribe::PublishSubscribe(NodeHandlerInterface *gen_node_handler) {
 /**
 * @brief Implements the destructor to the PublishSubscribe class
 **/
-PublishSubscribe::~PublishSubscribe() {
-  node_handle_.shutdown();
+template<class T>
+PublishSubscribe<T>::~PublishSubscribe() {
+  GeneratorConfig<T>::ConfigInstance().generator_handle_->shutdown();
 }
 
 /**
 * @brief Implements the functionality to get the generated 
 *        random number and publish it
 **/
-void PublishSubscribe::SendMessage() {
-  if (nullptr != generator_node_handler_) {
-    float frequency = 0.1;
-    if ( !node_handle_.getParam("frequency", frequency) ) {
-      ROS_WARN("Frequency Param not received...");
-    } else {
-      ROS_INFO("Frequency Param is [%f]", frequency);
-    }
+template<class T>
+void PublishSubscribe<T>::SendMessage(T value1, T value2) {
 
-    ros::Rate rate(frequency);
-    ros_ran_num_msg::rand_num value;
+  ros_ran_num_msg::rand_num value;
 
-    while ( node_handle_.ok() ) {
-      value.number1 = generator_node_handler_->GetNumber();
-      value.number2 = generator_node_handler_->GetNumber();
+  value.number1 = value1;
+  value.number2 = value2;
 
-      rand_num_publisher_.publish(value);
+  rand_num_publisher_.publish(value);
 
-      ROS_INFO("Number Generator Value 1: [%u] and Value 2: [%u]",
+  ROS_INFO("Number Generator Value 1: [%u] and Value 2: [%u]",
                                     value.number1, value.number2);
 
-      ros::spinOnce();
-      rate.sleep();
-    }
-  } else {
-    ROS_WARN("No Generator Node instance. No messages to publish");
-  }
+  ros::spinOnce();
 }
 
 /**
 * @brief Implements the functionality to receive the message
 **/
-void PublishSubscribe::ReceiveMessage() {
+template<class T>
+void PublishSubscribe<T>::ReceiveMessage() {
 }
+

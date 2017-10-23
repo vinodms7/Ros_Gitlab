@@ -1,0 +1,3 @@
+frequency: 2.5
+gentype: 'SRAND'
+commtype: 'PUB_SUB'

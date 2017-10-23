@@ -25,6 +25,7 @@
 #include "ros_ran_num_msg/mutliplier_num.h"
 
 /*! Class Declarations */
+template<class T, class RT>
 class ReceiverCallback {
  public:
   /**
@@ -37,7 +38,7 @@ class ReceiverCallback {
   * @param[in]  ArithmeticNodeHandlerInterface*
   *              Pointer to the reference multiplier node handler  
   **/
-  explicit ReceiverCallback(ArithmeticNodeHandlerInterface* node_handler);
+  explicit ReceiverCallback(ArithmeticNodeHandlerInterface<T, RT>* node_int);
 
   /**
   * Function name: Destructor
@@ -65,7 +66,7 @@ class ReceiverCallback {
 
  private:
   /*! Holds the reference of the multiplier node handler */
-  ArithmeticNodeHandlerInterface *arithmetic_node_handler_;
+  ArithmeticNodeHandlerInterface<T, RT>* arithmetic_node_handler_;
 
   /** Holds the reference to the publisher object */
   ros::Publisher multiplier_publisher_;
@@ -75,7 +76,8 @@ class ReceiverCallback {
 };
 
 /*! Class Declarations */
-class PublishSubscribe : public CommunicationInterface {
+template<class T, class RT>
+class PublishSubscribe : public CommunicationInterface<T, RT> {
  public:
   /**
   * Function name: Constructor
@@ -88,7 +90,7 @@ class PublishSubscribe : public CommunicationInterface {
   * @param[in]  ArithmeticNodeHandlerInterface*
   *              Pointer to the reference multiplier node handler
   **/
-  explicit PublishSubscribe(ArithmeticNodeHandlerInterface* node_handler);
+  explicit PublishSubscribe(ArithmeticNodeHandlerInterface<T, RT>* node_int);
 
   /**
   * Function name: Destructor
@@ -113,8 +115,8 @@ class PublishSubscribe : public CommunicationInterface {
   /**
   * Function name: ReceiveMessage
   *
-  * @brief      Declares the functionality to receive the message through ros subscribe
-  *             and calls the receiver callback function
+  * @brief      Declares the functionality to receive the message through 
+  *             ros subscribe and calls the receiver callback function
   *
   * @param[in]  None
   *
@@ -127,10 +129,10 @@ class PublishSubscribe : public CommunicationInterface {
 
  private:
   /** Holds the reference to the receiver callback object */
-  ReceiverCallback *receiver_callback_;
+  ReceiverCallback<T, RT>* receiver_callback_;
 
   /** Holds the reference to the multiplier node handler object */
-  ArithmeticNodeHandlerInterface *arithmetic_node_handler_;
+  ArithmeticNodeHandlerInterface<T, RT>* arithmetic_node_handler_;
 
   /** Holds the reference of the nodehandle object */
   ros::NodeHandle node_handle_;
@@ -138,6 +140,10 @@ class PublishSubscribe : public CommunicationInterface {
   /** Holds the reference to the subscriber object */
   ros::Subscriber multiplier_subscriber_;
 };
+  template class PublishSubscribe<uint32_t, uint64_t>;
+  template class PublishSubscribe<float, double>;
+  template class ReceiverCallback<uint32_t, uint64_t>;
+  template class ReceiverCallback<float, double>;
 
 #endif /* PUBLISHER_SUBSCRIBE_H */
 

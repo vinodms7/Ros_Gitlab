@@ -16,11 +16,11 @@
 * @brief        Perform factory creation and processing data functionalities
 *
 **/
-#ifndef GENERATOR_NODE_H
-#define GENERATOR_NODE_H
+#ifndef GENERATOR_NODE_HANDLER_H
+#define GENERATOR_NODE_HANDLER_H
 
-/*  include files  */
-#include <ros/console.h>
+/*! Include files  */
+#include <ros/ros.h>
 
 #include "ros_number_generator/core/generator_ node_handler_interface.h"
 #include "ros_number_generator/core/communication_factory.h"
@@ -28,24 +28,17 @@
 #include "ros_number_generator/app/number_generator_srand.h"
 #include "ros_number_generator/app/number_generator_lcg.h"
 
-class GeneratorNodeHandler : public NodeHandlerInterface {
+template<class T>
+class GeneratorNodeHandler : public NodeHandlerInterface<T> {
  public:
-  // enumeration type for random generator types ( srand, lcg etc)
-  enum GeneratorType {
-    NONE = 0,
-    SRAND,
-    LCG
-  };
-
   /**
   * Function name: GeneratorNodeHandler()
   *
   * @brief Constructor for the Node Handler
   *
-  * @param[in]  GeneratorType This is enumeration type of generator type
+  * @param[in]  None
   **/
-  explicit GeneratorNodeHandler(GeneratorType generator_type =
-                                            GeneratorType::LCG);
+  explicit GeneratorNodeHandler();
 
   /**
   * Function name: ~GeneratorNodeHandler()
@@ -59,9 +52,9 @@ class GeneratorNodeHandler : public NodeHandlerInterface {
   *
   * @brief Get random value generated using the generator Factory Node
   * 
-  * @return  uint32_t  return value of result
+  * @return  DataType  return value of result
   **/
-  uint32_t GetNumber();
+  T GetNumber();
 
   /**
   * Function name: Execute
@@ -73,20 +66,36 @@ class GeneratorNodeHandler : public NodeHandlerInterface {
   void Execute();
 
   /**
+  * Function name: TimerCallback
+  *
+  * @brief Call back to the execute communication
+  *
+  * @param[in]  ros:TimerEvent
+  *                Holds the callback event from timer
+  *
+  * @return  void
+  **/
+  static void CommCallback(const ros::TimerEvent& evt);
+
+  /**
   * Function name: GetCommunicationFactory
   *
   * @brief Get pointer to communication object by factory 
-  *   
+  *
+  * @return CommFactory<T>
+  *            Holds the reference to CommFactory of type T   
   **/
-  CommFactory* GetCommunicationFactory();
+  CommFactory<T>* GetCommunicationFactory();
 
   /**
   * Function name: GetNumberFactory
   *
   * @brief Get the pointer to the generator Factory Node
-  * 
+  *
+  * @return NumberGeneratorFactory<T>
+  *            Holds the reference to NumberGeneratorFactory of type T 
   **/
-  NumberGeneratorFactory* GetNumberFactory();
+  NumberGeneratorFactory<T>* GetNumberFactory();
 
  private:
   /**
@@ -107,9 +116,13 @@ class GeneratorNodeHandler : public NodeHandlerInterface {
   **/
   void CreateCommunicationFactory();
 
-  GeneratorType generator_type_;  // enum type for generator type
-  NumberGeneratorFactory* number_generator_;  // Pointer to generator factory
-  CommFactory*   communication_factory_;   // Pointer to communication factory
+  std::string generator_type_;  /*! string variable for generator type */
+  NumberGeneratorFactory<T>* number_generator_factory_;  /* Pointer to generator factory */
+  CommFactory<T>* communication_factory_;   /* Pointer to communication factory */
 };
-#endif /* GENERATOR_NODE_H */
+
+  template class GeneratorNodeHandler<uint32_t>;
+  template class GeneratorNodeHandler<float>;
+
+#endif /* GENERATOR_NODE_HANDLER_H */
 

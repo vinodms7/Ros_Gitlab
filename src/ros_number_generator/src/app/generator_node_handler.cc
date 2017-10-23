@@ -16,10 +16,11 @@
 *
 **/
 
-/*  include files */
+/*! Include files */
 #include "ros/ros.h"
 #include "ros_number_generator/app/generator_node_handler.h"
 #include "ros_number_generator/app/publish_subscribe.h"
+#include "ros_number_generator/core/generator_config.h"
 
 /**
 * @brief Default values for Random generator Range
@@ -29,13 +30,14 @@ namespace constVariables {
   constexpr uint32_t MIN_RANDOM_VALUE = 0;
 }
 
+/*! Class Defintions */
 /**
  * Function name: GeneratorNodeHandler()
  *
  * @brief Constructor for the Node Handler
 **/
-GeneratorNodeHandler::GeneratorNodeHandler(GeneratorType generator_type)
-                                  : generator_type_(generator_type) {
+template<class T>
+GeneratorNodeHandler<T>::GeneratorNodeHandler() {
   CreateNumberFactory();
   CreateCommunicationFactory();
 }
@@ -48,13 +50,14 @@ GeneratorNodeHandler::GeneratorNodeHandler(GeneratorType generator_type)
  * Deletes the instance of COmmunication Factory and
  * number generator factory 
 **/
-GeneratorNodeHandler::~GeneratorNodeHandler() {
-  if (nullptr != number_generator_) {
-    delete  number_generator_;
-    number_generator_ = nullptr;
+template<class T>
+GeneratorNodeHandler<T>::~GeneratorNodeHandler() {
+  if ( nullptr != number_generator_factory_ ) {
+    delete  number_generator_factory_;
+    number_generator_factory_ = nullptr;
   }
 
-  if (nullptr != communication_factory_) {
+  if ( nullptr != communication_factory_ ) {
     delete communication_factory_;
     communication_factory_ = nullptr;
   }
@@ -66,18 +69,22 @@ GeneratorNodeHandler::~GeneratorNodeHandler() {
 * @brief Call number generator factory and Create generator object
 * 
 **/
-void GeneratorNodeHandler::CreateNumberFactory() {
-  number_generator_ = new NumberGeneratorFactory();
-  if ( nullptr != number_generator_ ) {
-    if ( generator_type_ == GeneratorType::LCG ) {
-      number_generator_->CreateGenerator(new NumberGeneratorLCG(
+template<class T>
+void GeneratorNodeHandler<T>::CreateNumberFactory() {
+  number_generator_factory_ = new NumberGeneratorFactory<T>();
+
+  if ( nullptr != number_generator_factory_ ) {
+    if ( (GeneratorConfig<T>::ConfigInstance().generator_type_) == "LCG" ) {
+      number_generator_factory_->CreateGenerator(new NumberGeneratorLCG<T>(
           constVariables::MAX_RANDOM_VALUE, constVariables::MIN_RANDOM_VALUE));
-    } else if ( generator_type_ == GeneratorType::SRAND ) {
-      number_generator_->CreateGenerator(new NumberGeneratorSRand(
+    } else if ( (GeneratorConfig<T>::ConfigInstance().generator_type_) == "SRAND" ) {
+      number_generator_factory_->CreateGenerator(new NumberGeneratorSRand<T>(
           constVariables::MAX_RANDOM_VALUE, constVariables::MIN_RANDOM_VALUE));
     } else {
       ROS_WARN("No Generator type object Created, Invalid type");
     }
+
+    GeneratorConfig<T>::ConfigInstance().number_generator_ = number_generator_factory_;
   } else {
     ROS_WARN("Number factory object could not be created");
   }
@@ -89,30 +96,64 @@ void GeneratorNodeHandler::CreateNumberFactory() {
 * @brief Get the created communication object by factory 
 *   
 **/
-void GeneratorNodeHandler::CreateCommunicationFactory() {
-  communication_factory_ = new CommFactory();
-  if (nullptr != communication_factory_)
-    communication_factory_->CreateCommunicator(new PublishSubscribe(this));
+template<class T>
+void GeneratorNodeHandler<T>::CreateCommunicationFactory() {
+  communication_factory_ = new CommFactory<T>();
+
+  if ( nullptr != communication_factory_ ) {
+    if( GeneratorConfig<T>::ConfigInstance().communication_type_ == "PUB_SUB" ) {
+    communication_factory_->CreateCommunicator(new PublishSubscribe<T>(this));
+    } else {
+      ROS_WARN("No Comm Factory type object Created. Invalid type");
+    }
+    GeneratorConfig<T>::ConfigInstance().communication_factory_ = communication_factory_;
+  }
   else
     ROS_WARN("Commnication factory object could not be created");
 }
 
-void GeneratorNodeHandler::Execute() {
+/**
+* Function name: CommCallback
+*
+* @brief Call back function from Timer to publish random numbers
+*   
+**/
+template<class T>
+void GeneratorNodeHandler<T>::CommCallback(const ros::TimerEvent& evt) {
+
+  T value1;
+  T value2;
+  value1 = GeneratorConfig<T>::ConfigInstance().number_generator_->ExecuteGenerator();
+  value2 = GeneratorConfig<T>::ConfigInstance().number_generator_->ExecuteGenerator();
+
+  GeneratorConfig<T>::ConfigInstance().communication_factory_->GetCommunicator()->SendMessage(value1, value2);
+}
+
+/**
+* Function name: Execute
+*
+* @brief Function to start communication
+*   
+**/
+template <class T>
+void GeneratorNodeHandler<T>::Execute() {
   if ( nullptr != communication_factory_ )
     communication_factory_->ExecuteCommunication();
   else
     ROS_WARN("No instance of Communication Interface available");
 }
+
 /**
 * Function name: GetNumber
 *
 * @brief Get random value genrator by generator Factory Node
 * 
 **/
-uint32_t GeneratorNodeHandler::GetNumber() {
-  uint32_t gen_number = 0;
-  if (nullptr != number_generator_) {
-    gen_number =  number_generator_->ExecuteGenerator();
+template<class T>
+T GeneratorNodeHandler<T>::GetNumber() {
+  T gen_number = 0;
+  if ( nullptr != number_generator_factory_ ) {
+    gen_number =  number_generator_factory_->ExecuteGenerator();
   } else {
     gen_number =  0;
   }
@@ -125,7 +166,8 @@ uint32_t GeneratorNodeHandler::GetNumber() {
 * @brief Get pointer to communication object by factory 
 *   
 **/
-CommFactory* GeneratorNodeHandler::GetCommunicationFactory() {
+template<class T>
+CommFactory<T>* GeneratorNodeHandler<T>::GetCommunicationFactory() {
   return communication_factory_;
 }
 
@@ -135,6 +177,8 @@ CommFactory* GeneratorNodeHandler::GetCommunicationFactory() {
 * @brief Get the pointer to the generator Factory Node
 * 
 **/
-NumberGeneratorFactory* GeneratorNodeHandler::GetNumberFactory() {
-  return number_generator_;
+template<class T>
+NumberGeneratorFactory<T>* GeneratorNodeHandler<T>::GetNumberFactory() {
+  return number_generator_factory_;
 }
+

@@ -27,7 +27,8 @@
 * @brief Implements the constructor that initialises the communication 
 *        interface object to NULL
 **/
-CommFactory::CommFactory() {
+template<class T, class RT>
+CommFactory<T, RT>::CommFactory() {
   communication_interface_ = nullptr;
 }
 
@@ -35,8 +36,9 @@ CommFactory::CommFactory() {
 * @brief Implements the destructor that deletes the communication 
 *        interface object if existing and intializes it to NULL
 **/
-CommFactory::~CommFactory() {
-  if (nullptr != communication_interface_) {
+template<class T, class RT>
+CommFactory<T, RT>::~CommFactory() {
+  if ( nullptr != communication_interface_ ) {
     delete communication_interface_;
     communication_interface_ = nullptr;
   }
@@ -46,8 +48,10 @@ CommFactory::~CommFactory() {
 * @brief Implements the functionality to delete the existing reference to 
 *        the the communication object and initialize to the received object
 **/
-void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
-  if (nullptr != communication_interface_) {
+template<class T, class RT>
+void CommFactory<T, RT>::CreateCommunicator(
+                                   CommunicationInterface<T, RT> *comm_int) {
+  if ( nullptr != communication_interface_ ) {
     delete communication_interface_;
     communication_interface_ = nullptr;
   }
@@ -55,16 +59,19 @@ void CommFactory::CreateCommunicator(CommunicationInterface *comm_int) {
 }
 
 /**
-* @brief Implements the functionality to get the reference of CommunicationInterface     
+* @brief Implements the functionality to get the reference of 
+* CommunicationInterface     
 **/
-CommunicationInterface* CommFactory::GetCommunicator() {
+template<class T, class RT>
+CommunicationInterface<T, RT>* CommFactory<T, RT>::GetCommunicator() {
   return communication_interface_;
 }
 
 /**
 * @brief Implements the functionality receive the message    
 **/
-void CommFactory::ExecuteCommunication() {
+template<class T, class RT>
+void CommFactory<T, RT>::ExecuteCommunication() {
   if ( nullptr != communication_interface_ )
     communication_interface_->ReceiveMessage();
   else

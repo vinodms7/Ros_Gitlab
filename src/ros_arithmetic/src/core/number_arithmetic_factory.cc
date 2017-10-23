@@ -18,10 +18,13 @@
 #include "ros_arithmetic/core/number_arithmetic_factory.h"
 
 /*! Class Definitions */
-NumberArithmeticFactory::NumberArithmeticFactory() {
+template<class T, class RT>
+NumberArithmeticFactory<T, RT>::NumberArithmeticFactory() {
   number_arithmetic_ = nullptr;
 }
-NumberArithmeticFactory::~NumberArithmeticFactory() {
+
+template<class T, class RT>
+NumberArithmeticFactory<T, RT>::~NumberArithmeticFactory() {
   if ( nullptr != number_arithmetic_ ) {
     delete number_arithmetic_;
     number_arithmetic_ = nullptr;
@@ -31,8 +34,9 @@ NumberArithmeticFactory::~NumberArithmeticFactory() {
 /**
 * @brief Implements the creation of arithmetic operation object
 **/
-void NumberArithmeticFactory::CreateArithmeticOperation(
-                              NumberArithmeticInterface *number_arithmetic) {
+template<class T, class RT>
+void NumberArithmeticFactory<T, RT>::CreateArithmeticOperation(
+                      NumberArithmeticInterface<T, RT> *number_arithmetic) {
   if ( nullptr != number_arithmetic_ ) {
     delete number_arithmetic_;
     number_arithmetic_ = nullptr;
@@ -43,18 +47,21 @@ void NumberArithmeticFactory::CreateArithmeticOperation(
 /**
 * @brief Implements returning pointer to NumberArithmeticInterface
 **/
-NumberArithmeticInterface* NumberArithmeticFactory::GetArithmeticOperation() {
+template<class T, class RT>
+NumberArithmeticInterface<T, RT>* NumberArithmeticFactory<T, RT>::
+                                  GetArithmeticOperation() {
   return number_arithmetic_;
 }
 
 /**
 * @brief Implements arithmetic operation Execution
 **/
-uint32_t NumberArithmeticFactory::ExecuteArithmeticOperation(uint32_t value1,
-                                                            uint32_t value2) {
-  uint32_t number_arithmetic;
+template<class T, class RT>
+RT NumberArithmeticFactory<T, RT>::ExecuteArithmeticOperation(T value1,
+                                                            T value2) {
+  RT number_arithmetic;
 
-  if (nullptr != number_arithmetic_)
+  if ( nullptr != number_arithmetic_ )
     number_arithmetic = number_arithmetic_->DoArithmeticOperation(value1,
                                                                  value2);
   else

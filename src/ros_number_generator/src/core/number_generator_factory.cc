@@ -7,13 +7,13 @@
 * 
 * @author   Rajat Jayanth Shetty <rajat.shetty@kpit.com>
 * 
-* @date     18 Oct 2017
+* @date     18-Oct-2017
 * 
 * @brief    This file declares Number Generator Factory Class
 *
 */
 
-/* include files */
+/*! Include files */
 #include "ros_number_generator/core/number_generator_interface.h"
 #include "ros_number_generator/core/number_generator_factory.h"
 
@@ -24,7 +24,8 @@
 *
 * Initializes the Number Generator factory class
 **/
-NumberGeneratorFactory::NumberGeneratorFactory() {
+template<class T>
+NumberGeneratorFactory<T>::NumberGeneratorFactory() {
   number_generator_ = nullptr;
 }
 
@@ -34,7 +35,8 @@ NumberGeneratorFactory::NumberGeneratorFactory() {
 * @brief Destructor for the Number Generator Factory class
 *
 **/
-NumberGeneratorFactory::~NumberGeneratorFactory() {
+template<class T>
+NumberGeneratorFactory<T>::~NumberGeneratorFactory() {
   if ( nullptr != number_generator_ ) {
     delete number_generator_;
     number_generator_ = nullptr;
@@ -50,13 +52,15 @@ NumberGeneratorFactory::~NumberGeneratorFactory() {
 * delete the previous instance before assigning a new Number Generator
 *
 **/
-void NumberGeneratorFactory::CreateGenerator(NumberGenerator *number_gen) {
+template<class T>
+void NumberGeneratorFactory<T>::CreateGenerator(NumberGenerator<T> *number_gen) {
   if ( nullptr != number_generator_ ) {
     delete number_generator_;
     number_generator_ = nullptr;
   }
   number_generator_ = number_gen;
 }
+
 /**
 * Function name: getGenerator()
 *  
@@ -66,21 +70,24 @@ void NumberGeneratorFactory::CreateGenerator(NumberGenerator *number_gen) {
 * return the instance 
 *
 **/
-NumberGenerator* NumberGeneratorFactory::getGenerator() {
+template<class T>
+NumberGenerator<T>* NumberGeneratorFactory<T>::getGenerator() {
   return number_generator_;
 }
+
 /**
 * Function name: ExecuteGenerator()
 *  
 * @brief Execute the Number Generator functionality to get Number
 *
 **/
-
-uint32_t NumberGeneratorFactory::ExecuteGenerator() const {
-  uint32_t number_generated;
+template<class T>
+T NumberGeneratorFactory<T>::ExecuteGenerator() const {
+  T number_generated;
   if ( nullptr != number_generator_ )
     number_generated =  number_generator_->GetGeneratedNumber();
   else
     number_generated = 0;
   return number_generated;
 }
+

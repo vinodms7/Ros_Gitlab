@@ -18,6 +18,7 @@
 #define COMMUNICATION_INTERFACE_H
 
 /* Class Declarations */
+template<class T, class RT>
 class CommunicationInterface {
  public:
   /**

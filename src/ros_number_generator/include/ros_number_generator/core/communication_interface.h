@@ -8,7 +8,7 @@
 *
 * @author    Sujeyendra Tummala (Tummala.Sujeyendra@kpit.com)
 *
-* @date      18-Oct- 2017
+* @date      18-Oct-2017
 *
 * @brief     This file declares the communication Interface class 
 *
@@ -17,7 +17,11 @@
 #ifndef COMMUNICATION_INTERFACE_H
 #define COMMUNICATION_INTERFACE_H
 
+/*! Include files */
+#include <string>
+
 /* Class Declarations */
+template<class T>
 class CommunicationInterface {
  public:
   /**
@@ -26,14 +30,16 @@ class CommunicationInterface {
   * @brief      Defines the pure virtual function to implement the 
   *             functionality to send the message
   *
-  * @param[in]  None
+  * @param[in]  T value1
+  *               Holds the first value to be sent
   *
-  * @param[out] None
+  * @param[in]  T value2
+  *               Holds the second value to be sent
   *
   * @return     Void
   *
   **/
-  virtual void SendMessage() = 0;
+  virtual void SendMessage(T value1, T value2) = 0;
 
   /**
   * Function name: ReceiveMessage
@@ -50,4 +56,6 @@ class CommunicationInterface {
   **/
   virtual void ReceiveMessage() = 0;
 };
-#endif
+
+#endif /* COMMUNICATION_INTERFACE_H */
+

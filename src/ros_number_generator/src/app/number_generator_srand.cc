@@ -13,8 +13,9 @@
 *
 */
 
-/* include files */
+/*! Include files */
 #include <string>
+#include <cmath>
 #include "ros_number_generator/app/number_generator_srand.h"
 
 /**
@@ -26,14 +27,16 @@
 * numbers need to be generator.
 * The seed value is initialize using inbuilt srandom()  and random() function call
 **/
-NumberGeneratorSRand::NumberGeneratorSRand(uint32_t max_random_value,
-                                            uint32_t min_random_value)
-  : current_random_number_(0) {
+template<class T>
+NumberGeneratorSRand<T>::NumberGeneratorSRand(T max_random_value,
+                                            T min_random_value)
+                                         : current_random_number_(0) {
   SetRandomValRange(max_random_value, min_random_value);
-  srandom(static_cast<uint32_t>(time(0)));
+  srandom(static_cast<T>(time(0)));
 }
 
-NumberGeneratorSRand::~NumberGeneratorSRand() {
+template<class T>
+NumberGeneratorSRand<T>::~NumberGeneratorSRand() {
 }
 
 /**
@@ -42,7 +45,8 @@ NumberGeneratorSRand::~NumberGeneratorSRand() {
 * @brief       Function call containing the actual implementation of the Number Generator
 *
 **/
-uint32_t NumberGeneratorSRand::GenerateNumber() {
+template<class T>
+T NumberGeneratorSRand<T>::GenerateNumber() {
   current_seed_ = random();
   return current_seed_;
 }
@@ -52,7 +56,8 @@ uint32_t NumberGeneratorSRand::GenerateNumber() {
 *
 * @brief Function call to query Generator name or Implementation name
 **/
-std::string NumberGeneratorSRand::GetGeneratorName() const {
+template<class T>
+std::string NumberGeneratorSRand<T>::GetGeneratorName() const {
   return "Default CPP SRand Generator";
 }
 
@@ -65,9 +70,10 @@ std::string NumberGeneratorSRand::GetGeneratorName() const {
 * The method does a basic check to verify is the max_random_value is greater than min_random_value
 * If the min_random_value is greater than max_random_value, the values swapped
 **/
-void NumberGeneratorSRand::SetRandomValRange(uint32_t max_random_value,
-                                            uint32_t min_random_value) {
-  if (max_random_value > min_random_value) {
+template<class T>
+void NumberGeneratorSRand<T>::SetRandomValRange(T max_random_value,
+                                            T min_random_value) {
+  if ( max_random_value > min_random_value ) {
     max_random_value_ = max_random_value;
     min_random_value_ = min_random_value;
   } else {
@@ -83,8 +89,17 @@ void NumberGeneratorSRand::SetRandomValRange(uint32_t max_random_value,
 *
 * The function internally call the Implementation method for random number generator
 **/
-uint32_t NumberGeneratorSRand::GetGeneratedNumber() {
-  current_random_number_ = min_random_value_ +
-          (GenerateNumber() % (max_random_value_ - min_random_value_));
+template<class T>
+T NumberGeneratorSRand<T>::GetGeneratedNumber() {
+  double random_int = (double)GenerateNumber();
+  
+  double random_range = (double)max_random_value_ - (double)min_random_value_;
+
+  double random_numbr = (double)min_random_value_ + ((random_int/random_range)-
+                                 floor(random_int/random_range))*random_range;
+
+  current_random_number_ = static_cast<T>(random_numbr);
+
   return current_random_number_;
 }
+

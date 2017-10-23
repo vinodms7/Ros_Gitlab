@@ -19,6 +19,7 @@
 #include <string>
 
 /*! Class Declarations */
+template<class T, class RT>
 class ArithmeticNodeHandlerInterface {
  public:
   /**
@@ -36,16 +37,16 @@ class ArithmeticNodeHandlerInterface {
   * @brief process data and return value
   * 
   *
-  * @param[in]  uint32_t
+  * @param[in]  T
   *               Holds the value1 parameter
   *
-  * @param[in]  uint32_t
+  * @param[in]  T
   *               Holds the value2 parameter
   *
-  * @return     uint32_t
+  * @return     RT
   *               Holds the return value after result is computed
   **/
-  virtual uint32_t ProcessData(uint32_t, uint32_t) = 0;
+  virtual RT ProcessData(T, T) = 0;
 };
 
 #endif /*MULTIPLIER_NODE_H */
