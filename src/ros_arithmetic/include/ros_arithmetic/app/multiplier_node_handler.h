@@ -28,7 +28,6 @@
 template<class T, class RT>
 class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface<T, RT> {
  public:
-  
   /**
   * Function name: Constructor
   * @brief Constructs MultiplierNodeHandler object
@@ -120,7 +119,7 @@ class MultiplierNodeHandler : public ArithmeticNodeHandlerInterface<T, RT> {
   /*!  ptr to arithmetic factory */
   NumberArithmeticFactory<T, RT>* arithmetic_factory_;
   /*!  ptr to comm factory */
-  CommFactory<T, RT>*   communication_factory_; 
+  CommFactory<T, RT>*   communication_factory_;
 };
   template class MultiplierNodeHandler<uint32_t, uint64_t>;
   template class MultiplierNodeHandler<float, double>;

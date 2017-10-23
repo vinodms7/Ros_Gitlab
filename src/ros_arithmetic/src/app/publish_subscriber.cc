@@ -104,7 +104,7 @@ template<class T, class RT>
 void PublishSubscribe<T, RT>::ReceiveMessage() {
   if ( nullptr != receiver_callback_ ) {
     multiplier_subscriber_ = node_handle_.subscribe("random_numbers",
-              100, &ReceiverCallback<T, RT>::MultiplierCallback, receiver_callback_);
+       100, &ReceiverCallback<T, RT>::MultiplierCallback, receiver_callback_);
   } else {
     ROS_WARN("Receiver callback object not created");
   }

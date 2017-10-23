@@ -31,17 +31,21 @@
 *        and advertises the topic to be published
 **/
 template<class T>
-PublishSubscribe<T>::PublishSubscribe(NodeHandlerInterface<T> *gen_node_handler) {
+PublishSubscribe<T>::PublishSubscribe(NodeHandlerInterface<T>
+                                                     *gen_node_handler) {
   if ( nullptr != gen_node_handler ) {
     generator_node_handler_ = gen_node_handler;
 
-    ros::NodeHandle *handle = GeneratorConfig<T>::ConfigInstance().generator_handle_;
+    ros::NodeHandle *handle =
+                     GeneratorConfig<T>::ConfigInstance().generator_handle_;
 
-    rand_num_publisher_ = handle->advertise<ros_ran_num_msg::rand_num>("random_numbers", 100);
+    rand_num_publisher_ =
+         handle->advertise<ros_ran_num_msg::rand_num>("random_numbers", 100);
 
     float nDuration = (1.0/GeneratorConfig<T>::ConfigInstance().frequency_);
 
-    timer_ = handle->createTimer(ros::Duration(nDuration), &GeneratorNodeHandler<T>::CommCallback);
+    timer_ = handle->createTimer(ros::Duration(nDuration),
+                                    &GeneratorNodeHandler<T>::CommCallback);
   } else {
     ROS_WARN("No Generator Node instance. No messages to publish");
   }
@@ -61,7 +65,6 @@ PublishSubscribe<T>::~PublishSubscribe() {
 **/
 template<class T>
 void PublishSubscribe<T>::SendMessage(T value1, T value2) {
-
   ros_ran_num_msg::rand_num value;
 
   value.number1 = value1;

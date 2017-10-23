@@ -52,7 +52,8 @@ void MultiplierNodeHandler<T, RT>::CreateMultiplierFactory() {
   arithmetic_factory_ = new NumberArithmeticFactory<T, RT>();
   if ( nullptr != arithmetic_factory_ ) {
     if (operation_type_ == "MUL") {
-      arithmetic_factory_->CreateArithmeticOperation(new NumberMultiplier<T, RT>());
+      arithmetic_factory_->CreateArithmeticOperation(
+                                    new NumberMultiplier<T, RT>());
     } else {
       ROS_WARN("No object Created, Invalid type");
     }
@@ -65,7 +66,8 @@ template<class T, class RT>
 void MultiplierNodeHandler<T, RT>::CreateCommunicationFactory() {
   communication_factory_ = new CommFactory<T, RT>();
   if ( nullptr != communication_factory_ ) {
-    communication_factory_->CreateCommunicator(new PublishSubscribe<T, RT>(this));
+    communication_factory_->CreateCommunicator(
+                               new PublishSubscribe<T, RT>(this));
   } else {
     ROS_WARN("Communication Factory object not Created");
   }

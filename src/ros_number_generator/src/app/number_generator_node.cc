@@ -28,32 +28,34 @@ int main(int argc, char **argv) {
 
   ros::init(argc, argv, "NumberGeneratorNode");
 
-  GeneratorConfig<uint32_t> & generator_config = GeneratorConfig<uint32_t>::ConfigInstance();
+  GeneratorConfig<uint32_t> & generator_config =
+                           GeneratorConfig<uint32_t>::ConfigInstance();
 
   generator_config.generator_handle_ = new ros::NodeHandle();
 
-  if ( !generator_config.generator_handle_->getParam("frequency", frequency) ) {
+  if ( !generator_config.generator_handle_->getParam(
+                                               "frequency", frequency) ) {
     ROS_WARN("Frequency Param not received...");
   } else {
     ROS_INFO("Frequency Param is [%f]", frequency);
     generator_config.frequency_ = frequency;
   }
-  
+
   if ( !generator_config.generator_handle_->getParam("gentype", value) ) {
-    ROS_WARN("Generator type not received, Using default generator interface.");
+    ROS_WARN("Generator type not received,Using default generator interface");
   } else {
     generator_config.generator_type_ = value;
     ROS_INFO("Generator type is [%s]", value.c_str());
   }
-  
+
   if ( !generator_config.generator_handle_->getParam("commtype", value) ) {
-    ROS_WARN("Communication type not received, Using default communication interface.");
+    ROS_WARN("Communication type not received, Using default communication");
   } else {
     ROS_INFO("Communication type is [%s]", value.c_str());
     generator_config.communication_type_ = value;
   }
 
-  std::unique_ptr<NodeHandlerInterface<uint32_t>>randNumberObj(
+  std::unique_ptr< NodeHandlerInterface<uint32_t> >randNumberObj(
                         new GeneratorNodeHandler<uint32_t>());
 
   ros::spin();

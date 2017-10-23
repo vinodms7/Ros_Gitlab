@@ -53,7 +53,8 @@ NumberGeneratorFactory<T>::~NumberGeneratorFactory() {
 *
 **/
 template<class T>
-void NumberGeneratorFactory<T>::CreateGenerator(NumberGenerator<T> *number_gen) {
+void NumberGeneratorFactory<T>::CreateGenerator(
+                                       NumberGenerator<T> *number_gen) {
   if ( nullptr != number_generator_ ) {
     delete number_generator_;
     number_generator_ = nullptr;
@@ -66,7 +67,7 @@ void NumberGeneratorFactory<T>::CreateGenerator(NumberGenerator<T> *number_gen) 
 *  
 * @brief Returns the instance of the Number Generator
 *
-* If an instance of Number generator already exist, the current method will 
+* If an instance of Number generator already exist, the current method will
 * return the instance 
 *
 **/

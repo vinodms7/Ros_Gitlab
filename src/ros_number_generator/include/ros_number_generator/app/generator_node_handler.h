@@ -38,7 +38,7 @@ class GeneratorNodeHandler : public NodeHandlerInterface<T> {
   *
   * @param[in]  None
   **/
-  explicit GeneratorNodeHandler();
+  GeneratorNodeHandler();
 
   /**
   * Function name: ~GeneratorNodeHandler()
@@ -116,9 +116,12 @@ class GeneratorNodeHandler : public NodeHandlerInterface<T> {
   **/
   void CreateCommunicationFactory();
 
-  std::string generator_type_;  /*! string variable for generator type */
-  NumberGeneratorFactory<T>* number_generator_factory_;  /* Pointer to generator factory */
-  CommFactory<T>* communication_factory_;   /* Pointer to communication factory */
+  /*! string variable for generator type */
+  std::string generator_type_;
+  /* Pointer to generator factory */
+  NumberGeneratorFactory<T>* number_generator_factory_;
+  /* Pointer to communication factory */
+  CommFactory<T>* communication_factory_;
 };
 
   template class GeneratorNodeHandler<uint32_t>;

@@ -25,18 +25,23 @@
 template<typename T>
 class GeneratorConfig {
  public:
-  static GeneratorConfig<T> & ConfigInstance()
-  {
+  static GeneratorConfig<T> & ConfigInstance() {
     static GeneratorConfig<T> gconfig;
     return gconfig;
   }
 
-  float frequency_;                              /*! Frequency of publishing the numbers */
-  std::string generator_type_;                   /*! Type of message generation */
-  std::string communication_type_;               /*! Type of communication interface */
-  NumberGeneratorFactory<T>* number_generator_;  /*! Pointer to generator factory */
-  CommFactory<T>*   communication_factory_;      /*! Pointer to communication factory */
-  ros::NodeHandle* generator_handle_;            /* Publisher node handle */
+  /*! Frequency of publishing the numbers */
+  float frequency_;
+  /*! Type of message generation */
+  std::string generator_type_;
+  /*! Type of communication interface */
+  std::string communication_type_;
+  /*! Pointer to generator factory */
+  NumberGeneratorFactory<T>* number_generator_;
+  /*! Pointer to communication factory */
+  CommFactory<T>* communication_factory_;
+  /* Publisher node handle */
+  ros::NodeHandle* generator_handle_;
 
  private:
   GeneratorConfig():frequency_(1.0),
@@ -47,9 +52,8 @@ class GeneratorConfig {
                       generator_handle_(nullptr)  { }
 
   ~GeneratorConfig() { }
-
 };
- template class GeneratorConfig<uint32_t>;
+template class GeneratorConfig<uint32_t>;
 
 #endif /* _GENERATOR_CONFIG_H */
 

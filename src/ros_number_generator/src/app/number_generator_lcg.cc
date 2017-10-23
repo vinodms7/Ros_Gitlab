@@ -38,7 +38,8 @@ namespace constValues {
 *
 * @brief Constructor for LCG generator
 *
-* The constructor initializes the Random generator and specifies the range between which random
+* The constructor initializes the Random generator and specifies the 
+* range between which random
 * numbers need to be generator.
 * The seed value is initialize using inbuilt srandom()  and random() function call
 **/
@@ -89,7 +90,8 @@ std::string NumberGeneratorLCG<T>::GetGeneratorName() const {
 * @brief Function call to set the the random genrator range
 *
 * The Range between which the random numbers need to be generator.
-* The method does a basic check to verify is the max_random_value is greater than min_random_value
+* The method does a basic check to verify is the max_random_value is 
+* greater than min_random_value
 * If the min_random_value is greater than max_random_value, the values swapped
 **/
 template<class T>
@@ -109,15 +111,17 @@ void NumberGeneratorLCG<T>::SetRandomValRange(T max_random_value,
 *
 * @brief Function call to query for Number generator to provide a Random Number
 *
-* The function internally call the Implementation method for random number generator 
+* The function internally call the Implementation method for 
+* random number generator
 **/
 template <class T>
 T NumberGeneratorLCG<T>::GetGeneratedNumber() {
-  double random_int = (double)GenerateNumber();
-  double random_range = (double)max_random_value_ - (double)min_random_value_;
+  double random_int = static_cast<double>(GenerateNumber());
+  double random_range = static_cast<double>(max_random_value_) -
+                                       static_cast<double>(min_random_value_);
 
-  double random_numbr = (double)min_random_value_ + ((random_int/random_range)-
-                                 floor(random_int/random_range))*random_range;
+  double random_numbr = static_cast<double>(min_random_value_) +
+    ((random_int/random_range) - floor(random_int/random_range))*random_range;
 
   current_random_number_ = static_cast<T>(random_numbr);
 

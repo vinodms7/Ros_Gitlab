@@ -76,15 +76,17 @@ void GeneratorNodeHandler<T>::CreateNumberFactory() {
   if ( nullptr != number_generator_factory_ ) {
     if ( (GeneratorConfig<T>::ConfigInstance().generator_type_) == "LCG" ) {
       number_generator_factory_->CreateGenerator(new NumberGeneratorLCG<T>(
-          constVariables::MAX_RANDOM_VALUE, constVariables::MIN_RANDOM_VALUE));
-    } else if ( (GeneratorConfig<T>::ConfigInstance().generator_type_) == "SRAND" ) {
+        constVariables::MAX_RANDOM_VALUE, constVariables::MIN_RANDOM_VALUE));
+    } else if (GeneratorConfig<T>::ConfigInstance().
+                                                generator_type_ == "SRAND") {
       number_generator_factory_->CreateGenerator(new NumberGeneratorSRand<T>(
           constVariables::MAX_RANDOM_VALUE, constVariables::MIN_RANDOM_VALUE));
     } else {
       ROS_WARN("No Generator type object Created, Invalid type");
     }
 
-    GeneratorConfig<T>::ConfigInstance().number_generator_ = number_generator_factory_;
+    GeneratorConfig<T>::ConfigInstance().number_generator_ =
+                                                  number_generator_factory_;
   } else {
     ROS_WARN("Number factory object could not be created");
   }
@@ -101,15 +103,17 @@ void GeneratorNodeHandler<T>::CreateCommunicationFactory() {
   communication_factory_ = new CommFactory<T>();
 
   if ( nullptr != communication_factory_ ) {
-    if( GeneratorConfig<T>::ConfigInstance().communication_type_ == "PUB_SUB" ) {
+    if (GeneratorConfig<T>::ConfigInstance().
+                                          communication_type_ == "PUB_SUB") {
     communication_factory_->CreateCommunicator(new PublishSubscribe<T>(this));
     } else {
       ROS_WARN("No Comm Factory type object Created. Invalid type");
     }
-    GeneratorConfig<T>::ConfigInstance().communication_factory_ = communication_factory_;
-  }
-  else
+    GeneratorConfig<T>::ConfigInstance().communication_factory_ =
+                                                   communication_factory_;
+  } else {
     ROS_WARN("Commnication factory object could not be created");
+  }
 }
 
 /**
@@ -120,13 +124,15 @@ void GeneratorNodeHandler<T>::CreateCommunicationFactory() {
 **/
 template<class T>
 void GeneratorNodeHandler<T>::CommCallback(const ros::TimerEvent& evt) {
-
   T value1;
   T value2;
-  value1 = GeneratorConfig<T>::ConfigInstance().number_generator_->ExecuteGenerator();
-  value2 = GeneratorConfig<T>::ConfigInstance().number_generator_->ExecuteGenerator();
+  value1 = GeneratorConfig<T>::ConfigInstance().
+                                       number_generator_->ExecuteGenerator();
+  value2 = GeneratorConfig<T>::ConfigInstance().
+                                       number_generator_->ExecuteGenerator();
 
-  GeneratorConfig<T>::ConfigInstance().communication_factory_->GetCommunicator()->SendMessage(value1, value2);
+  GeneratorConfig<T>::ConfigInstance().communication_factory_->
+                              GetCommunicator()->SendMessage(value1, value2);
 }
 
 /**

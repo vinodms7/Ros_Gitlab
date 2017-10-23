@@ -87,16 +87,17 @@ void NumberGeneratorSRand<T>::SetRandomValRange(T max_random_value,
 *
 * @brief Function call to query for Number generator to provide a Random Number
 *
-* The function internally call the Implementation method for random number generator
+* The function internally call the Implementation method for 
+* random number generator
 **/
 template<class T>
 T NumberGeneratorSRand<T>::GetGeneratedNumber() {
-  double random_int = (double)GenerateNumber();
-  
-  double random_range = (double)max_random_value_ - (double)min_random_value_;
+  double random_int = static_cast<double>(GenerateNumber());
+  double random_range = static_cast<double>(max_random_value_) -
+                                       static_cast<double>(min_random_value_);
 
-  double random_numbr = (double)min_random_value_ + ((random_int/random_range)-
-                                 floor(random_int/random_range))*random_range;
+  double random_numbr = static_cast<double>(min_random_value_) +
+    ((random_int/random_range) - floor(random_int/random_range))*random_range;
 
   current_random_number_ = static_cast<T>(random_numbr);
 

@@ -73,8 +73,8 @@ class NumberMultiplier : public NumberArithmeticInterface<T, RT> {
   /*!  Multiplier value member variable */
   RT multiplier_value_;
 };
-  template class NumberMultiplier<uint32_t,uint64_t>;
-  template class NumberMultiplier<float, double>;
+template class NumberMultiplier<uint32_t, uint64_t>;
+template class NumberMultiplier<float, double>;
 
 #endif /* __MULTIPLIER_ARITHMETIC_H_ */
 
