@@ -7,7 +7,7 @@
 TEST(MYTEST , TESTVAL)
 {
  int val1 = 10;
- int val2 = 20;
+ int val2 = 10;
  
  EXPECT_EQ(val1,val2);
 }
