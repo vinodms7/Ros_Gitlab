@@ -12,6 +12,15 @@ TEST(MYTEST , TESTVAL)
  EXPECT_EQ(val1,val2);
 }
 
+
+TEST(MYTEST , TESTVALFAIL)
+{
+ int val1 = 10;
+ int val2 = 20;
+ 
+ EXPECT_NE(val1,val2);
+}
+
 int main(int argc, char **argv) {
   
   testing::InitGoogleTest(&argc, argv);
